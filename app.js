@@ -121,14 +121,16 @@ const sellersPath = path.join(__dirname, 'data', 'sellers.json');
 // Función para leer los nombres de los vendedores
 function readSellers() {
   try {
-    return JSON.parse(fs.readFileSync(sellersPath));
+    return JSON.parse(fs.readFileSync(sellersPath, 'utf8'));
   } catch (error) {
     // Si el archivo no existe o está vacío, devolver un objeto con valores predeterminados
-    return { vendedor1: null, vendedor2: null };
+    return {
+      local1: { vendedor1: null, vendedor2: null },
+      local2: { vendedor1: null, vendedor2: null }
+    };
   }
 }
 
-// Función para escribir los nombres de los vendedores
 function writeSellers(sellers) {
   fs.writeFileSync(sellersPath, JSON.stringify(sellers, null, 2));
 }
@@ -164,14 +166,14 @@ app.post('/update-seller', (req, res) => {
   // Guardar el cambio en el historial
   sellersHistory.push({
     seller,
-    oldName: sellers[seller] ? sellers[seller].name : null,
+    oldName: sellers[local][seller] ? sellers[local][seller].name : null,
     newName: name,
     updatedAt: new Date().toISOString(),
     local // Agregar el local al historial
   });
 
   // Actualizar el nombre del vendedor
-  sellers[seller] = {
+  sellers[local][seller] = {
     name,
     updatedAt: new Date().toISOString()
   };
@@ -190,15 +192,15 @@ app.get('/get-sellers', (req, res) => {
 });
 
 // Ruta para obtener el historial de cambios de los vendedores
-app.get('/get-sellers-history', (req, res) => {
-  const { local } = req.query; // Obtener el local desde la query
-  let sellersHistory = readSellersHistory();
+app.get('/get-sellers', (req, res) => {
+  const local = req.query.local; // Obtener el local desde la query
 
-  if (local) {
-    sellersHistory = sellersHistory.filter(entry => entry.local === local);
+  if (!['local1', 'local2'].includes(local)) {
+    return res.status(400).send('Local no válido');
   }
 
-  res.json(sellersHistory);
+  const sellers = readSellers();
+  res.json(sellers[local]);
 });
 
 // Función para leer pedidos, aceptando un parámetro para el local
@@ -466,12 +468,12 @@ io.on('connection', (socket) => {
 
   socket.on('process-order', (orderData) => {
     const { local, items, sellerName } = orderData;
-
+  
     // Validación básica de entrada
     if (!orderData || !local || !['local1', 'local2'].includes(local) || !Array.isArray(items) || items.length === 0) {
       return socket.emit('error', 'Datos de pedido inválidos o local no válido');
     }
-
+  
     // Actualizar el stock de los productos vendidos
     items.forEach(item => {
       if (item.details) {
@@ -496,26 +498,26 @@ io.on('connection', (socket) => {
         }
       }
     });
-
+  
     // Guardar el inventario actualizado
     writeInventory(inventory);
-
+  
     // Leer los pedidos previos
     const orders = readOrders(local);
     if (!orders) {
       return socket.emit('error', 'Error al leer los pedidos');
     }
-
+  
     // Añadir el nuevo pedido y guardarlo
     orders.push({
       ...orderData,
       sellerName // Incluir el nombre del vendedor en el pedido
     });
     writeOrders(local, orders);
-
+  
     // Limpiar el carrito
-    carts[local] = [];
-
+    carts[local] = []; // Limpiar el carrito del local correspondiente
+  
     // Emitir evento de actualización de stock para todos los clientes
     const stockUpdates = items.map(item => {
       const product = inventory[local].products.find(p => p.id === item.id);
@@ -525,9 +527,12 @@ io.on('connection', (socket) => {
         product: product ? { stock: product.stock } : null
       };
     });
-
+  
     // Emitir el evento de actualización del stock
     io.emit('stock-update', { local, items: stockUpdates });
+  
+    // Emitir evento para limpiar el carrito en el cliente
+    io.emit('cart-updated', { local, cart: [] });
   });
 
   socket.on('add-docena', ({ local, docena }) => {

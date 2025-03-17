@@ -5,7 +5,7 @@
         "name": "Carne",
         "category": "Tradicionales",
         "price": 100,
-        "stock": 3,
+        "stock": 100,
         "description": "Carne seleccionada picada, Cebolla y Huevo duro.",
         "id": 1
       },
@@ -13,7 +13,7 @@
         "name": "Picante",
         "category": "Tradicionales",
         "price": 100,
-        "stock": 198,
+        "stock": 100,
         "description": "Carne cortada a cuchillo, Macerada con mix de pimientas, Aji picante.",
         "id": 4
       },
@@ -21,7 +21,7 @@
         "name": "Pollo",
         "category": "Tradicionales",
         "price": 100,
-        "stock": 202,
+        "stock": 100,
         "description": "Pechuga fileteadas, Salteadas con curry, Cortadas a cuchillo, Con cebolla y huevo duro.",
         "id": 5
       },
@@ -29,7 +29,7 @@
         "name": "Verdura",
         "category": "Tradicionales",
         "price": 100,
-        "stock": 196,
+        "stock": 100,
         "description": "Espinaca, Zanahorai, Cebolla, Huevo duro y verdeo.",
         "id": 6
       },
@@ -37,7 +37,7 @@
         "name": "Choclo",
         "category": "Tradicionales",
         "price": 100,
-        "stock": 176,
+        "stock": 100,
         "description": "Granos de chochlo y cebolla salteados, Choclo cremoso y muzzarella.",
         "id": 7
       },
@@ -141,7 +141,7 @@
         "name": "Vacio/Provolone",
         "category": "Especiales",
         "price": 200,
-        "stock": 99,
+        "stock": 100,
         "description": "Vacio cortado a cuchillo, provolone, cebolla y verdeo.",
         "id": 20
       },
@@ -149,7 +149,7 @@
         "name": "Cordero",
         "category": "Especiales",
         "price": 200,
-        "stock": 87,
+        "stock": 100,
         "description": "Cordero a la cerveza con miel y romero desmecha y cebolla.",
         "id": 21
       },
@@ -173,7 +173,7 @@
         "name": "Docena Tradicionales",
         "category": "Docena",
         "price": 28000,
-        "stock": 80,
+        "stock": 100,
         "description": "Carne, Pollo, Verdura, Cebolla, Jamon, Calabaza, Carne Picante, Choclo, Salchica Alemana.",
         "id": 24
       },
@@ -197,7 +197,7 @@
         "name": "Docena Imperdibles",
         "category": "Docena",
         "price": 39000,
-        "stock": 88,
+        "stock": 100,
         "description": "Cordero, Trucha, Ciervo.",
         "id": 26
       },
@@ -221,7 +221,7 @@
         "name": "Clásica",
         "category": "Hamburgesas",
         "price": 10000,
-        "stock": 7,
+        "stock": 100,
         "description": "Clasica.",
         "id": 29
       },
@@ -333,7 +333,7 @@
         "name": "Bebidas 500cc",
         "category": "Extra",
         "price": 2500,
-        "stock": 100,
+        "stock": 99,
         "description": "Bebidas 500cc.",
         "id": 43
       }
@@ -345,7 +345,7 @@
         "name": "Carne",
         "category": "Tradicionales",
         "price": 100,
-        "stock": 179,
+        "stock": 100,
         "description": "Carne seleccionada picada, Cebolla y Huevo duro.",
         "id": 1
       },
@@ -353,7 +353,7 @@
         "name": "Picante",
         "category": "Tradicionales",
         "price": 100,
-        "stock": 198,
+        "stock": 100,
         "description": "Carne cortada a cuchillo, Macerada con mix de pimientas, Aji picante.",
         "id": 4
       },
@@ -361,7 +361,7 @@
         "name": "Pollo",
         "category": "Tradicionales",
         "price": 100,
-        "stock": 180,
+        "stock": 100,
         "description": "Pechuga fileteadas, Salteadas con curry, Cortadas a cuchillo, Con cebolla y huevo duro.",
         "id": 5
       },
@@ -377,7 +377,7 @@
         "name": "Choclo",
         "category": "Tradicionales",
         "price": 100,
-        "stock": 188,
+        "stock": 100,
         "description": "Granos de chochlo y cebolla salteados, Choclo cremoso y muzzarella.",
         "id": 7
       },
@@ -561,7 +561,7 @@
         "name": "Clásica",
         "category": "Hamburgesas",
         "price": 10000,
-        "stock": 95,
+        "stock": 100,
         "description": "Clasica.",
         "id": 29
       },

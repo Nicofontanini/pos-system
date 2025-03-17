@@ -28,7 +28,7 @@
           <button onclick="closeCashRegister()" class="btn-mostrarFormulario">Cierre de Caja</button>
           <button onclick="showCashRegisterHistoryModal()" class="btn-mostrarFormulario">Consultar Historial de
             Cierres</button>
-          <button onclick="cleanOldOrders()" class="btn-limpiar">Limpiar Pedidos Antiguos</button>
+          <!-- <button onclick="cleanOldOrders()" class="btn-limpiar">Limpiar Pedidos Antiguos</button> -->
         </div>
       </div>
     </div>
@@ -217,6 +217,20 @@
     </div>
   </div>
 
+
+  <!-- Modal para seleccionar empanadas -->
+  <div id="docenaModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeDocenaModal()">&times;</span>
+      <h2 id="docenaModalTitle"></h2>
+      <div id="empanadasSelection"></div>
+      <div class="modal-actions">
+        <button onclick="confirmDocenaSelection()" style="padding: 10px;">Confirmar</button>
+        <button onclick="closeDocenaModal()" style="padding: 10px;">Cancelar</button>
+      </div>
+    </div>
+  </div>
+
   <!-- Formulario para agregar nuevas docenas -->
   <!-- <div class="docena-form" id="docenaForm">
     <h3>Agregar Nueva Docena</h3>
@@ -289,29 +303,29 @@
     const socket = io();
 
     function cleanOldOrders() {
-  const local = window.location.pathname.includes('local1') ? 'local1' : 'local2';
+      const local = window.location.pathname.includes('local1') ? 'local1' : 'local2';
 
-  fetch('/clean-old-data', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'X-Local': local // Enviar el local actual
+      fetch('/clean-old-data', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Local': local // Enviar el local actual
+        }
+      })
+        .then(response => response.json())
+        .then(data => {
+          if (data.success) {
+            alert('Datos antiguos eliminados correctamente');
+            location.reload(); // Recargar la página para actualizar la lista de datos
+          } else {
+            alert('Error al eliminar datos antiguos');
+          }
+        })
+        .catch(error => {
+          console.error('Error:', error);
+          alert('Error al eliminar datos antiguos');
+        });
     }
-  })
-    .then(response => response.json())
-    .then(data => {
-      if (data.success) {
-        alert('Datos antiguos eliminados correctamente');
-        location.reload(); // Recargar la página para actualizar la lista de datos
-      } else {
-        alert('Error al eliminar datos antiguos');
-      }
-    })
-    .catch(error => {
-      console.error('Error:', error);
-      alert('Error al eliminar datos antiguos');
-    });
-}
 
 
     function toggleDocenaForm() {
@@ -473,7 +487,9 @@
 
     // Función para cargar el historial de empleados
     function loadEmployeeHistory() {
-      fetch(`/get-sellers-history?local=${currentLocal}`) // Usar currentLocal
+      const local = window.location.pathname.includes('local1') ? 'local1' : 'local2';
+
+      fetch(`/get-sellers-history?local=${local}`)
         .then(response => response.json())
         .then(data => {
           const container = document.getElementById('employeeHistoryContainer');
@@ -483,13 +499,13 @@
             const entryElement = document.createElement('div');
             entryElement.className = 'history-entry';
             entryElement.innerHTML = `
-            <p><strong>Local:</strong> ${entry.local}</p>
-      <p><strong>Vendedor:</strong> ${entry.seller}</p>
-      <p><strong>Nombre anterior:</strong> ${entry.oldName || 'N/A'}</p>
-      <p><strong>Nombre nuevo:</strong> ${entry.newName}</p>
-      <p><strong>Fecha de cambio:</strong> ${new Date(entry.updatedAt).toLocaleString()}</p>
-      <hr>
-    `;
+          <p><strong>Local:</strong> ${entry.local}</p>
+          <p><strong>Vendedor:</strong> ${entry.seller}</p>
+          <p><strong>Nombre anterior:</strong> ${entry.oldName || 'N/A'}</p>
+          <p><strong>Nombre nuevo:</strong> ${entry.newName}</p>
+          <p><strong>Fecha de cambio:</strong> ${new Date(entry.updatedAt).toLocaleString()}</p>
+          <hr>
+        `;
             container.appendChild(entryElement);
           });
         })
@@ -497,7 +513,6 @@
           console.error('Error al cargar el historial de empleados:', error);
         });
     }
-
     // Función para mostrar el modal de cambio de vendedor
     function showSellerModal() {
       const modal = document.getElementById('sellerModal');
@@ -512,21 +527,23 @@
 
     // Función para cargar la información de los vendedores
     function loadSellerInfo() {
+      const local = window.location.pathname.includes('local1') ? 'local1' : 'local2';
+
       fetch('/get-sellers')
         .then(response => response.json())
         .then(data => {
           const sellerInfo = document.getElementById('sellerInfo');
           sellerInfo.innerHTML = `
-  <p>Vendedor 1: ${data.vendedor1 ? data.vendedor1.name : 'No definido'} (Última actualización: ${data.vendedor1 ? new Date(data.vendedor1.updatedAt).toLocaleString() : 'N/A'})</p>
-  <p>Vendedor 2: ${data.vendedor2 ? data.vendedor2.name : 'No definido'} (Última actualización: ${data.vendedor2 ? new Date(data.vendedor2.updatedAt).toLocaleString() : 'N/A'})</p>
-`;
+        <p>Vendedor 1: ${data[local].vendedor1 ? data[local].vendedor1.name : 'No definido'} (Última actualización: ${data[local].vendedor1 ? new Date(data[local].vendedor1.updatedAt).toLocaleString() : 'N/A'})</p>
+        <p>Vendedor 2: ${data[local].vendedor2 ? data[local].vendedor2.name : 'No definido'} (Última actualización: ${data[local].vendedor2 ? new Date(data[local].vendedor2.updatedAt).toLocaleString() : 'N/A'})</p>
+      `;
 
           // Actualizar los botones del modal de pago
-          if (data.vendedor1) {
-            document.getElementById('seller1Button').textContent = data.vendedor1.name;
+          if (data[local].vendedor1) {
+            document.getElementById('seller1Button').textContent = data[local].vendedor1.name;
           }
-          if (data.vendedor2) {
-            document.getElementById('seller2Button').textContent = data.vendedor2.name;
+          if (data[local].vendedor2) {
+            document.getElementById('seller2Button').textContent = data[local].vendedor2.name;
           }
         });
     }
@@ -567,18 +584,19 @@
 
     // Escuchar el evento de actualización de vendedores
     socket.on('seller-updated', function (sellers) {
+      const local = window.location.pathname.includes('local1') ? 'local1' : 'local2';
       const sellerInfo = document.getElementById('sellerInfo');
       sellerInfo.innerHTML = `
-    <p>Vendedor 1: ${sellers.vendedor1 ? sellers.vendedor1.name : 'No definido'} (Última actualización: ${sellers.vendedor1 ? new Date(sellers.vendedor1.updatedAt).toLocaleString() : 'N/A'})</p>
-    <p>Vendedor 2: ${sellers.vendedor2 ? sellers.vendedor2.name : 'No definido'} (Última actualización: ${sellers.vendedor2 ? new Date(sellers.vendedor2.updatedAt).toLocaleString() : 'N/A'})</p>
+    <p>Vendedor 1: ${sellers[local].vendedor1 ? sellers[local].vendedor1.name : 'No definido'} (Última actualización: ${sellers[local].vendedor1 ? new Date(sellers[local].vendedor1.updatedAt).toLocaleString() : 'N/A'})</p>
+    <p>Vendedor 2: ${sellers[local].vendedor2 ? sellers[local].vendedor2.name : 'No definido'} (Última actualización: ${sellers[local].vendedor2 ? new Date(sellers[local].vendedor2.updatedAt).toLocaleString() : 'N/A'})</p>
   `;
 
       // Actualizar los botones del modal de pago
-      if (sellers.vendedor1) {
-        document.getElementById('seller1Button').textContent = sellers.vendedor1.name;
+      if (sellers[local].vendedor1) {
+        document.getElementById('seller1Button').textContent = sellers[local].vendedor1.name;
       }
-      if (sellers.vendedor2) {
-        document.getElementById('seller2Button').textContent = sellers.vendedor2.name;
+      if (sellers[local].vendedor2) {
+        document.getElementById('seller2Button').textContent = sellers[local].vendedor2.name;
       }
     });
     // Función para seleccionar el vendedor
@@ -604,25 +622,21 @@
       }
     });
 
-    // Función para agregar productos al carrito
+    let currentDocena = null; // Variable para almacenar la docena seleccionada
+
     function addToCart(productId, productName, productPrice) {
-      // Verificar si el producto es una docena
       const docenaType = Object.keys(docenas).find(docena => productName.includes(docena));
 
       if (docenaType) {
-        // Obtener la configuración de la docena
-        const docenaConfig = docenas[docenaType];
+        currentDocena = {
+          id: productId,
+          name: productName,
+          price: productPrice,
+          type: docenaType,
+          config: docenas[docenaType]
+        };
 
-        // Determinar si es una docena normal o combinada
-        const esCombinadaDocena = typeof docenaConfig === 'object' && docenaConfig.tipo === 'combinada';
-
-        if (esCombinadaDocena) {
-          // Gestionar docena combinada
-          handleCombinedDocena(productId, productName, productPrice, docenaConfig);
-        } else {
-          // Gestionar docena regular (código original)
-          handleRegularDocena(productId, productName, productPrice, docenaConfig);
-        }
+        openDocenaModal(currentDocena);
       } else {
         // Si no es una docena, agregar el producto normalmente
         const local = window.location.pathname.includes('local1') ? 'local1' : 'local2';
@@ -633,13 +647,171 @@
             name: productName,
             price: productPrice,
             quantity: 1,
-            details: null // Sin detalles adicionales
+            details: null
           }
         });
-        alert(`${productName} agregado al carrito.`);
       }
     }
 
+    function openDocenaModal(docena) {
+      const modal = document.getElementById('docenaModal');
+      const title = document.getElementById('docenaModalTitle');
+      const selection = document.getElementById('empanadasSelection');
+
+      title.textContent = `Seleccionar empanadas para ${docena.name}`;
+      selection.innerHTML = '';
+
+      if (docena.config.tipo === 'combinada') {
+        // Si es una docena combinada, mostrar los grupos
+        docena.config.combinaciones.forEach((grupo, grupoIndex) => {
+          const grupoDiv = document.createElement('div');
+          grupoDiv.className = 'grupo-empanadas';
+          grupoDiv.innerHTML = `<h4>${grupo.nombre} (${grupo.cantidad} unidades)</h4>`;
+
+          grupo.opciones.forEach((empanada, empanadaIndex) => {
+            const empanadaDiv = document.createElement('div');
+            empanadaDiv.className = 'empanada-item';
+            empanadaDiv.innerHTML = `
+          <span>${empanada}</span>
+          <div>
+            <button onclick="decrementEmpanada(${grupoIndex}, ${empanadaIndex})">-</button>
+            <span id="empanada-${grupoIndex}-${empanadaIndex}-quantity">0</span>
+            <button onclick="incrementEmpanada(${grupoIndex}, ${empanadaIndex}, ${grupo.cantidad})">+</button>
+          </div>
+        `;
+            grupoDiv.appendChild(empanadaDiv);
+          });
+
+          selection.appendChild(grupoDiv);
+        });
+      } else {
+        // Si es una docena normal, mostrar todas las empanadas
+        docena.config.forEach((empanada, index) => {
+          const empanadaDiv = document.createElement('div');
+          empanadaDiv.className = 'empanada-item';
+          empanadaDiv.innerHTML = `
+        <span>${empanada}</span>
+        <div>
+          <button onclick="decrementEmpanada(0, ${index})">-</button>
+          <span id="empanada-0-${index}-quantity">0</span>
+          <button onclick="incrementEmpanada(0, ${index}, 12)">+</button>
+        </div>
+      `;
+          selection.appendChild(empanadaDiv);
+        });
+      }
+
+      modal.style.display = 'block';
+    }
+
+    function closeDocenaModal() {
+      document.getElementById('docenaModal').style.display = 'none';
+      currentDocena = null;
+    }
+
+    function incrementEmpanada(grupoIndex, empanadaIndex, maxQuantity) {
+      const quantityElement = document.getElementById(`empanada-${grupoIndex}-${empanadaIndex}-quantity`);
+      let quantity = parseInt(quantityElement.textContent);
+
+      // Verificar que no se exceda la cantidad máxima permitida
+      const totalSelected = getTotalSelectedForGroup(grupoIndex);
+      if (totalSelected < maxQuantity) {
+        quantity += 1;
+        quantityElement.textContent = quantity;
+      } else {
+        alert(`No puedes seleccionar más de ${maxQuantity} unidades en este grupo.`);
+      }
+    }
+
+    function decrementEmpanada(grupoIndex, empanadaIndex) {
+      const quantityElement = document.getElementById(`empanada-${grupoIndex}-${empanadaIndex}-quantity`);
+      let quantity = parseInt(quantityElement.textContent);
+      if (quantity > 0) {
+        quantity -= 1;
+        quantityElement.textContent = quantity;
+      }
+    }
+
+    function getTotalSelectedForGroup(grupoIndex) {
+      let total = 0;
+      const grupoDiv = document.querySelectorAll(`#empanadasSelection .grupo-empanadas`)[grupoIndex];
+      if (grupoDiv) {
+        const quantityElements = grupoDiv.querySelectorAll('span[id$="-quantity"]');
+        quantityElements.forEach(element => {
+          total += parseInt(element.textContent);
+        });
+      }
+      return total;
+    }
+
+    function confirmDocenaSelection() {
+      const grupos = [];
+      let isValid = true;
+
+      if (currentDocena.config.tipo === 'combinada') {
+        // Para docenas combinadas, validar cada grupo
+        currentDocena.config.combinaciones.forEach((grupo, grupoIndex) => {
+          const empanadas = [];
+          let totalSelected = 0;
+
+          grupo.opciones.forEach((empanada, empanadaIndex) => {
+            const quantity = parseInt(document.getElementById(`empanada-${grupoIndex}-${empanadaIndex}-quantity`).textContent);
+            if (quantity > 0) {
+              empanadas.push({ name: empanada, quantity });
+              totalSelected += quantity;
+            }
+          });
+
+          if (totalSelected !== grupo.cantidad) {
+            alert(`Debes seleccionar exactamente ${grupo.cantidad} unidades en el grupo "${grupo.nombre}".`);
+            isValid = false;
+          }
+
+          grupos.push({
+            grupo: grupo.nombre,
+            empanadas: empanadas
+          });
+        });
+      } else {
+        // Para docenas normales, validar el total de empanadas
+        const empanadas = [];
+        let totalSelected = 0;
+
+        currentDocena.config.forEach((empanada, index) => {
+          const quantity = parseInt(document.getElementById(`empanada-0-${index}-quantity`).textContent);
+          if (quantity > 0) {
+            empanadas.push({ name: empanada, quantity });
+            totalSelected += quantity;
+          }
+        });
+
+        if (totalSelected !== 12) {
+          alert('Debes seleccionar exactamente 12 empanadas.');
+          isValid = false;
+        }
+
+        grupos.push({
+          grupo: 'Docena',
+          empanadas: empanadas
+        });
+      }
+
+      if (isValid) {
+        const local = window.location.pathname.includes('local1') ? 'local1' : 'local2';
+        socket.emit('add-to-cart', {
+          local: local,
+          product: {
+            id: currentDocena.id,
+            name: currentDocena.name,
+            price: currentDocena.price,
+            quantity: 1,
+            details: grupos.flatMap(g => g.empanadas),
+            gruposDetalle: grupos // Mantener los grupos para mejor visualización
+          }
+        });
+        closeDocenaModal();
+      }
+    }
     function handleRegularDocena(productId, productName, productPrice, empanadasDisponibles) {
       const empanadas = empanadasDisponibles.map(name => ({ name, quantity: 0 }));
       let totalSelected = 0;
@@ -817,12 +989,12 @@
         const itemElement = document.createElement('div');
         itemElement.className = 'cart-item';
         itemElement.innerHTML = `
-  <p>${item.name} - $${item.price} x ${item.quantity}</p>
-  <button onclick="decrementProduct(${item.id})">-</button>
-  <span>${item.quantity}</span>
-  <button onclick="incrementProduct(${item.id})">+</button>
-  <button onclick="removeFromCart(${item.id})">Eliminar</button>
-`;
+      <p>${item.name} - $${item.price} x ${item.quantity}</p>
+      <button onclick="decrementProduct(${item.id})">-</button>
+      <span>${item.quantity}</span>
+      <button onclick="incrementProduct(${item.id})">+</button>
+      <button onclick="removeFromCart(${item.id})">Eliminar</button>
+    `;
         cartItemsElement.appendChild(itemElement);
         total += item.price * item.quantity; // Calcular el total
       });
@@ -1159,9 +1331,7 @@
 
     // Función para procesar el pago
     function processPayment() {
-      // Obtener los valores directamente de los campos del formulario
       const orderName = document.getElementById('orderName').value;
-      const sellerName = document.getElementById('sellerName').value;
 
       // Crear el objeto de datos del pedido
       const orderData = {
@@ -1171,17 +1341,16 @@
         paymentMethod: currentPaymentMethod,
         paymentAmounts: paymentAmounts,
         local: window.location.pathname.includes('local1') ? 'local1' : 'local2',
-        orderName: orderName, // Asignar nombre del cliente
-        seller: selectedSeller, // ID del vendedor
-        sellerName: sellerName // Nombre del vendedor
+        orderName: orderName, // Nombre del cliente
+        seller: selectedSeller // Nombre del vendedor seleccionado
       };
 
       // Enviar al servidor
       socket.emit('process-order', orderData);
 
-      // Actualizar el contador de pagos y el monto total
-      totalPayments += 1;
-      totalAmount += orderData.total;
+      // Limpiar el carrito en la interfaz de usuario
+      cart = []; // Limpiar el carrito local
+      updateCartUI(); // Actualizar la interfaz de usuario
 
       // Mostrar botón de impresión
       const printOrderBtn = document.getElementById('printOrderBtn');
@@ -1198,108 +1367,110 @@
     function printOrder(orderData) {
       const date = new Date(orderData.date).toLocaleString();
 
-      // Crear el contenido del pedido
-      let orderContent = `
-    <h2>Comanda</h2>
-    <p>Fecha: ${date}</p>
-    <p>Nombre del cliente: ${orderData.orderName || 'No especificado'}</p>
-    <p>Vendedor: ${orderData.sellerName || 'No especificado'}</p>
-    <table>
-      <thead>
-        <tr>
-          <th>Producto</th>
-          <th>Cantidad</th>
-          <th>Precio Unit.</th>
-          <th>Subtotal</th>
-        </tr>
-      </thead>
-      <tbody>
-  `;
+      // Verificar explícitamente los valores
+      const clientName = orderData.orderName ? orderData.orderName : 'No especificado';
+      const vendorName = orderData.sellerName ? orderData.sellerName : 'No especificado';
 
-      // Recorrer los productos del pedido
-      orderData.items.forEach(item => {
-        orderContent += `
-      <tr>
-        <td>${item.name}</td>
-        <td>${item.quantity}</td>
-        <td>$${item.price.toFixed(2)}</td>
-        <td>$${(item.price * item.quantity).toFixed(2)}</td>
-      </tr>
+      console.log("Imprimiendo - Nombre del cliente:", clientName);
+      console.log("Imprimiendo - Nombre del vendedor:", vendorName);
+
+      let paymentDetails = '';
+
+      if (orderData.paymentMethod === 'mixto') {
+        paymentDetails = `
+      <p>Pago en efectivo: $${orderData.paymentAmounts.efectivo.toFixed(2)}</p>
+      <p>Pago por transferencia: $${orderData.paymentAmounts.transferencia.toFixed(2)}</p>
     `;
+      } else {
+        paymentDetails = `
+      <p>Pago por ${orderData.paymentMethod}: $${orderData.total.toFixed(2)}</p>
+    `;
+      }
 
-        // Si es una docena, mostrar el detalle de las empanadas
-        if (item.details) {
-          // Verificar si es una docena combinada (tiene gruposDetalle)
-          if (item.gruposDetalle) {
-            orderContent += `
-          <tr>
-            <td colspan="4">
-              <strong>Detalle de ${item.name}:</strong>
-              <ul>
-        `;
-
-            // Mostrar empanadas agrupadas por categoría
-            item.gruposDetalle.forEach(grupo => {
-              orderContent += `<li><strong>${grupo.grupo} (${grupo.empanadas.reduce((sum, emp) => sum + emp.quantity, 0)} unidades):</strong>
-            <ul>
-              ${grupo.empanadas.map(empanada => `
-                <li>${empanada.name}: ${empanada.quantity} unidades</li>
-              `).join('')}
-            </ul>
-          </li>`;
-            });
-
-            orderContent += `
-              </ul>
-            </td>
-          </tr>
-        `;
-          } else {
-            // Docena normal (no combinada)
-            orderContent += `
-          <tr>
-            <td colspan="4">
-              <strong>Detalle de ${item.name}:</strong>
-              <ul>
-                ${item.details.map(detail => `
-                  <li>${detail.name}: ${detail.quantity} unidades</li>
+      const printContent = `
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                padding: 20px;
+            }
+            table {
+                width: 100%;
+                border-collapse: collapse;
+                margin: 20px 0;
+            }
+            th, td {
+                border: 1px solid #ddd;
+                padding: 8px;
+                text-align: left;
+            }
+            th {
+                background-color: #f2f2f2;
+            }
+            .total {
+                font-weight: bold;
+                font-size: 1.2em;
+                margin-top: 20px;
+            }
+            .payment-info {
+                margin-top: 20px;
+                padding: 10px;
+                border: 1px solid #ddd;
+                background-color: #f9f9f9;
+            }
+        </style>
+    </head>
+    <body>
+        <h2>Comprobante de Pago</h2>
+        <p>Fecha: ${date}</p>
+        <p>Nombre del cliente: ${clientName}</p>
+        <p>Vendedor: ${vendorName}</p>
+        <table>
+            <thead>
+                <tr>
+                    <th>Producto</th>
+                    <th>Cantidad</th>
+                    <th>Precio Unit.</th>
+                    <th>Subtotal</th>
+                </tr>
+            </thead>
+            <tbody>
+                ${orderData.items.map(item => `
+                    <tr>
+                        <td>${item.name}</td>
+                        <td>${item.quantity}</td>
+                        <td>$${item.price.toFixed(2)}</td>
+                        <td>$${(item.price * item.quantity).toFixed(2)}</td>
+                    </tr>
                 `).join('')}
-              </ul>
-            </td>
-          </tr>
-        `;
-          }
-        }
-      });
-
-      orderContent += `
-      </tbody>
-    </table>
-    <p><strong>Total: $${orderData.total.toFixed(2)}</strong></p>
+            </tbody>
+        </table>
+        
+        <div class="total">
+            Total: $${orderData.total.toFixed(2)}
+        </div>
+        
+        <div class="payment-info">
+            <h3>Información de Pago</h3>
+            <p>Método de pago: ${orderData.paymentMethod}</p>
+            ${paymentDetails}
+        </div>
+    </body>
+    </html>
   `;
 
       // Abrir ventana de impresión
       const printWindow = window.open('', '_blank');
-      printWindow.document.write(`
-    <!DOCTYPE html>
-    <html>
-    <head>
-      <style>
-        body { font-family: Arial, sans-serif;}
-        table { width: 100%; border-collapse: collapse; margin: 20px 0; }
-        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
-        th { background-color: #f2f2f2; }
-        .total { font-weight: bold; font-size: 1.2em; margin-top: 20px; }
-      </style>
-    </head>
-    <body>
-      ${orderContent}
-    </body>
-    </html>
-  `);
+      printWindow.document.write(printContent);
       printWindow.document.close();
-      printWindow.print();
-      printWindow.close();
+
+      // Esperar a que el contenido se cargue antes de imprimir
+      printWindow.onload = function () {
+        printWindow.print();
+        // printWindow.close(); // Opcional: cerrar la ventana después de imprimir
+      };
     }
 
     // Evento para el botón de impresión cuando se carga la página
@@ -1636,6 +1807,11 @@
       printWindow.document.close();
       printWindow.print();
     }
+
+
+    document.addEventListener('DOMContentLoaded', function () {
+      loadSellerInfo();
+    });
   </script>
 </body>
 
