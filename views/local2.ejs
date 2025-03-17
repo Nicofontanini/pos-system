@@ -415,6 +415,22 @@
       <button onclick="printCashRegisterHistory()" class="print-button">Imprimir Historial</button>
     </div>
   </div>
+
+
+   <!-- Modal para seleccionar empanadas -->
+   <div id="docenaModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeDocenaModal()">&times;</span>
+      <h2 id="docenaModalTitle"></h2>
+      <div id="empanadasSelection"></div>
+      <div class="modal-actions">
+        <button onclick="confirmDocenaSelection()" style="padding: 10px;">Confirmar</button>
+        <button onclick="closeDocenaModal()" style="padding: 10px;">Cancelar</button>
+      </div>
+    </div>
+  </div>
+
+
   <script>
     // Esta función abre y cierra el dropdown al hacer clic en el botón
     document.querySelector('.dropbtn').addEventListener('click', function () {
@@ -775,38 +791,194 @@
 });
 
     // Función para agregar productos al carrito
-    function addToCart(productId, productName, productPrice) {
-      // Verificar si el producto es una docena
-      const docenaType = Object.keys(docenas).find(docena => productName.includes(docena));
+    let currentDocena = null; // Variable para almacenar la docena seleccionada
 
-      if (docenaType) {
-        // Obtener la configuración de la docena
-        const docenaConfig = docenas[docenaType];
+function addToCart(productId, productName, productPrice) {
+  const docenaType = Object.keys(docenas).find(docena => productName.includes(docena));
 
-        // Determinar si es una docena normal o combinada
-        const esCombinadaDocena = typeof docenaConfig === 'object' && docenaConfig.tipo === 'combinada';
+  if (docenaType) {
+    currentDocena = {
+      id: productId,
+      name: productName,
+      price: productPrice,
+      type: docenaType,
+      config: docenas[docenaType]
+    };
 
-        if (esCombinadaDocena) {
-          // Gestionar docena combinada
-          handleCombinedDocena(productId, productName, productPrice, docenaConfig);
-        } else {
-          // Gestionar docena regular (código original)
-          handleRegularDocena(productId, productName, productPrice, docenaConfig);
-        }
+    openDocenaModal(currentDocena);
+  } else {
+    // Si no es una docena, agregar el producto normalmente
+    const local = window.location.pathname.includes('local1') ? 'local1' : 'local2';
+    socket.emit('add-to-cart', {
+      local: local,
+      product: {
+        id: productId,
+        name: productName,
+        price: productPrice,
+        quantity: 1,
+        details: null
+      }
+    });
+  }
+}
+
+    function openDocenaModal(docena) {
+      const modal = document.getElementById('docenaModal');
+      const title = document.getElementById('docenaModalTitle');
+      const selection = document.getElementById('empanadasSelection');
+
+      title.textContent = `Seleccionar empanadas para ${docena.name}`;
+      selection.innerHTML = '';
+
+      if (docena.config.tipo === 'combinada') {
+        // Si es una docena combinada, mostrar los grupos
+        docena.config.combinaciones.forEach((grupo, grupoIndex) => {
+          const grupoDiv = document.createElement('div');
+          grupoDiv.className = 'grupo-empanadas';
+          grupoDiv.innerHTML = `<h4>${grupo.nombre} (${grupo.cantidad} unidades)</h4>`;
+
+          grupo.opciones.forEach((empanada, empanadaIndex) => {
+            const empanadaDiv = document.createElement('div');
+            empanadaDiv.className = 'empanada-item';
+            empanadaDiv.innerHTML = `
+          <span>${empanada}</span>
+          <div>
+            <button onclick="decrementEmpanada(${grupoIndex}, ${empanadaIndex})">-</button>
+            <span id="empanada-${grupoIndex}-${empanadaIndex}-quantity">0</span>
+            <button onclick="incrementEmpanada(${grupoIndex}, ${empanadaIndex}, ${grupo.cantidad})">+</button>
+          </div>
+        `;
+            grupoDiv.appendChild(empanadaDiv);
+          });
+
+          selection.appendChild(grupoDiv);
+        });
       } else {
-        // Si no es una docena, agregar el producto normalmente
+        // Si es una docena normal, mostrar todas las empanadas
+        docena.config.forEach((empanada, index) => {
+          const empanadaDiv = document.createElement('div');
+          empanadaDiv.className = 'empanada-item';
+          empanadaDiv.innerHTML = `
+        <span>${empanada}</span>
+        <div>
+          <button onclick="decrementEmpanada(0, ${index})">-</button>
+          <span id="empanada-0-${index}-quantity">0</span>
+          <button onclick="incrementEmpanada(0, ${index}, 12)">+</button>
+        </div>
+      `;
+          selection.appendChild(empanadaDiv);
+        });
+      }
+
+      modal.style.display = 'block';
+    }
+
+    function closeDocenaModal() {
+      document.getElementById('docenaModal').style.display = 'none';
+      currentDocena = null;
+    }
+
+    function incrementEmpanada(grupoIndex, empanadaIndex, maxQuantity) {
+      const quantityElement = document.getElementById(`empanada-${grupoIndex}-${empanadaIndex}-quantity`);
+      let quantity = parseInt(quantityElement.textContent);
+
+      // Verificar que no se exceda la cantidad máxima permitida
+      const totalSelected = getTotalSelectedForGroup(grupoIndex);
+      if (totalSelected < maxQuantity) {
+        quantity += 1;
+        quantityElement.textContent = quantity;
+      } else {
+        alert(`No puedes seleccionar más de ${maxQuantity} unidades en este grupo.`);
+      }
+    }
+
+    function decrementEmpanada(grupoIndex, empanadaIndex) {
+      const quantityElement = document.getElementById(`empanada-${grupoIndex}-${empanadaIndex}-quantity`);
+      let quantity = parseInt(quantityElement.textContent);
+      if (quantity > 0) {
+        quantity -= 1;
+        quantityElement.textContent = quantity;
+      }
+    }
+
+    function getTotalSelectedForGroup(grupoIndex) {
+      let total = 0;
+      const grupoDiv = document.querySelectorAll(`#empanadasSelection .grupo-empanadas`)[grupoIndex];
+      if (grupoDiv) {
+        const quantityElements = grupoDiv.querySelectorAll('span[id$="-quantity"]');
+        quantityElements.forEach(element => {
+          total += parseInt(element.textContent);
+        });
+      }
+      return total;
+    }
+
+    function confirmDocenaSelection() {
+      const grupos = [];
+      let isValid = true;
+
+      if (currentDocena.config.tipo === 'combinada') {
+        // Para docenas combinadas, validar cada grupo
+        currentDocena.config.combinaciones.forEach((grupo, grupoIndex) => {
+          const empanadas = [];
+          let totalSelected = 0;
+
+          grupo.opciones.forEach((empanada, empanadaIndex) => {
+            const quantity = parseInt(document.getElementById(`empanada-${grupoIndex}-${empanadaIndex}-quantity`).textContent);
+            if (quantity > 0) {
+              empanadas.push({ name: empanada, quantity });
+              totalSelected += quantity;
+            }
+          });
+
+          if (totalSelected !== grupo.cantidad) {
+            alert(`Debes seleccionar exactamente ${grupo.cantidad} unidades en el grupo "${grupo.nombre}".`);
+            isValid = false;
+          }
+
+          grupos.push({
+            grupo: grupo.nombre,
+            empanadas: empanadas
+          });
+        });
+      } else {
+        // Para docenas normales, validar el total de empanadas
+        const empanadas = [];
+        let totalSelected = 0;
+
+        currentDocena.config.forEach((empanada, index) => {
+          const quantity = parseInt(document.getElementById(`empanada-0-${index}-quantity`).textContent);
+          if (quantity > 0) {
+            empanadas.push({ name: empanada, quantity });
+            totalSelected += quantity;
+          }
+        });
+
+        if (totalSelected !== 12) {
+          alert('Debes seleccionar exactamente 12 empanadas.');
+          isValid = false;
+        }
+
+        grupos.push({
+          grupo: 'Docena',
+          empanadas: empanadas
+        });
+      }
+
+      if (isValid) {
         const local = window.location.pathname.includes('local1') ? 'local1' : 'local2';
         socket.emit('add-to-cart', {
           local: local,
           product: {
-            id: productId,
-            name: productName,
-            price: productPrice,
+            id: currentDocena.id,
+            name: currentDocena.name,
+            price: currentDocena.price,
             quantity: 1,
-            details: null // Sin detalles adicionales
+            details: grupos.flatMap(g => g.empanadas),
+            gruposDetalle: grupos // Mantener los grupos para mejor visualización
           }
         });
-        // alert(`${productName} agregado al carrito.`);
+        closeDocenaModal();
       }
     }
 

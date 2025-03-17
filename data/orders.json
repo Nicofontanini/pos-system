@@ -1,1 +1,204 @@
-[]
+[
+  {
+    "date": "2025-03-17T18:41:47.738Z",
+    "items": [
+      {
+        "id": 1,
+        "name": "Carne",
+        "price": 100,
+        "quantity": 1,
+        "details": null
+      }
+    ],
+    "total": 100,
+    "paymentMethod": "efectivo",
+    "paymentAmounts": {
+      "efectivo": 100,
+      "transferencia": 0
+    },
+    "local": "local1",
+    "orderName": "Nico1",
+    "seller": "Vendedor 1"
+  },
+  {
+    "date": "2025-03-17T18:45:20.521Z",
+    "items": [
+      {
+        "id": 1,
+        "name": "Carne",
+        "price": 100,
+        "quantity": 1,
+        "details": null
+      }
+    ],
+    "total": 100,
+    "paymentMethod": "efectivo",
+    "paymentAmounts": {
+      "efectivo": 100,
+      "transferencia": 0
+    },
+    "local": "local1",
+    "orderName": "nico2",
+    "seller": "Vendedor 1"
+  },
+  {
+    "date": "2025-03-17T18:53:48.944Z",
+    "items": [
+      {
+        "id": 1,
+        "name": "Carne",
+        "price": 100,
+        "quantity": 1,
+        "details": null
+      }
+    ],
+    "total": 100,
+    "paymentMethod": "efectivo",
+    "paymentAmounts": {
+      "efectivo": 100,
+      "transferencia": 0
+    },
+    "local": "local1",
+    "orderName": "asdasd",
+    "seller": "Vendedor 1"
+  },
+  {
+    "date": "2025-03-17T18:53:48.944Z",
+    "items": [
+      {
+        "id": 1,
+        "name": "Carne",
+        "price": 100,
+        "quantity": 1,
+        "details": null
+      }
+    ],
+    "total": 100,
+    "paymentMethod": "efectivo",
+    "paymentAmounts": {
+      "efectivo": 100,
+      "transferencia": 0
+    },
+    "local": "local1",
+    "orderName": "asdasd",
+    "seller": "Vendedor 1"
+  },
+  {
+    "date": "2025-03-17T19:06:05.311Z",
+    "items": [
+      {
+        "id": 1,
+        "name": "Carne",
+        "price": 100,
+        "quantity": 1,
+        "details": null
+      }
+    ],
+    "total": 100,
+    "paymentMethod": "efectivo",
+    "paymentAmounts": {
+      "efectivo": 100,
+      "transferencia": 0
+    },
+    "local": "local1",
+    "orderName": "nico2",
+    "seller": "Vendedor 1"
+  },
+  {
+    "date": "2025-03-17T19:06:05.311Z",
+    "items": [
+      {
+        "id": 1,
+        "name": "Carne",
+        "price": 100,
+        "quantity": 1,
+        "details": null
+      }
+    ],
+    "total": 100,
+    "paymentMethod": "efectivo",
+    "paymentAmounts": {
+      "efectivo": 100,
+      "transferencia": 0
+    },
+    "local": "local1",
+    "orderName": "nico2",
+    "seller": "Vendedor 1"
+  },
+  {
+    "date": "2025-03-17T19:18:06.791Z",
+    "items": [
+      {
+        "id": 27,
+        "name": "Docena Combinada 1",
+        "price": 34500,
+        "quantity": 1,
+        "details": [
+          {
+            "name": "Carne",
+            "quantity": 3
+          },
+          {
+            "name": "Carne",
+            "quantity": 3
+          },
+          {
+            "name": "Vacio Provolone",
+            "quantity": 3
+          },
+          {
+            "name": "Cordero",
+            "quantity": 3
+          }
+        ],
+        "gruposDetalle": [
+          {
+            "grupo": "Tradicionales",
+            "empanadas": [
+              {
+                "name": "Carne",
+                "quantity": 3
+              }
+            ]
+          },
+          {
+            "grupo": "Especiales",
+            "empanadas": [
+              {
+                "name": "Carne",
+                "quantity": 3
+              }
+            ]
+          },
+          {
+            "grupo": "Vacio",
+            "empanadas": [
+              {
+                "name": "Vacio Provolone",
+                "quantity": 3
+              }
+            ]
+          },
+          {
+            "grupo": "Imperdibles",
+            "empanadas": [
+              {
+                "name": "Cordero",
+                "quantity": 3
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "total": 34500,
+    "paymentMethod": "efectivo",
+    "paymentAmounts": {
+      "efectivo": 34500,
+      "transferencia": 0
+    },
+    "local": "local1",
+    "orderName": "nico",
+    "seller": "Vendedor 1"
+  }
+]
