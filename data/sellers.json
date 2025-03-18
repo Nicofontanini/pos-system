@@ -1,1 +1,26 @@
-{}
+{
+  "local1": {
+    "vendedor1": {
+      "name": "nico",
+      "updatedAt": "2025-03-18T12:03:16.417Z"
+    },
+    "vendedor2": {
+      "name": "Nombre Vendedor 2",
+      "updatedAt": "2023-10-01T12:00:00.000Z"
+    }
+  },
+  "local2": {
+    "vendedor1": {
+      "name": "juansaas",
+      "updatedAt": "2025-03-18T12:04:30.609Z"
+    },
+    "vendedor2": {
+      "name": "dasdaddasdada",
+      "updatedAt": "2025-03-18T09:50:35.031Z"
+    }
+  },
+  "vendedor1": {
+    "name": "maxi",
+    "updatedAt": "2025-03-18T10:23:08.955Z"
+  }
+}

@@ -5,7 +5,7 @@
         "name": "Carne",
         "category": "Tradicionales",
         "price": 100,
-        "stock": 90,
+        "stock": -7,
         "description": "Carne seleccionada picada, Cebolla y Huevo duro.",
         "id": 1
       },
@@ -13,7 +13,7 @@
         "name": "Picante",
         "category": "Tradicionales",
         "price": 100,
-        "stock": 100,
+        "stock": 87,
         "description": "Carne cortada a cuchillo, Macerada con mix de pimientas, Aji picante.",
         "id": 4
       },
@@ -21,7 +21,7 @@
         "name": "Pollo",
         "category": "Tradicionales",
         "price": 100,
-        "stock": 100,
+        "stock": 61,
         "description": "Pechuga fileteadas, Salteadas con curry, Cortadas a cuchillo, Con cebolla y huevo duro.",
         "id": 5
       },
@@ -149,7 +149,7 @@
         "name": "Cordero",
         "category": "Especiales",
         "price": 200,
-        "stock": 97,
+        "stock": 78,
         "description": "Cordero a la cerveza con miel y romero desmecha y cebolla.",
         "id": 21
       },
@@ -157,7 +157,7 @@
         "name": "Trucha",
         "category": "Especiales",
         "price": 200,
-        "stock": 100,
+        "stock": 82,
         "description": "Trucha arcoiris, sin espinas con cebolla, morron y verdeo.",
         "id": 22
       },
@@ -345,7 +345,7 @@
         "name": "Carne",
         "category": "Tradicionales",
         "price": 100,
-        "stock": 93,
+        "stock": 79,
         "description": "Carne seleccionada picada, Cebolla y Huevo duro.",
         "id": 1
       },
@@ -353,7 +353,7 @@
         "name": "Picante",
         "category": "Tradicionales",
         "price": 100,
-        "stock": 100,
+        "stock": 99,
         "description": "Carne cortada a cuchillo, Macerada con mix de pimientas, Aji picante.",
         "id": 4
       },
@@ -361,7 +361,7 @@
         "name": "Pollo",
         "category": "Tradicionales",
         "price": 100,
-        "stock": 94,
+        "stock": 88,
         "description": "Pechuga fileteadas, Salteadas con curry, Cortadas a cuchillo, Con cebolla y huevo duro.",
         "id": 5
       },

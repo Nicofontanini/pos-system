@@ -192,15 +192,9 @@ app.get('/get-sellers', (req, res) => {
 });
 
 // Ruta para obtener el historial de cambios de los vendedores
-app.get('/get-sellers', (req, res) => {
-  const local = req.query.local; // Obtener el local desde la query
-
-  if (!['local1', 'local2'].includes(local)) {
-    return res.status(400).send('Local no válido');
-  }
-
-  const sellers = readSellers();
-  res.json(sellers[local]);
+app.get('/get-sellers-history', (req, res) => {  // ¡Ruta diferente!
+  const sellersHistory = readSellersHistory();
+  res.json(sellersHistory);
 });
 
 // Función para leer pedidos, aceptando un parámetro para el local

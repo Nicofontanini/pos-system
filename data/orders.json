@@ -200,5 +200,1156 @@
     "local": "local1",
     "orderName": "nico",
     "seller": "Vendedor 1"
+  },
+  {
+    "date": "2025-03-18T09:56:01.354Z",
+    "items": [
+      {
+        "id": 1,
+        "name": "Carne",
+        "price": 100,
+        "quantity": 1,
+        "details": null
+      }
+    ],
+    "total": 100,
+    "paymentMethod": "efectivo",
+    "paymentAmounts": {
+      "efectivo": 100,
+      "transferencia": 0
+    },
+    "local": "local1",
+    "orderName": "asdadasasd",
+    "sellerName": "Vendedor 1"
+  },
+  {
+    "date": "2025-03-18T09:56:15.049Z",
+    "items": [
+      {
+        "id": 1,
+        "name": "Carne",
+        "price": 100,
+        "quantity": 1,
+        "details": null
+      }
+    ],
+    "total": 100,
+    "paymentMethod": "efectivo",
+    "paymentAmounts": {
+      "efectivo": 100,
+      "transferencia": 0
+    },
+    "local": "local1",
+    "orderName": "dsadasda",
+    "sellerName": "Vendedor 1"
+  },
+  {
+    "date": "2025-03-18T10:05:34.937Z",
+    "items": [
+      {
+        "id": 1,
+        "name": "Carne",
+        "price": 100,
+        "quantity": 1,
+        "details": null
+      }
+    ],
+    "total": 100,
+    "paymentMethod": "efectivo",
+    "paymentAmounts": {
+      "efectivo": 100,
+      "transferencia": 0
+    },
+    "local": "local1",
+    "orderName": "dada",
+    "sellerName": "Vendedor 1"
+  },
+  {
+    "date": "2025-03-18T10:11:55.241Z",
+    "items": [
+      {
+        "id": 1,
+        "name": "Carne",
+        "price": 100,
+        "quantity": 1,
+        "details": null
+      }
+    ],
+    "total": 100,
+    "paymentMethod": "efectivo",
+    "paymentAmounts": {
+      "efectivo": 100,
+      "transferencia": 0
+    },
+    "local": "local1",
+    "orderName": "sdasda",
+    "sellerName": "Vendedor 1"
+  },
+  {
+    "date": "2025-03-18T10:16:12.896Z",
+    "items": [
+      {
+        "id": 4,
+        "name": "Picante",
+        "price": 100,
+        "quantity": 1,
+        "details": null
+      }
+    ],
+    "total": 100,
+    "paymentMethod": "efectivo",
+    "paymentAmounts": {
+      "efectivo": 100,
+      "transferencia": 0
+    },
+    "local": "local1",
+    "orderName": "dsadas",
+    "sellerName": "Vendedor 1"
+  },
+  {
+    "date": "2025-03-18T10:23:24.928Z",
+    "items": [
+      {
+        "id": 1,
+        "name": "Carne",
+        "price": 100,
+        "quantity": 2,
+        "details": null
+      }
+    ],
+    "total": 200,
+    "paymentMethod": "efectivo",
+    "paymentAmounts": {
+      "efectivo": 200,
+      "transferencia": 0
+    },
+    "local": "local1",
+    "orderName": "sadasdas",
+    "sellerName": "Vendedor 1"
+  },
+  {
+    "date": "2025-03-18T10:44:44.754Z",
+    "items": [
+      {
+        "id": 1,
+        "name": "Carne",
+        "price": 100,
+        "quantity": 1,
+        "details": null
+      }
+    ],
+    "total": 100,
+    "paymentMethod": "efectivo",
+    "paymentAmounts": {
+      "efectivo": 100,
+      "transferencia": 0
+    },
+    "local": "local1",
+    "orderName": "nico",
+    "sellerName": "Vendedor 1"
+  },
+  {
+    "date": "2025-03-18T10:47:17.058Z",
+    "items": [
+      {
+        "id": 1,
+        "name": "Carne",
+        "price": 100,
+        "quantity": 1,
+        "details": null
+      }
+    ],
+    "total": 100,
+    "paymentMethod": "efectivo",
+    "paymentAmounts": {
+      "efectivo": 100,
+      "transferencia": 0
+    },
+    "local": "local1",
+    "orderName": "sdad",
+    "sellerName": "Vendedor 1"
+  },
+  {
+    "date": "2025-03-18T10:47:42.209Z",
+    "items": [
+      {
+        "id": 4,
+        "name": "Picante",
+        "price": 100,
+        "quantity": 1,
+        "details": null
+      }
+    ],
+    "total": 100,
+    "paymentMethod": "efectivo",
+    "paymentAmounts": {
+      "efectivo": 100,
+      "transferencia": 0
+    },
+    "local": "local1",
+    "orderName": "dasdasd",
+    "sellerName": "Vendedor 1"
+  },
+  {
+    "date": "2025-03-18T10:47:59.274Z",
+    "items": [
+      {
+        "id": 4,
+        "name": "Picante",
+        "price": 100,
+        "quantity": 1,
+        "details": null
+      }
+    ],
+    "total": 100,
+    "paymentMethod": "efectivo",
+    "paymentAmounts": {
+      "efectivo": 100,
+      "transferencia": 0
+    },
+    "local": "local1",
+    "orderName": "dasdasd",
+    "sellerName": "Vendedor 1"
+  },
+  {
+    "date": "2025-03-18T10:50:29.249Z",
+    "items": [
+      {
+        "id": 4,
+        "name": "Picante",
+        "price": 100,
+        "quantity": 1,
+        "details": null
+      }
+    ],
+    "total": 100,
+    "paymentMethod": "efectivo",
+    "paymentAmounts": {
+      "efectivo": 100,
+      "transferencia": 0
+    },
+    "local": "local1",
+    "orderName": "100",
+    "sellerName": "Vendedor 1"
+  },
+  {
+    "date": "2025-03-18T10:50:55.785Z",
+    "items": [
+      {
+        "id": 1,
+        "name": "Carne",
+        "price": 100,
+        "quantity": 1,
+        "details": null
+      }
+    ],
+    "total": 100,
+    "paymentMethod": "efectivo",
+    "paymentAmounts": {
+      "efectivo": 100,
+      "transferencia": 0
+    },
+    "local": "local1",
+    "orderName": "dasdasd",
+    "sellerName": "Vendedor 1"
+  },
+  {
+    "date": "2025-03-18T11:04:16.248Z",
+    "items": [
+      {
+        "id": 4,
+        "name": "Picante",
+        "price": 100,
+        "quantity": 1,
+        "details": null
+      }
+    ],
+    "total": 100,
+    "paymentMethod": "efectivo",
+    "paymentAmounts": {
+      "efectivo": 100,
+      "transferencia": 0
+    },
+    "local": "local1",
+    "orderName": "100",
+    "sellerName": "Vendedor 1"
+  },
+  {
+    "date": "2025-03-18T11:09:03.592Z",
+    "items": [
+      {
+        "id": 1,
+        "name": "Carne",
+        "price": 100,
+        "quantity": 1,
+        "details": null
+      }
+    ],
+    "total": 100,
+    "paymentMethod": "efectivo",
+    "paymentAmounts": {
+      "efectivo": 100,
+      "transferencia": 0
+    },
+    "local": "local1",
+    "orderName": "dasdas",
+    "sellerName": "Vendedor 1"
+  },
+  {
+    "date": "2025-03-18T11:12:22.624Z",
+    "items": [
+      {
+        "id": 4,
+        "name": "Picante",
+        "price": 100,
+        "quantity": 1,
+        "details": null
+      }
+    ],
+    "total": 100,
+    "paymentMethod": "efectivo",
+    "paymentAmounts": {
+      "efectivo": 100,
+      "transferencia": 0
+    },
+    "local": "local1",
+    "orderName": "dasdasd",
+    "sellerName": "Vendedor 1"
+  },
+  {
+    "date": "2025-03-18T11:12:43.816Z",
+    "items": [
+      {
+        "id": 1,
+        "name": "Carne",
+        "price": 100,
+        "quantity": 1,
+        "details": null
+      }
+    ],
+    "total": 100,
+    "paymentMethod": "efectivo",
+    "paymentAmounts": {
+      "efectivo": 100,
+      "transferencia": 0
+    },
+    "local": "local1",
+    "orderName": "dasda",
+    "sellerName": "Vendedor 1"
+  },
+  {
+    "date": "2025-03-18T11:13:25.232Z",
+    "items": [
+      {
+        "id": 4,
+        "name": "Picante",
+        "price": 100,
+        "quantity": 1,
+        "details": null
+      }
+    ],
+    "total": 100,
+    "paymentMethod": "efectivo",
+    "paymentAmounts": {
+      "efectivo": 100,
+      "transferencia": 0
+    },
+    "local": "local1",
+    "orderName": "asdasd",
+    "sellerName": "Vendedor 1"
+  },
+  {
+    "date": "2025-03-18T11:25:33.800Z",
+    "items": [
+      {
+        "id": 1,
+        "name": "Carne",
+        "price": 100,
+        "quantity": 1,
+        "details": null
+      }
+    ],
+    "total": 100,
+    "paymentMethod": "efectivo",
+    "paymentAmounts": {
+      "efectivo": 100,
+      "transferencia": 0
+    },
+    "local": "local1",
+    "orderName": "dsadas",
+    "sellerName": "Vendedor 1"
+  },
+  {
+    "date": "2025-03-18T11:26:00.159Z",
+    "items": [
+      {
+        "id": 4,
+        "name": "Picante",
+        "price": 100,
+        "quantity": 2,
+        "details": null
+      }
+    ],
+    "total": 200,
+    "paymentMethod": "efectivo",
+    "paymentAmounts": {
+      "efectivo": 200,
+      "transferencia": 0
+    },
+    "local": "local1",
+    "orderName": "",
+    "sellerName": "Vendedor 1"
+  },
+  {
+    "date": "2025-03-18T11:26:28.751Z",
+    "items": [
+      {
+        "id": 4,
+        "name": "Picante",
+        "price": 100,
+        "quantity": 1,
+        "details": null
+      }
+    ],
+    "total": 100,
+    "paymentMethod": "efectivo",
+    "paymentAmounts": {
+      "efectivo": 100,
+      "transferencia": 0
+    },
+    "local": "local1",
+    "orderName": "sdada",
+    "sellerName": "Vendedor 1"
+  },
+  {
+    "date": "2025-03-18T11:26:52.367Z",
+    "items": [
+      {
+        "id": 4,
+        "name": "Picante",
+        "price": 100,
+        "quantity": 1,
+        "details": null
+      }
+    ],
+    "total": 100,
+    "paymentMethod": "efectivo",
+    "paymentAmounts": {
+      "efectivo": 100,
+      "transferencia": 0
+    },
+    "local": "local1",
+    "orderName": "sdad",
+    "sellerName": "Vendedor 1"
+  },
+  {
+    "date": "2025-03-18T11:27:04.095Z",
+    "items": [
+      {
+        "id": 5,
+        "name": "Pollo",
+        "price": 100,
+        "quantity": 1,
+        "details": null
+      }
+    ],
+    "total": 100,
+    "paymentMethod": "transferencia",
+    "paymentAmounts": {
+      "efectivo": 0,
+      "transferencia": 100
+    },
+    "local": "local1",
+    "orderName": "123131",
+    "sellerName": "Vendedor 1"
+  },
+  {
+    "date": "2025-03-18T11:27:15.791Z",
+    "items": [
+      {
+        "id": 4,
+        "name": "Picante",
+        "price": 100,
+        "quantity": 1,
+        "details": null
+      }
+    ],
+    "total": 100,
+    "paymentMethod": "efectivo",
+    "paymentAmounts": {
+      "efectivo": 100,
+      "transferencia": 0
+    },
+    "local": "local1",
+    "orderName": "123131",
+    "sellerName": "Vendedor 1"
+  },
+  {
+    "date": "2025-03-18T11:27:26.199Z",
+    "items": [
+      {
+        "id": 5,
+        "name": "Pollo",
+        "price": 100,
+        "quantity": 1,
+        "details": null
+      }
+    ],
+    "total": 100,
+    "paymentMethod": "efectivo",
+    "paymentAmounts": {
+      "efectivo": 100,
+      "transferencia": 0
+    },
+    "local": "local1",
+    "orderName": "123131",
+    "sellerName": "Vendedor 1"
+  },
+  {
+    "date": "2025-03-18T11:27:41.631Z",
+    "items": [
+      {
+        "id": 21,
+        "name": "Cordero",
+        "price": 200,
+        "quantity": 1,
+        "details": null
+      }
+    ],
+    "total": 200,
+    "paymentMethod": "efectivo",
+    "paymentAmounts": {
+      "efectivo": 200,
+      "transferencia": 0
+    },
+    "local": "local1",
+    "orderName": "123131",
+    "sellerName": "Vendedor 1"
+  },
+  {
+    "date": "2025-03-18T11:28:32.727Z",
+    "items": [
+      {
+        "id": 4,
+        "name": "Picante",
+        "price": 100,
+        "quantity": 1,
+        "details": null
+      }
+    ],
+    "total": 100,
+    "paymentMethod": "efectivo",
+    "paymentAmounts": {
+      "efectivo": 100,
+      "transferencia": 0
+    },
+    "local": "local1",
+    "orderName": "nico",
+    "sellerName": "Vendedor 1"
+  },
+  {
+    "date": "2025-03-18T11:29:32.679Z",
+    "items": [
+      {
+        "id": 1,
+        "name": "Carne",
+        "price": 100,
+        "quantity": 1,
+        "details": null
+      }
+    ],
+    "total": 100,
+    "paymentMethod": "efectivo",
+    "paymentAmounts": {
+      "efectivo": 100,
+      "transferencia": 0
+    },
+    "local": "local1",
+    "orderName": "sdada",
+    "sellerName": "Vendedor 1"
+  },
+  {
+    "date": "2025-03-18T11:29:46.055Z",
+    "items": [
+      {
+        "id": 5,
+        "name": "Pollo",
+        "price": 100,
+        "quantity": 1,
+        "details": null
+      }
+    ],
+    "total": 100,
+    "paymentMethod": "efectivo",
+    "paymentAmounts": {
+      "efectivo": 100,
+      "transferencia": 0
+    },
+    "local": "local1",
+    "orderName": "1dsada",
+    "sellerName": "Vendedor 1"
+  },
+  {
+    "date": "2025-03-18T11:35:57.687Z",
+    "items": [
+      {
+        "id": 1,
+        "name": "Carne",
+        "price": 100,
+        "quantity": 1,
+        "details": null
+      }
+    ],
+    "total": 100,
+    "paymentMethod": "efectivo",
+    "paymentAmounts": {
+      "efectivo": 100,
+      "transferencia": 0
+    },
+    "local": "local1",
+    "orderName": "Nico",
+    "sellerName": "Vendedor 1"
+  },
+  {
+    "date": "2025-03-18T11:42:41.534Z",
+    "items": [
+      {
+        "id": 1,
+        "name": "Carne",
+        "price": 100,
+        "quantity": 1,
+        "details": null
+      }
+    ],
+    "total": 100,
+    "paymentMethod": "efectivo",
+    "paymentAmounts": {
+      "efectivo": 100,
+      "transferencia": 0
+    },
+    "local": "local1",
+    "orderName": "dasda",
+    "sellerName": "Vendedor 1"
+  },
+  {
+    "date": "2025-03-18T11:43:28.438Z",
+    "items": [
+      {
+        "id": 1,
+        "name": "Carne",
+        "price": 100,
+        "quantity": 1,
+        "details": null
+      }
+    ],
+    "total": 100,
+    "paymentMethod": "efectivo",
+    "paymentAmounts": {
+      "efectivo": 100,
+      "transferencia": 0
+    },
+    "local": "local1",
+    "orderName": "dsad",
+    "sellerName": "Vendedor 1"
+  },
+  {
+    "date": "2025-03-18T12:00:16.437Z",
+    "items": [
+      {
+        "id": 24,
+        "name": "Docena Tradicionales",
+        "price": 28000,
+        "quantity": 1,
+        "details": [
+          {
+            "name": "Carne",
+            "quantity": 12
+          }
+        ],
+        "gruposDetalle": [
+          {
+            "grupo": "Docena",
+            "empanadas": [
+              {
+                "name": "Carne",
+                "quantity": 12
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "total": 28000,
+    "paymentMethod": "efectivo",
+    "paymentAmounts": {
+      "efectivo": 28000,
+      "transferencia": 0
+    },
+    "local": "local1",
+    "orderName": "nico",
+    "sellerName": "Vendedor 1"
+  },
+  {
+    "date": "2025-03-18T12:00:59.269Z",
+    "items": [
+      {
+        "id": 26,
+        "name": "Docena Imperdibles",
+        "price": 39000,
+        "quantity": 1,
+        "details": [
+          {
+            "name": "Cordero",
+            "quantity": 6
+          },
+          {
+            "name": "Trucha",
+            "quantity": 6
+          }
+        ],
+        "gruposDetalle": [
+          {
+            "grupo": "Docena",
+            "empanadas": [
+              {
+                "name": "Cordero",
+                "quantity": 6
+              },
+              {
+                "name": "Trucha",
+                "quantity": 6
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "total": 39000,
+    "paymentMethod": "efectivo",
+    "paymentAmounts": {
+      "efectivo": 39000,
+      "transferencia": 0
+    },
+    "local": "local1",
+    "orderName": "sadsda",
+    "sellerName": "Vendedor 1"
+  },
+  {
+    "date": "2025-03-18T12:02:54.909Z",
+    "items": [
+      {
+        "id": 24,
+        "name": "Docena Tradicionales",
+        "price": 28000,
+        "quantity": 1,
+        "details": [
+          {
+            "name": "Carne",
+            "quantity": 6
+          },
+          {
+            "name": "Pollo",
+            "quantity": 6
+          }
+        ],
+        "gruposDetalle": [
+          {
+            "grupo": "Docena",
+            "empanadas": [
+              {
+                "name": "Carne",
+                "quantity": 6
+              },
+              {
+                "name": "Pollo",
+                "quantity": 6
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "total": 28000,
+    "paymentMethod": "efectivo",
+    "paymentAmounts": {
+      "efectivo": 28000,
+      "transferencia": 0
+    },
+    "local": "local1",
+    "orderName": "dasdas",
+    "sellerName": "Vendedor 1"
+  },
+  {
+    "date": "2025-03-18T12:03:31.245Z",
+    "items": [
+      {
+        "id": 26,
+        "name": "Docena Imperdibles",
+        "price": 39000,
+        "quantity": 1,
+        "details": [
+          {
+            "name": "Cordero",
+            "quantity": 6
+          },
+          {
+            "name": "Trucha",
+            "quantity": 6
+          }
+        ],
+        "gruposDetalle": [
+          {
+            "grupo": "Docena",
+            "empanadas": [
+              {
+                "name": "Cordero",
+                "quantity": 6
+              },
+              {
+                "name": "Trucha",
+                "quantity": 6
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "total": 39000,
+    "paymentMethod": "efectivo",
+    "paymentAmounts": {
+      "efectivo": 39000,
+      "transferencia": 0
+    },
+    "local": "local1",
+    "orderName": "dasdas",
+    "sellerName": "Vendedor 1"
+  },
+  {
+    "date": "2025-03-18T12:03:59.973Z",
+    "items": [
+      {
+        "id": 1,
+        "name": "Carne",
+        "price": 100,
+        "quantity": 1,
+        "details": null
+      }
+    ],
+    "total": 100,
+    "paymentMethod": "efectivo",
+    "paymentAmounts": {
+      "efectivo": 100,
+      "transferencia": 0
+    },
+    "local": "local1",
+    "orderName": "dsada",
+    "sellerName": "Vendedor 1"
+  },
+  {
+    "date": "2025-03-18T12:11:07.844Z",
+    "items": [
+      {
+        "id": 24,
+        "name": "Docena Tradicionales",
+        "price": 28000,
+        "quantity": 1,
+        "details": [
+          {
+            "name": "Carne",
+            "quantity": 6
+          },
+          {
+            "name": "Pollo",
+            "quantity": 6
+          }
+        ],
+        "gruposDetalle": [
+          {
+            "grupo": "Docena",
+            "empanadas": [
+              {
+                "name": "Carne",
+                "quantity": 6
+              },
+              {
+                "name": "Pollo",
+                "quantity": 6
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "total": 28000,
+    "paymentMethod": "efectivo",
+    "paymentAmounts": {
+      "efectivo": 28000,
+      "transferencia": 0
+    },
+    "local": "local1",
+    "orderName": "sdasd",
+    "sellerName": "Vendedor 1"
+  },
+  {
+    "date": "2025-03-18T12:12:10.708Z",
+    "items": [
+      {
+        "id": 24,
+        "name": "Docena Tradicionales",
+        "price": 28000,
+        "quantity": 1,
+        "details": [
+          {
+            "name": "Carne",
+            "quantity": 6
+          },
+          {
+            "name": "Pollo",
+            "quantity": 6
+          }
+        ],
+        "gruposDetalle": [
+          {
+            "grupo": "Docena",
+            "empanadas": [
+              {
+                "name": "Carne",
+                "quantity": 6
+              },
+              {
+                "name": "Pollo",
+                "quantity": 6
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "total": 28000,
+    "paymentMethod": "efectivo",
+    "paymentAmounts": {
+      "efectivo": 28000,
+      "transferencia": 0
+    },
+    "local": "local1",
+    "orderName": "dasdsa",
+    "sellerName": "Vendedor 1"
+  },
+  {
+    "date": "2025-03-18T12:13:33.404Z",
+    "items": [
+      {
+        "id": 26,
+        "name": "Docena Imperdibles",
+        "price": 39000,
+        "quantity": 1,
+        "details": [
+          {
+            "name": "Cordero",
+            "quantity": 6
+          },
+          {
+            "name": "Trucha",
+            "quantity": 6
+          }
+        ],
+        "gruposDetalle": [
+          {
+            "grupo": "Docena",
+            "empanadas": [
+              {
+                "name": "Cordero",
+                "quantity": 6
+              },
+              {
+                "name": "Trucha",
+                "quantity": 6
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "total": 39000,
+    "paymentMethod": "efectivo",
+    "paymentAmounts": {
+      "efectivo": 39000,
+      "transferencia": 0
+    },
+    "local": "local1",
+    "orderName": "dasda",
+    "sellerName": "Vendedor 1"
+  },
+  {
+    "date": "2025-03-18T12:23:42.276Z",
+    "items": [
+      {
+        "id": 24,
+        "name": "Docena Tradicionales",
+        "price": 28000,
+        "quantity": 1,
+        "details": [
+          {
+            "name": "Carne",
+            "quantity": 6
+          },
+          {
+            "name": "Pollo",
+            "quantity": 6
+          }
+        ],
+        "gruposDetalle": [
+          {
+            "grupo": "Docena",
+            "empanadas": [
+              {
+                "name": "Carne",
+                "quantity": 6
+              },
+              {
+                "name": "Pollo",
+                "quantity": 6
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "total": 28000,
+    "paymentMethod": "efectivo",
+    "paymentAmounts": {
+      "efectivo": 28000,
+      "transferencia": 0
+    },
+    "local": "local1",
+    "orderName": "dasdas",
+    "sellerName": "Vendedor 1"
+  },
+  {
+    "date": "2025-03-18T12:24:47.252Z",
+    "items": [
+      {
+        "id": 24,
+        "name": "Docena Tradicionales",
+        "price": 28000,
+        "quantity": 1,
+        "details": [
+          {
+            "name": "Carne",
+            "quantity": 6
+          },
+          {
+            "name": "Pollo",
+            "quantity": 6
+          }
+        ],
+        "gruposDetalle": [
+          {
+            "grupo": "Docena",
+            "empanadas": [
+              {
+                "name": "Carne",
+                "quantity": 6
+              },
+              {
+                "name": "Pollo",
+                "quantity": 6
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "total": 28000,
+    "paymentMethod": "efectivo",
+    "paymentAmounts": {
+      "efectivo": 28000,
+      "transferencia": 0
+    },
+    "local": "local1",
+    "orderName": "dsadas",
+    "sellerName": "Vendedor 1"
+  },
+  {
+    "date": "2025-03-18T12:28:57.699Z",
+    "items": [
+      {
+        "id": 24,
+        "name": "Docena Tradicionales",
+        "price": 28000,
+        "quantity": 1,
+        "details": [
+          {
+            "name": "Carne",
+            "quantity": 6
+          },
+          {
+            "name": "Pollo",
+            "quantity": 6
+          }
+        ],
+        "gruposDetalle": [
+          {
+            "grupo": "Docena",
+            "empanadas": [
+              {
+                "name": "Carne",
+                "quantity": 6
+              },
+              {
+                "name": "Pollo",
+                "quantity": 6
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "total": 28000,
+    "paymentMethod": "efectivo",
+    "paymentAmounts": {
+      "efectivo": 28000,
+      "transferencia": 0
+    },
+    "local": "local1",
+    "orderName": "sadasd",
+    "sellerName": "Vendedor 1"
+  },
+  {
+    "date": "2025-03-18T12:51:52.090Z",
+    "items": [
+      {
+        "id": 24,
+        "name": "Docena Tradicionales",
+        "price": 28000,
+        "quantity": 1,
+        "details": [
+          {
+            "name": "Carne",
+            "quantity": 32
+          }
+        ],
+        "gruposDetalle": [
+          {
+            "grupo": "Docena",
+            "empanadas": [
+              {
+                "name": "Carne",
+                "quantity": 32
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "total": 28000,
+    "paymentMethod": "efectivo",
+    "paymentAmounts": {
+      "efectivo": 28000,
+      "transferencia": 0
+    },
+    "local": "local1",
+    "orderName": "dadas",
+    "sellerName": "Vendedor 1"
   }
 ]

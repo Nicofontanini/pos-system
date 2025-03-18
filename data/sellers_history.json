@@ -1,1 +1,93 @@
-[]
+[
+  {
+    "seller": "vendedor1",
+    "oldName": "Vendedor",
+    "newName": "Nico",
+    "updatedAt": "2025-02-18T15:28:06.899Z"
+  },
+  {
+    "seller": "vendedor1",
+    "oldName": "Nico",
+    "newName": "Maxi",
+    "updatedAt": "2025-02-18T15:28:57.064Z"
+  },
+  {
+    "seller": "vendedor2",
+    "oldName": null,
+    "newName": "nano",
+    "updatedAt": "2025-02-18T16:09:59.363Z"
+  },
+  {
+    "seller": "vendedor2",
+    "oldName": "nano",
+    "newName": "nanci",
+    "updatedAt": "2025-02-18T16:10:10.365Z"
+  },
+  {
+    "seller": "vendedor1",
+    "oldName": "Maxi",
+    "newName": "martin",
+    "updatedAt": "2025-02-18T16:10:38.078Z"
+  },
+  {
+    "seller": "vendedor1",
+    "oldName": "Nombre Vendedor 1",
+    "newName": "asdad",
+    "updatedAt": "2025-03-18T09:42:13.727Z",
+    "local": "local2"
+  },
+  {
+    "seller": "vendedor1",
+    "oldName": "asdad",
+    "newName": "dadasd",
+    "updatedAt": "2025-03-18T09:42:52.565Z",
+    "local": "local2"
+  },
+  {
+    "seller": "vendedor1",
+    "oldName": "dadasd",
+    "newName": "william",
+    "updatedAt": "2025-03-18T09:44:09.989Z",
+    "local": "local2"
+  },
+  {
+    "seller": "vendedor2",
+    "oldName": "Nombre Vendedor 2",
+    "newName": "dasdaddasdada",
+    "updatedAt": "2025-03-18T09:50:35.031Z",
+    "local": "local2"
+  },
+  {
+    "seller": "vendedor1",
+    "oldName": "Nombre Vendedor 1",
+    "newName": "sdadasdas",
+    "updatedAt": "2025-03-18T09:55:53.669Z",
+    "local": "local1"
+  },
+  {
+    "seller": "vendedor1",
+    "oldName": null,
+    "newName": "nico",
+    "updatedAt": "2025-03-18T10:22:44.157Z"
+  },
+  {
+    "seller": "vendedor1",
+    "oldName": "nico",
+    "newName": "maxi",
+    "updatedAt": "2025-03-18T10:23:08.955Z"
+  },
+  {
+    "seller": "vendedor1",
+    "oldName": "sdadasdas",
+    "newName": "nico",
+    "updatedAt": "2025-03-18T12:03:16.417Z",
+    "local": "local1"
+  },
+  {
+    "seller": "vendedor1",
+    "oldName": "william",
+    "newName": "juansaas",
+    "updatedAt": "2025-03-18T12:04:30.609Z",
+    "local": "local2"
+  }
+]

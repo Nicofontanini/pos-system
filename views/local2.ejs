@@ -1513,7 +1513,7 @@ function addToCart(productId, productName, productPrice) {
     paymentAmounts: paymentAmounts,
     local: window.location.pathname.includes('local1') ? 'local1' : 'local2',
     orderName: orderName, // Nombre del cliente
-    seller: selectedSeller // Nombre del vendedor seleccionado
+    sellerName: selectedSeller // Nombre del vendedor seleccionado
   };
 
   // Enviar al servidor
@@ -1558,6 +1558,23 @@ function addToCart(productId, productName, productPrice) {
     `;
       }
 
+        // Generar el detalle de las docenas si existen
+  let docenaDetails = '';
+  orderData.items.forEach(item => {
+    if (item.details) {
+      docenaDetails += `
+        <div class="docena-detail">
+          <h4>${item.name}</h4>
+          <ul>
+            ${item.details.map(detail => `
+              <li>${detail.name}: ${detail.quantity} unidades</li>
+            `).join('')}
+          </ul>
+        </div>
+      `;
+    }
+  });
+
       const printContent = `
     <!DOCTYPE html>
     <html>
@@ -1568,7 +1585,7 @@ function addToCart(productId, productName, productPrice) {
                 padding: 20px;
             }
             table {
-                width: 100%;
+                width: 50%;
                 border-collapse: collapse;
                 margin: 20px 0;
             }
@@ -1594,7 +1611,7 @@ function addToCart(productId, productName, productPrice) {
         </style>
     </head>
     <body>
-        <h2>Comprobante de Pago</h2>
+        <h2>Comanda</h2>
         <p>Fecha: ${date}</p>
         <p>Nombre del cliente: ${clientName}</p>
         <p>Vendedor: ${vendorName}</p>
@@ -1618,7 +1635,7 @@ function addToCart(productId, productName, productPrice) {
                 `).join('')}
             </tbody>
         </table>
-        
+        ${docenaDetails}
         <div class="total">
             Total: $${orderData.total.toFixed(2)}
         </div>

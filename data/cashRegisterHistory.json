@@ -1,1 +1,10 @@
-[]
+{
+    "local1": {
+      "totalPayments": 0,
+      "totalAmount": 0
+    },
+    "local2": {
+      "totalPayments": 0,
+      "totalAmount": 0
+    }
+  }

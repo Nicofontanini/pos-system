@@ -779,7 +779,7 @@
 
         currentDocena.config.forEach((empanada, index) => {
           const quantity = parseInt(document.getElementById(`empanada-0-${index}-quantity`).textContent);
-          if (quantity > 0) {
+          if (quantity = 0) {
             empanadas.push({ name: empanada, quantity });
             totalSelected += quantity;
           }
@@ -1342,8 +1342,12 @@
         paymentAmounts: paymentAmounts,
         local: window.location.pathname.includes('local1') ? 'local1' : 'local2',
         orderName: orderName, // Nombre del cliente
-        seller: selectedSeller // Nombre del vendedor seleccionado
+        sellerName: selectedSeller // Nombre del vendedor seleccionado
       };
+
+        // Actualizar los contadores de cierre de caja
+  totalPayments++; // Incrementar el contador de pagos
+  totalAmount += orderData.total; // Sumar el monto de la venta al total
 
       // Enviar al servidor
       socket.emit('process-order', orderData);
@@ -1365,29 +1369,46 @@
 
     // Función mejorada para imprimir el pedido
     function printOrder(orderData) {
-      const date = new Date(orderData.date).toLocaleString();
+  const date = new Date(orderData.date).toLocaleString();
 
-      // Verificar explícitamente los valores
-      const clientName = orderData.orderName ? orderData.orderName : 'No especificado';
-      const vendorName = orderData.sellerName ? orderData.sellerName : 'No especificado';
+  // Verificar explícitamente los valores
+  const clientName = orderData.orderName ? orderData.orderName : 'No especificado';
+  const vendorName = orderData.sellerName ? orderData.sellerName : 'No especificado';
 
-      console.log("Imprimiendo - Nombre del cliente:", clientName);
-      console.log("Imprimiendo - Nombre del vendedor:", vendorName);
+  console.log("Imprimiendo - Nombre del cliente:", clientName);
+  console.log("Imprimiendo - Nombre del vendedor:", vendorName);
 
-      let paymentDetails = '';
+  let paymentDetails = '';
 
-      if (orderData.paymentMethod === 'mixto') {
-        paymentDetails = `
+  if (orderData.paymentMethod === 'mixto') {
+    paymentDetails = `
       <p>Pago en efectivo: $${orderData.paymentAmounts.efectivo.toFixed(2)}</p>
       <p>Pago por transferencia: $${orderData.paymentAmounts.transferencia.toFixed(2)}</p>
     `;
-      } else {
-        paymentDetails = `
+  } else {
+    paymentDetails = `
       <p>Pago por ${orderData.paymentMethod}: $${orderData.total.toFixed(2)}</p>
     `;
-      }
+  }
 
-      const printContent = `
+  // Generar el detalle de las docenas si existen
+  let docenaDetails = '';
+  orderData.items.forEach(item => {
+    if (item.details) {
+      docenaDetails += `
+        <div class="docena-detail">
+          <h4>${item.name}</h4>
+          <ul>
+            ${item.details.map(detail => `
+              <li>${detail.name}: ${detail.quantity} unidades</li>
+            `).join('')}
+          </ul>
+        </div>
+      `;
+    }
+  });
+
+  const printContent = `
     <!DOCTYPE html>
     <html>
     <head>
@@ -1420,10 +1441,16 @@
                 border: 1px solid #ddd;
                 background-color: #f9f9f9;
             }
+            .docena-detail {
+                margin-top: 20px;
+                padding: 10px;
+                border: 1px solid #ddd;
+                background-color: #f9f9f9;
+            }
         </style>
     </head>
     <body>
-        <h2>Comprobante de Pago</h2>
+        <h2>Comanda</h2>
         <p>Fecha: ${date}</p>
         <p>Nombre del cliente: ${clientName}</p>
         <p>Vendedor: ${vendorName}</p>
@@ -1447,7 +1474,7 @@
                 `).join('')}
             </tbody>
         </table>
-        
+        ${docenaDetails}
         <div class="total">
             Total: $${orderData.total.toFixed(2)}
         </div>
@@ -1461,17 +1488,17 @@
     </html>
   `;
 
-      // Abrir ventana de impresión
-      const printWindow = window.open('', '_blank');
-      printWindow.document.write(printContent);
-      printWindow.document.close();
+  // Abrir ventana de impresión
+  const printWindow = window.open('', '_blank');
+  printWindow.document.write(printContent);
+  printWindow.document.close();
 
-      // Esperar a que el contenido se cargue antes de imprimir
-      printWindow.onload = function () {
-        printWindow.print();
-        // printWindow.close(); // Opcional: cerrar la ventana después de imprimir
-      };
-    }
+  // Esperar a que el contenido se cargue antes de imprimir
+  printWindow.onload = function () {
+    printWindow.print();
+    // printWindow.close(); // Opcional: cerrar la ventana después de imprimir
+  };
+}
 
     // Evento para el botón de impresión cuando se carga la página
     document.addEventListener('DOMContentLoaded', function () {
