@@ -4,14 +4,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Local 1 - Productos</title>
+  <title>Foodtruck KM11</title>
   <link rel="stylesheet" href="/styles.css">
 </head>
 
 <body>
 
   <header class="header">
-    <h1>Local 1 - Empanadas KM11</h1>
+    <h1>Foodtruck - Empanadas KM11</h1>
     <div class="header-actions">
       <button onclick="window.location.href='/logout'">Cerrar Sesión</button>
       <button id="fullscreenBtn">[ ]</button>
@@ -148,6 +148,9 @@
 
           <button id="processPaymentBtn" class="cart-item" disabled>Procesar Pago</button>
           <button id="printOrderBtn" style="display: none;" class="cart-item">Imprimir Pedido</button>
+
+          <!-- Botón para cerrar el modal -->
+          <button id="closeModalBtn" class="cart-item" onclick="closeModal()">Cerrar</button>
         </div>
       </div>
 
@@ -159,6 +162,7 @@
           <input type="date" id="filterDate" onchange="filterHistory()">
           <div id="historyContainer" class="history-container"></div>
           <button onclick="printHistory()" class="print-button">Imprimir Historial</button>
+          <button onclick="downloadExcel()" class="print-button">Descargar Excel</button> <!-- Botón nuevo -->
         </div>
       </div>
 
@@ -264,6 +268,18 @@
   </div> -->
   <!-- 
   <button onclick="toggleDocenaForm()" class="btn-mostrarFormulario">Agregar Docena</button> -->
+
+  <script>
+    // Función para cerrar el modal
+    function closeModal() {
+      document.getElementById('paymentModal').style.display = 'none';
+    }
+
+    // Si tienes un script que muestra el modal, puedes agregarlo así:
+    function showModal() {
+      document.getElementById('paymentModal').style.display = 'block';
+    }
+  </script>
   <script>
     // Esta función abre y cierra el dropdown al hacer clic en el botón
     document.querySelector('.dropbtn').addEventListener('click', function () {
@@ -415,14 +431,14 @@
 
     const docenas = {
       "Docena Tradicionales": ["Carne", "Pollo", "Verdura", "Cebolla", "Jamon", "Calabaza", "Picante", "Choclo", "Salchicha Alemana"],
-      "Docena Especiales": ["Carne", "Pollo", "Verdura", "Cebolla", "Jamon", "Calabaza", "Picante", "Choclo", "Salchicha Alemana", "Capresse", "Roquefort"],
+      "Docena Especiales": ["4 Quesos", "Crudo", "Vegana", "Panceta y Ciruela", "J Roque"],
       "Docena Vacio": ["Vacio Provolone", "Chesse Burger"],
       "Docena Imperdibles": ["Cordero", "Trucha", "Ciervo"],
       "Docena Combinada 1": {
         tipo: "combinada",
         combinaciones: [
           { nombre: "Tradicionales", cantidad: 3, opciones: ["Carne", "Pollo", "Verdura", "Cebolla", "Jamon", "Calabaza", "Picante", "Choclo", "Salchicha Alemana"] },
-          { nombre: "Especiales", cantidad: 3, opciones: ["Carne", "Pollo", "Verdura", "Cebolla", "Jamon", "Calabaza", "Picante", "Choclo", "Salchicha Alemana", "Capresse", "Roquefort"] },
+          { nombre: "Especiales", cantidad: 3, opciones: ["4 Quesos", "Crudo", "Vegana", "Panceta y Ciruela", "J Roque"] },
           { nombre: "Vacio", cantidad: 3, opciones: ["Vacio Provolone", "Chesse Burger"] },
           { nombre: "Imperdibles", cantidad: 3, opciones: ["Cordero", "Trucha", "Ciervo"] }
         ]
@@ -431,7 +447,7 @@
         tipo: "combinada",
         combinaciones: [
           { nombre: "Tradicionales", cantidad: 4, opciones: ["Carne", "Pollo", "Verdura", "Cebolla", "Jamon", "Calabaza", "Picante", "Choclo", "Salchicha Alemana"] },
-          { nombre: "Especiales", cantidad: 4, opciones: ["Carne", "Pollo", "Verdura", "Cebolla", "Jamon", "Calabaza", "Picante", "Choclo", "Salchicha Alemana", "Capresse", "Roquefort"] },
+          { nombre: "Especiales", cantidad: 4, opciones: ["4 Quesos", "Crudo", "Vegana", "Panceta y Ciruela", "J Roque"] },
           { nombre: "Imperdibles", cantidad: 4, opciones: ["Cordero", "Trucha", "Ciervo"] }
         ]
       },
@@ -548,6 +564,15 @@
         });
     }
 
+    // Asigna el nombre del boton al vendedor colocado
+    document.getElementById('seller1Button').onclick = function () {
+      selectSeller(document.getElementById('seller1Button').textContent);
+    };
+
+    document.getElementById('seller2Button').onclick = function () {
+      selectSeller(document.getElementById('seller2Button').textContent);
+    };
+
     // Función para actualizar el nombre del vendedor
     function updateSeller() {
       const seller = document.getElementById('sellerSelect').value;
@@ -602,7 +627,7 @@
     // Función para seleccionar el vendedor
     function selectSeller(seller) {
       selectedSeller = seller;
-      alert(`Vendedor seleccionado: ${seller}`);
+      alert(`Vendedor seleccionado: ${selectedSeller}`);
     }
 
     // Función para actualizar el nombre del pedido
@@ -779,7 +804,7 @@
 
         currentDocena.config.forEach((empanada, index) => {
           const quantity = parseInt(document.getElementById(`empanada-0-${index}-quantity`).textContent);
-          if (quantity = 0) {
+          if (quantity > 0) {
             empanadas.push({ name: empanada, quantity });
             totalSelected += quantity;
           }
@@ -1329,6 +1354,37 @@
       document.getElementById('processPaymentBtn').disabled = remaining !== 0;
     }
 
+
+    // Función para cargar los contadores desde el backend
+    function loadCashRegisterCounters() {
+      fetch('/cash-register')
+        .then(response => response.json())
+        .then(data => {
+          totalPayments = data.totalPayments;
+          totalAmount = data.totalAmount;
+        })
+        .catch(error => console.error('Error al cargar los contadores:', error));
+    }
+
+    // Función para actualizar los contadores en el backend
+    function updateCashRegisterCounters() {
+      fetch('/cash-register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ totalPayments, totalAmount })
+      })
+        .then(response => response.json())
+        .then(data => {
+          if (data.success) {
+            console.log('Contadores actualizados en el backend');
+          }
+        })
+        .catch(error => console.error('Error al actualizar los contadores:', error));
+    }
+
+    // Llamar a loadCashRegisterCounters al cargar la página
+    document.addEventListener('DOMContentLoaded', loadCashRegisterCounters);
+
     // Función para procesar el pago
     function processPayment() {
       const orderName = document.getElementById('orderName').value;
@@ -1345,10 +1401,11 @@
         sellerName: selectedSeller // Nombre del vendedor seleccionado
       };
 
-        // Actualizar los contadores de cierre de caja
-  totalPayments++; // Incrementar el contador de pagos
-  totalAmount += orderData.total; // Sumar el monto de la venta al total
-
+      // Actualizar los contadores de cierre de caja
+      totalPayments++; // Incrementar el contador de pagos
+      totalAmount += orderData.total; // Sumar el monto de la venta al total
+      // Actualizar los contadores en el backend
+      updateCashRegisterCounters();
       // Enviar al servidor
       socket.emit('process-order', orderData);
 
@@ -1369,62 +1426,61 @@
 
     // Función mejorada para imprimir el pedido
     function printOrder(orderData) {
-  const date = new Date(orderData.date).toLocaleString();
+      const date = new Date(orderData.date).toLocaleString();
 
-  // Verificar explícitamente los valores
-  const clientName = orderData.orderName ? orderData.orderName : 'No especificado';
-  const vendorName = orderData.sellerName ? orderData.sellerName : 'No especificado';
+      // Verificar explícitamente los valores
+      const clientName = orderData.orderName ? orderData.orderName : 'No especificado';
+      const vendorName = orderData.sellerName ? orderData.sellerName : 'No especificado';
 
-  console.log("Imprimiendo - Nombre del cliente:", clientName);
-  console.log("Imprimiendo - Nombre del vendedor:", vendorName);
+      console.log("Imprimiendo - Nombre del cliente:", clientName);
+      console.log("Imprimiendo - Nombre del vendedor:", vendorName);
 
-  let paymentDetails = '';
+      let paymentDetails = '';
 
-  if (orderData.paymentMethod === 'mixto') {
-    paymentDetails = `
+      if (orderData.paymentMethod === 'mixto') {
+        paymentDetails = `
       <p>Pago en efectivo: $${orderData.paymentAmounts.efectivo.toFixed(2)}</p>
       <p>Pago por transferencia: $${orderData.paymentAmounts.transferencia.toFixed(2)}</p>
     `;
-  } else {
-    paymentDetails = `
+      } else {
+        paymentDetails = `
       <p>Pago por ${orderData.paymentMethod}: $${orderData.total.toFixed(2)}</p>
     `;
-  }
+      }
 
-  // Generar el detalle de las docenas si existen
-  let docenaDetails = '';
-  orderData.items.forEach(item => {
-    if (item.details) {
-      docenaDetails += `
+      // Generar el detalle de las docenas si existen
+      let docenaDetails = '';
+      orderData.items.forEach(item => {
+        if (item.details) {
+          docenaDetails += `
         <div class="docena-detail">
           <h4>${item.name}</h4>
           <ul>
             ${item.details.map(detail => `
-              <li>${detail.name}: ${detail.quantity} unidades</li>
+              <li style="list-style-type: none;">${detail.quantity} de ${detail.name}</li>
             `).join('')}
           </ul>
         </div>
       `;
-    }
-  });
+        }
+      });
 
-  const printContent = `
+      const printContent = `
     <!DOCTYPE html>
     <html>
     <head>
         <style>
             body {
                 font-family: Arial, sans-serif;
-                padding: 20px;
             }
             table {
-                width: 100%;
+                width: 50%;
                 border-collapse: collapse;
                 margin: 20px 0;
             }
             th, td {
                 border: 1px solid #ddd;
-                padding: 8px;
+                padding: 1px;
                 text-align: left;
             }
             th {
@@ -1488,17 +1544,17 @@
     </html>
   `;
 
-  // Abrir ventana de impresión
-  const printWindow = window.open('', '_blank');
-  printWindow.document.write(printContent);
-  printWindow.document.close();
+      // Abrir ventana de impresión
+      const printWindow = window.open('', '_blank');
+      printWindow.document.write(printContent);
+      printWindow.document.close();
 
-  // Esperar a que el contenido se cargue antes de imprimir
-  printWindow.onload = function () {
-    printWindow.print();
-    // printWindow.close(); // Opcional: cerrar la ventana después de imprimir
-  };
-}
+      // Esperar a que el contenido se cargue antes de imprimir
+      printWindow.onload = function () {
+        printWindow.print();
+        // printWindow.close(); // Opcional: cerrar la ventana después de imprimir
+      };
+    }
 
     // Evento para el botón de impresión cuando se carga la página
     document.addEventListener('DOMContentLoaded', function () {
@@ -1548,7 +1604,7 @@
   <style>
     body { font-family: Arial; }
     table { width: 100%; border-collapse: collapse; }
-    th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+    th, td { border: 1px solid #ddd; padding: 1px; text-align: left; }
     .total { font-weight: bold; }
   </style>
 </head>
@@ -1816,8 +1872,8 @@
     <head>
       <style>
         body { font-family: Arial, sans-serif; padding: 20px; }
-        table { width: 100%; border-collapse: collapse; margin: 20px 0; }
-        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        table { width: 100%; border-collapse: collapse; margin: 5px 0; }
+        th, td { border: 1px solid #ddd; padding: 1px; text-align: left; }
         th { background-color: #f2f2f2; }
         .total { font-weight: bold; font-size: 1.2em; margin-top: 20px; }
         .payment-info { margin-top: 20px; padding: 10px; border: 1px solid #ddd; background-color: #f9f9f9; }
@@ -1837,7 +1893,45 @@
     document.addEventListener('DOMContentLoaded', function () {
       loadSellerInfo();
     });
+
+    function downloadExcel() {
+      // Obtener los datos del historial de pedidos
+      const historyContainer = document.getElementById('historyContainer');
+      const orders = Array.from(historyContainer.querySelectorAll('.order-card'));
+
+      // Crear un array de objetos con los datos
+      const data = orders.map(order => ({
+        Fecha: order.querySelector('p:nth-child(1)').textContent.replace('Fecha: ', ''),
+        'Nombre del Pedido': order.querySelector('p:nth-child(2)').textContent.replace('Nombre del pedido: ', ''),
+        Vendedor: order.querySelector('p:nth-child(3)').textContent.replace('Vendedor: ', ''),
+        Total: order.querySelector('p:nth-child(4)').textContent.replace('Total: $', ''),
+        'Método de Pago': order.querySelector('p:nth-child(5)').textContent.replace('Método de pago: ', '')
+      }));
+
+      // Crear una hoja de cálculo
+      const worksheet = XLSX.utils.json_to_sheet(data);
+
+      // Crear un libro de trabajo y agregar la hoja
+      const workbook = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(workbook, worksheet, 'Historial de Pedidos');
+
+      // Generar el archivo Excel
+      const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
+      const blob = new Blob([excelBuffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+
+      // Crear un enlace de descarga
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = 'historial_pedidos.xlsx';
+      link.click();
+
+      // Liberar el objeto URL
+      URL.revokeObjectURL(url);
+    }
   </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.4/xlsx.full.min.js"></script>
+
 </body>
 
 </html>

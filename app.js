@@ -255,14 +255,28 @@ app.post('/add-product/:location', (req, res) => {
   const { location } = req.params;
   const newProduct = req.body;
 
-  // Generate new ID
+  // Generar nuevo ID
   const maxId = Math.max(...inventory[location].products.map(p => p.id), 0);
   newProduct.id = maxId + 1;
 
+  // Agregar el producto al local correspondiente
   inventory[location].products.push(newProduct);
+
+  // Si el producto se agrega en local2, también agregarlo en local1
+  if (location === 'local2') {
+    const newProductLocal1 = { ...newProduct }; // Crear una copia del producto
+    inventory.local1.products.push(newProductLocal1);
+  }
+
+  // Guardar el inventario actualizado
   writeInventory(inventory);
 
+  // Emitir eventos para actualizar la interfaz de usuario en ambos locales
   io.emit('product-added', { location, product: newProduct });
+  if (location === 'local2') {
+    io.emit('product-added', { location: 'local1', product: newProduct });
+  }
+
   res.status(201).json(newProduct);
 });
 
@@ -272,15 +286,32 @@ app.put('/update-product/:location/:id', (req, res) => {
   const updatedProduct = req.body;
   const productId = parseInt(id);
 
+  // Encontrar el producto en el local correspondiente
   const index = inventory[location].products.findIndex(p => p.id === productId);
   if (index === -1) {
     return res.status(404).send('Producto no encontrado');
   }
 
+  // Actualizar el producto en el local correspondiente
   inventory[location].products[index] = { ...updatedProduct, id: productId };
+
+  // Si el producto se edita en local2, también actualizarlo en local1
+  if (location === 'local2') {
+    const indexLocal1 = inventory.local1.products.findIndex(p => p.id === productId);
+    if (indexLocal1 !== -1) {
+      inventory.local1.products[indexLocal1] = { ...updatedProduct, id: productId };
+    }
+  }
+
+  // Guardar el inventario actualizado
   writeInventory(inventory);
 
+  // Emitir eventos para actualizar la interfaz de usuario en ambos locales
   io.emit('product-updated', { location, product: inventory[location].products[index] });
+  if (location === 'local2') {
+    io.emit('product-updated', { location: 'local1', product: inventory.local1.products[indexLocal1] });
+  }
+
   res.json(inventory[location].products[index]);
 });
 
@@ -289,6 +320,7 @@ app.delete('/delete-product/:location/:id', (req, res) => {
   const { location, id } = req.params;
   const productId = parseInt(id);
 
+  // Eliminar el producto en el local correspondiente
   const initialLength = inventory[location].products.length;
   inventory[location].products = inventory[location].products.filter(p => p.id !== productId);
 
@@ -296,8 +328,20 @@ app.delete('/delete-product/:location/:id', (req, res) => {
     return res.status(404).send('Producto no encontrado');
   }
 
+  // Si el producto se elimina en local2, también eliminarlo en local1
+  if (location === 'local2') {
+    inventory.local1.products = inventory.local1.products.filter(p => p.id !== productId);
+  }
+
+  // Guardar el inventario actualizado
   writeInventory(inventory);
+
+  // Emitir eventos para actualizar la interfaz de usuario en ambos locales
   io.emit('product-deleted', { location, productId });
+  if (location === 'local2') {
+    io.emit('product-deleted', { location: 'local1', productId });
+  }
+
   res.status(200).send('Producto eliminado');
 });
 
@@ -562,6 +606,24 @@ io.on('connection', (socket) => {
     }
 
     socket.emit('order-history', orders); // Enviar solo los pedidos del local correspondiente
+  });
+
+  let cashRegister = {
+    totalPayments: 0,
+    totalAmount: 0
+  };
+  
+  // Ruta para obtener los contadores
+  app.get('/cash-register', (req, res) => {
+    res.json(cashRegister);
+  });
+  
+  // Ruta para actualizar los contadores
+  app.post('/cash-register', (req, res) => {
+    const { totalPayments, totalAmount } = req.body;
+    cashRegister.totalPayments = totalPayments;
+    cashRegister.totalAmount = totalAmount;
+    res.json({ success: true });
   });
 
 

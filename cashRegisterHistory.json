@@ -166,5 +166,83 @@
     "totalPayments": 1,
     "totalAmount": 100,
     "local": "local1"
+  },
+  {
+    "date": "2025-03-19T11:53:26.100Z",
+    "totalPayments": 0,
+    "totalAmount": 0,
+    "local": "local2"
+  },
+  {
+    "date": "2025-03-19T12:02:22.354Z",
+    "totalPayments": 1,
+    "totalAmount": 100,
+    "local": "local1"
+  },
+  {
+    "date": "2025-03-19T12:02:26.362Z",
+    "totalPayments": 1,
+    "totalAmount": 100,
+    "local": "local1"
+  },
+  {
+    "date": "2025-03-19T12:02:30.082Z",
+    "totalPayments": 1,
+    "totalAmount": 100,
+    "local": "local1"
+  },
+  {
+    "date": "2025-03-19T12:02:33.170Z",
+    "totalPayments": 0,
+    "totalAmount": 0,
+    "local": "local1"
+  },
+  {
+    "date": "2025-03-19T12:24:45.433Z",
+    "totalPayments": 1,
+    "totalAmount": 100,
+    "local": "local1"
+  },
+  {
+    "date": "2025-03-19T12:54:51.271Z",
+    "totalPayments": 2,
+    "totalAmount": 200,
+    "local": "local2"
+  },
+  {
+    "date": "2025-03-19T12:54:55.358Z",
+    "totalPayments": 0,
+    "totalAmount": 0,
+    "local": "local2"
+  },
+  {
+    "date": "2025-03-19T12:55:14.535Z",
+    "totalPayments": 0,
+    "totalAmount": 0,
+    "local": "local2"
+  },
+  {
+    "date": "2025-03-19T12:56:36.934Z",
+    "totalPayments": 1,
+    "totalAmount": 100,
+    "local": "local2"
+  },
+  {
+    "date": "2025-03-19T12:56:40.287Z",
+    "totalPayments": 1,
+    "totalAmount": 100,
+    "local": "local2"
+  },
+  {
+    "date": "2025-03-19T18:57:48.937Z",
+    "totalPayments": 1,
+    "totalAmount": 100,
+    "local": "local2"
+  },
+  {
+    "date": "2025-03-19T18:57:51.882Z",
+    "totalPayments": 1,
+    "totalAmount": 100,
+    "local": "local2"
   }
 ]

@@ -5,7 +5,7 @@
         "name": "Carne",
         "category": "Tradicionales",
         "price": 100,
-        "stock": -7,
+        "stock": -65,
         "description": "Carne seleccionada picada, Cebolla y Huevo duro.",
         "id": 1
       },
@@ -13,7 +13,7 @@
         "name": "Picante",
         "category": "Tradicionales",
         "price": 100,
-        "stock": 87,
+        "stock": 80,
         "description": "Carne cortada a cuchillo, Macerada con mix de pimientas, Aji picante.",
         "id": 4
       },
@@ -21,7 +21,7 @@
         "name": "Pollo",
         "category": "Tradicionales",
         "price": 100,
-        "stock": 61,
+        "stock": 51,
         "description": "Pechuga fileteadas, Salteadas con curry, Cortadas a cuchillo, Con cebolla y huevo duro.",
         "id": 5
       },
@@ -29,7 +29,7 @@
         "name": "Verdura",
         "category": "Tradicionales",
         "price": 100,
-        "stock": 100,
+        "stock": 90,
         "description": "Espinaca, Zanahorai, Cebolla, Huevo duro y verdeo.",
         "id": 6
       },
@@ -61,7 +61,7 @@
         "name": "Calabaza",
         "category": "Tradicionales",
         "price": 200,
-        "stock": 100,
+        "stock": 99,
         "description": "Pure de calabaza, con cebolla y granos de choclo rehogados y muzzarella.",
         "id": 10
       },
@@ -77,7 +77,7 @@
         "name": "Capresse",
         "category": "Tradicionales",
         "price": 200,
-        "stock": 100,
+        "stock": 99,
         "description": "Tomates naturales cubeteados, sin piel ni semillas, albahaca y muzzarella.",
         "id": 12
       },
@@ -85,7 +85,7 @@
         "name": "4 Quesos",
         "category": "Especiales",
         "price": 200,
-        "stock": 100,
+        "stock": 83,
         "description": "Cinco quesos, gouda, parmesano, sbrinz, roquefort y muzzarella.",
         "id": 13
       },
@@ -147,15 +147,15 @@
       },
       {
         "name": "Cordero",
-        "category": "Especiales",
+        "category": "Imperdibles",
         "price": 200,
-        "stock": 78,
+        "stock": 75,
         "description": "Cordero a la cerveza con miel y romero desmecha y cebolla.",
         "id": 21
       },
       {
         "name": "Trucha",
-        "category": "Especiales",
+        "category": "Imperdibles",
         "price": 200,
         "stock": 82,
         "description": "Trucha arcoiris, sin espinas con cebolla, morron y verdeo.",
@@ -163,7 +163,7 @@
       },
       {
         "name": "Ciervo",
-        "category": "Especiales",
+        "category": "Imperdibles",
         "price": 200,
         "stock": 100,
         "description": "Ciervo macerado al merken, gisado con cebollas, verdeo y salsa.",
@@ -345,7 +345,7 @@
         "name": "Carne",
         "category": "Tradicionales",
         "price": 100,
-        "stock": 79,
+        "stock": 73,
         "description": "Carne seleccionada picada, Cebolla y Huevo duro.",
         "id": 1
       },
@@ -353,7 +353,7 @@
         "name": "Picante",
         "category": "Tradicionales",
         "price": 100,
-        "stock": 99,
+        "stock": 98,
         "description": "Carne cortada a cuchillo, Macerada con mix de pimientas, Aji picante.",
         "id": 4
       },
@@ -487,7 +487,7 @@
       },
       {
         "name": "Cordero",
-        "category": "Especiales",
+        "category": "Imperdibles",
         "price": 200,
         "stock": 100,
         "description": "Cordero a la cerveza con miel y romero desmecha y cebolla.",
@@ -495,7 +495,7 @@
       },
       {
         "name": "Trucha",
-        "category": "Especiales",
+        "category": "Imperdibles",
         "price": 200,
         "stock": 100,
         "description": "Trucha arcoiris, sin espinas con cebolla, morron y verdeo.",
@@ -503,7 +503,7 @@
       },
       {
         "name": "Ciervo",
-        "category": "Especiales",
+        "category": "Imperdibles",
         "price": 200,
         "stock": 100,
         "description": "Ciervo macerado al merken, gisado con cebollas, verdeo y salsa.",

@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Local 2 - Productos</title>
+  <title>Cocina KM11</title>
   <link rel="stylesheet" href="/styles.css">
   <style>
     .low-stock {
@@ -201,7 +201,7 @@
 <body>
 
   <header class="header">
-    <h1>Local 2 - Empanadas KM11</h1>
+    <h1>Cocina - Empanadas KM11</h1>
     <div class="header-actions">
       <button onclick="window.location.href='/logout'">Cerrar Sesión</button>
       <button id="fullscreenBtn">[ ]</button>
@@ -347,6 +347,8 @@
 
           <button id="processPaymentBtn" class="cart-item" disabled>Procesar Pago</button>
           <button id="printOrderBtn" style="display: none;" class="cart-item">Imprimir Pedido</button>
+          <!-- Botón para cerrar el modal -->
+          <button id="closeModalBtn" class="cart-item" onclick="closeModal()">Cerrar</button>
         </div>
       </div>
 
@@ -358,6 +360,7 @@
           <input type="date" id="filterDate" onchange="filterHistory()">
           <div id="historyContainer" class="history-container"></div>
           <button onclick="printHistory()" class="print-button">Imprimir Historial</button>
+          <button onclick="downloadExcel()" class="print-button">Descargar Excel</button> <!-- Botón nuevo -->
         </div>
       </div>
 
@@ -417,8 +420,8 @@
   </div>
 
 
-   <!-- Modal para seleccionar empanadas -->
-   <div id="docenaModal" class="modal">
+  <!-- Modal para seleccionar empanadas -->
+  <div id="docenaModal" class="modal">
     <div class="modal-content">
       <span class="close" onclick="closeDocenaModal()">&times;</span>
       <h2 id="docenaModalTitle"></h2>
@@ -430,7 +433,17 @@
     </div>
   </div>
 
+  <script>
+    // Función para cerrar el modal
+    function closeModal() {
+      document.getElementById('paymentModal').style.display = 'none';
+    }
 
+    // Si tienes un script que muestra el modal, puedes agregarlo así:
+    function showModal() {
+      document.getElementById('paymentModal').style.display = 'block';
+    }
+  </script>
   <script>
     // Esta función abre y cierra el dropdown al hacer clic en el botón
     document.querySelector('.dropbtn').addEventListener('click', function () {
@@ -581,14 +594,14 @@
 
     const docenas = {
       "Docena Tradicionales": ["Carne", "Pollo", "Verdura", "Cebolla", "Jamon", "Calabaza", "Picante", "Choclo", "Salchicha Alemana"],
-      "Docena Especiales": ["Carne", "Pollo", "Verdura", "Cebolla", "Jamon", "Calabaza", "Picante", "Choclo", "Salchicha Alemana", "Capresse", "Roquefort"],
+      "Docena Especiales": ["4 Quesos", "Crudo", "Vegana", "Panceta y Ciruela", "J Roque"],
       "Docena Vacio": ["Vacio Provolone", "Chesse Burger"],
       "Docena Imperdibles": ["Cordero", "Trucha", "Ciervo"],
       "Docena Combinada 1": {
         tipo: "combinada",
         combinaciones: [
           { nombre: "Tradicionales", cantidad: 3, opciones: ["Carne", "Pollo", "Verdura", "Cebolla", "Jamon", "Calabaza", "Picante", "Choclo", "Salchicha Alemana"] },
-          { nombre: "Especiales", cantidad: 3, opciones: ["Carne", "Pollo", "Verdura", "Cebolla", "Jamon", "Calabaza", "Picante", "Choclo", "Salchicha Alemana", "Capresse", "Roquefort"] },
+          { nombre: "Especiales", cantidad: 3, opciones: ["4 Quesos", "Crudo", "Vegana", "Panceta y Ciruela", "J Roque"] },
           { nombre: "Vacio", cantidad: 3, opciones: ["Vacio Provolone", "Chesse Burger"] },
           { nombre: "Imperdibles", cantidad: 3, opciones: ["Cordero", "Trucha", "Ciervo"] }
         ]
@@ -597,7 +610,7 @@
         tipo: "combinada",
         combinaciones: [
           { nombre: "Tradicionales", cantidad: 4, opciones: ["Carne", "Pollo", "Verdura", "Cebolla", "Jamon", "Calabaza", "Picante", "Choclo", "Salchicha Alemana"] },
-          { nombre: "Especiales", cantidad: 4, opciones: ["Carne", "Pollo", "Verdura", "Cebolla", "Jamon", "Calabaza", "Picante", "Choclo", "Salchicha Alemana", "Capresse", "Roquefort"] },
+          { nombre: "Especiales", cantidad: 4, opciones: ["4 Quesos", "Crudo", "Vegana", "Panceta y Ciruela", "J Roque"] },
           { nombre: "Imperdibles", cantidad: 4, opciones: ["Cordero", "Trucha", "Ciervo"] }
         ]
       },
@@ -653,18 +666,18 @@
 
     // Función para cargar el historial de empleados
     function loadEmployeeHistory() {
-  const local = window.location.pathname.includes('local1') ? 'local1' : 'local2';
+      const local = window.location.pathname.includes('local1') ? 'local1' : 'local2';
 
-  fetch(`/get-sellers-history?local=${local}`)
-    .then(response => response.json())
-    .then(data => {
-      const container = document.getElementById('employeeHistoryContainer');
-      container.innerHTML = '';
+      fetch(`/get-sellers-history?local=${local}`)
+        .then(response => response.json())
+        .then(data => {
+          const container = document.getElementById('employeeHistoryContainer');
+          container.innerHTML = '';
 
-      data.forEach(entry => {
-        const entryElement = document.createElement('div');
-        entryElement.className = 'history-entry';
-        entryElement.innerHTML = `
+          data.forEach(entry => {
+            const entryElement = document.createElement('div');
+            entryElement.className = 'history-entry';
+            entryElement.innerHTML = `
           <p><strong>Local:</strong> ${entry.local}</p>
           <p><strong>Vendedor:</strong> ${entry.seller}</p>
           <p><strong>Nombre anterior:</strong> ${entry.oldName || 'N/A'}</p>
@@ -672,13 +685,13 @@
           <p><strong>Fecha de cambio:</strong> ${new Date(entry.updatedAt).toLocaleString()}</p>
           <hr>
         `;
-        container.appendChild(entryElement);
-      });
-    })
-    .catch(error => {
-      console.error('Error al cargar el historial de empleados:', error);
-    });
-}
+            container.appendChild(entryElement);
+          });
+        })
+        .catch(error => {
+          console.error('Error al cargar el historial de empleados:', error);
+        });
+    }
 
 
     // Función para mostrar el modal de cambio de vendedor
@@ -715,6 +728,15 @@
           }
         });
     }
+
+    // Asigna el nombre del boton al vendedor colocado
+    document.getElementById('seller1Button').onclick = function () {
+      selectSeller(document.getElementById('seller1Button').textContent);
+    };
+
+    document.getElementById('seller2Button').onclick = function () {
+      selectSeller(document.getElementById('seller2Button').textContent);
+    };
 
     // Función para actualizar el nombre del vendedor
     function updateSeller() {
@@ -770,7 +792,7 @@
     // Función para seleccionar el vendedor
     function selectSeller(seller) {
       selectedSeller = seller;
-      alert(`Vendedor seleccionado: ${seller}`);
+      alert(`Vendedor seleccionado: ${selectedSeller}`);
     }
 
     // Función para actualizar el nombre del pedido
@@ -783,44 +805,44 @@
 
     // Escuchar el evento cart-updated
     socket.on('cart-updated', function ({ local, cart: updatedCart }) {
-  // Solo actualizar si el carrito pertenece al local actual
-  if (local === (window.location.pathname.includes('local1') ? 'local1' : 'local2')) {
-    cart = updatedCart; // Actualizar el carrito local
-    updateCartUI(); // Actualizar la interfaz
-  }
-});
+      // Solo actualizar si el carrito pertenece al local actual
+      if (local === (window.location.pathname.includes('local1') ? 'local1' : 'local2')) {
+        cart = updatedCart; // Actualizar el carrito local
+        updateCartUI(); // Actualizar la interfaz
+      }
+    });
 
     // Función para agregar productos al carrito
     let currentDocena = null; // Variable para almacenar la docena seleccionada
 
-function addToCart(productId, productName, productPrice) {
-  const docenaType = Object.keys(docenas).find(docena => productName.includes(docena));
+    function addToCart(productId, productName, productPrice) {
+      const docenaType = Object.keys(docenas).find(docena => productName.includes(docena));
 
-  if (docenaType) {
-    currentDocena = {
-      id: productId,
-      name: productName,
-      price: productPrice,
-      type: docenaType,
-      config: docenas[docenaType]
-    };
+      if (docenaType) {
+        currentDocena = {
+          id: productId,
+          name: productName,
+          price: productPrice,
+          type: docenaType,
+          config: docenas[docenaType]
+        };
 
-    openDocenaModal(currentDocena);
-  } else {
-    // Si no es una docena, agregar el producto normalmente
-    const local = window.location.pathname.includes('local1') ? 'local1' : 'local2';
-    socket.emit('add-to-cart', {
-      local: local,
-      product: {
-        id: productId,
-        name: productName,
-        price: productPrice,
-        quantity: 1,
-        details: null
+        openDocenaModal(currentDocena);
+      } else {
+        // Si no es una docena, agregar el producto normalmente
+        const local = window.location.pathname.includes('local1') ? 'local1' : 'local2';
+        socket.emit('add-to-cart', {
+          local: local,
+          product: {
+            id: productId,
+            name: productName,
+            price: productPrice,
+            quantity: 1,
+            details: null
+          }
+        });
       }
-    });
-  }
-}
+    }
 
     function openDocenaModal(docena) {
       const modal = document.getElementById('docenaModal');
@@ -1147,31 +1169,31 @@ function addToCart(productId, productName, productPrice) {
 
     // Función para actualizar la interfaz del carrito
     function updateCartUI() {
-  const cartItemsElement = document.getElementById('cart-items');
-  const cartTotalElement = document.getElementById('cart-total');
-  const checkoutButton = document.getElementById('checkoutButton');
+      const cartItemsElement = document.getElementById('cart-items');
+      const cartTotalElement = document.getElementById('cart-total');
+      const checkoutButton = document.getElementById('checkoutButton');
 
-  cartItemsElement.innerHTML = ''; // Limpiar el carrito antes de actualizar
-  let total = 0;
+      cartItemsElement.innerHTML = ''; // Limpiar el carrito antes de actualizar
+      let total = 0;
 
-  // Recorrer los productos en el carrito
-  cart.forEach((item) => {
-    const itemElement = document.createElement('div');
-    itemElement.className = 'cart-item';
-    itemElement.innerHTML = `
+      // Recorrer los productos en el carrito
+      cart.forEach((item) => {
+        const itemElement = document.createElement('div');
+        itemElement.className = 'cart-item';
+        itemElement.innerHTML = `
       <p>${item.name} - $${item.price} x ${item.quantity}</p>
       <button onclick="decrementProduct(${item.id})">-</button>
       <span>${item.quantity}</span>
       <button onclick="incrementProduct(${item.id})">+</button>
       <button onclick="removeFromCart(${item.id})">Eliminar</button>
     `;
-    cartItemsElement.appendChild(itemElement);
-    total += item.price * item.quantity; // Calcular el total
-  });
+        cartItemsElement.appendChild(itemElement);
+        total += item.price * item.quantity; // Calcular el total
+      });
 
-  cartTotalElement.textContent = total.toFixed(2); // Actualizar el total
-  checkoutButton.disabled = cart.length === 0; // Habilitar/deshabilitar el botón de compra
-}
+      cartTotalElement.textContent = total.toFixed(2); // Actualizar el total
+      checkoutButton.disabled = cart.length === 0; // Habilitar/deshabilitar el botón de compra
+    }
 
     // Script para manejar el carrito y el pago
     document.addEventListener('DOMContentLoaded', function () {
@@ -1500,39 +1522,74 @@ function addToCart(productId, productName, productPrice) {
       document.getElementById('processPaymentBtn').disabled = remaining !== 0;
     }
 
+    // Función para cargar los contadores desde el backend
+    function loadCashRegisterCounters() {
+      fetch('/cash-register')
+        .then(response => response.json())
+        .then(data => {
+          totalPayments = data.totalPayments;
+          totalAmount = data.totalAmount;
+        })
+        .catch(error => console.error('Error al cargar los contadores:', error));
+    }
+
+    // Función para actualizar los contadores en el backend
+    function updateCashRegisterCounters() {
+      fetch('/cash-register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ totalPayments, totalAmount })
+      })
+        .then(response => response.json())
+        .then(data => {
+          if (data.success) {
+            console.log('Contadores actualizados en el backend');
+          }
+        })
+        .catch(error => console.error('Error al actualizar los contadores:', error));
+    }
+
+    
+    // Llamar a loadCashRegisterCounters al cargar la página
+    document.addEventListener('DOMContentLoaded', loadCashRegisterCounters);
     // Función para procesar el pago
     function processPayment() {
-  const orderName = document.getElementById('orderName').value;
+      const orderName = document.getElementById('orderName').value;
 
-  // Crear el objeto de datos del pedido
-  const orderData = {
-    date: new Date().toISOString(),
-    items: cart,
-    total: parseFloat(document.getElementById('modalTotal').textContent),
-    paymentMethod: currentPaymentMethod,
-    paymentAmounts: paymentAmounts,
-    local: window.location.pathname.includes('local1') ? 'local1' : 'local2',
-    orderName: orderName, // Nombre del cliente
-    sellerName: selectedSeller // Nombre del vendedor seleccionado
-  };
+      // Crear el objeto de datos del pedido
+      const orderData = {
+        date: new Date().toISOString(),
+        items: cart,
+        total: parseFloat(document.getElementById('modalTotal').textContent),
+        paymentMethod: currentPaymentMethod,
+        paymentAmounts: paymentAmounts,
+        local: window.location.pathname.includes('local1') ? 'local1' : 'local2',
+        orderName: orderName, // Nombre del cliente
+        sellerName: selectedSeller // Nombre del vendedor seleccionado
+      };
 
-  // Enviar al servidor
-  socket.emit('process-order', orderData);
+      // Actualizar los contadores de cierre de caja
+      totalPayments++; // Incrementar el contador de pagos
+      totalAmount += orderData.total; // Sumar el monto de la venta al total
+      // Actualizar los contadores en el backend
+      updateCashRegisterCounters();
+      // Enviar al servidor
+      socket.emit('process-order', orderData);
 
-  // Limpiar el carrito en la interfaz de usuario
-  cart = []; // Limpiar el carrito local
-  updateCartUI(); // Actualizar la interfaz de usuario
+      // Limpiar el carrito en la interfaz de usuario
+      cart = []; // Limpiar el carrito local
+      updateCartUI(); // Actualizar la interfaz de usuario
 
-  // Mostrar botón de impresión
-  const printOrderBtn = document.getElementById('printOrderBtn');
-  printOrderBtn.style.display = 'block';
+      // Mostrar botón de impresión
+      const printOrderBtn = document.getElementById('printOrderBtn');
+      printOrderBtn.style.display = 'block';
 
-  // Deshabilitar el botón de procesar pago
-  document.getElementById('processPaymentBtn').disabled = true;
+      // Deshabilitar el botón de procesar pago
+      document.getElementById('processPaymentBtn').disabled = true;
 
-  // Configurar el evento de impresión y pasar directamente el objeto orderData
-  printOrderBtn.onclick = () => printOrder(orderData);
-}
+      // Configurar el evento de impresión y pasar directamente el objeto orderData
+      printOrderBtn.onclick = () => printOrder(orderData);
+    }
 
     // Función mejorada para imprimir el pedido
     function printOrder(orderData) {
@@ -1558,22 +1615,22 @@ function addToCart(productId, productName, productPrice) {
     `;
       }
 
-        // Generar el detalle de las docenas si existen
-  let docenaDetails = '';
-  orderData.items.forEach(item => {
-    if (item.details) {
-      docenaDetails += `
+      // Generar el detalle de las docenas si existen
+      let docenaDetails = '';
+      orderData.items.forEach(item => {
+        if (item.details) {
+          docenaDetails += `
         <div class="docena-detail">
           <h4>${item.name}</h4>
           <ul>
             ${item.details.map(detail => `
-              <li>${detail.name}: ${detail.quantity} unidades</li>
+               <li style="list-style-type: none;">${detail.quantity} de ${detail.name}</li>
             `).join('')}
           </ul>
         </div>
       `;
-    }
-  });
+        }
+      });
 
       const printContent = `
     <!DOCTYPE html>
@@ -1582,7 +1639,6 @@ function addToCart(productId, productName, productPrice) {
         <style>
             body {
                 font-family: Arial, sans-serif;
-                padding: 20px;
             }
             table {
                 width: 50%;
@@ -1591,7 +1647,7 @@ function addToCart(productId, productName, productPrice) {
             }
             th, td {
                 border: 1px solid #ddd;
-                padding: 8px;
+                padding: 1px;
                 text-align: left;
             }
             th {
@@ -1708,7 +1764,7 @@ function addToCart(productId, productName, productPrice) {
       <style>
         body { font-family: Arial; }
         table { width: 100%; border-collapse: collapse; }
-        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th, td { border: 1px solid #ddd; padding: 1px; text-align: left; }
         .total { font-weight: bold; }
       </style>
     </head>
@@ -1886,8 +1942,8 @@ function addToCart(productId, productName, productPrice) {
     <head>
       <style>
         body { font-family: Arial, sans-serif; padding: 20px; }
-        table { width: 100%; border-collapse: collapse; margin: 20px 0; }
-        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        table { width: 100%; border-collapse: collapse; margin: 5px 0; }
+        th, td { border: 1px solid #ddd; padding: 1px; text-align: left; }
         th { background-color: #f2f2f2; }
         .total { font-weight: bold; font-size: 1.2em; margin-top: 20px; }
         .payment-info { margin-top: 20px; padding: 10px; border: 1px solid #ddd; background-color: #f9f9f9; }
@@ -1906,6 +1962,42 @@ function addToCart(productId, productName, productPrice) {
     document.addEventListener('DOMContentLoaded', function () {
       loadSellerInfo();
     });
+
+    function downloadExcel() {
+      // Obtener los datos del historial de pedidos
+      const historyContainer = document.getElementById('historyContainer');
+      const orders = Array.from(historyContainer.querySelectorAll('.order-card'));
+
+      // Crear un array de objetos con los datos
+      const data = orders.map(order => ({
+        Fecha: order.querySelector('p:nth-child(1)').textContent.replace('Fecha: ', ''),
+        'Nombre del Pedido': order.querySelector('p:nth-child(2)').textContent.replace('Nombre del pedido: ', ''),
+        Vendedor: order.querySelector('p:nth-child(3)').textContent.replace('Vendedor: ', ''),
+        Total: order.querySelector('p:nth-child(4)').textContent.replace('Total: $', ''),
+        'Método de Pago': order.querySelector('p:nth-child(5)').textContent.replace('Método de pago: ', '')
+      }));
+
+      // Crear una hoja de cálculo
+      const worksheet = XLSX.utils.json_to_sheet(data);
+
+      // Crear un libro de trabajo y agregar la hoja
+      const workbook = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(workbook, worksheet, 'Historial de Pedidos');
+
+      // Generar el archivo Excel
+      const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
+      const blob = new Blob([excelBuffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+
+      // Crear un enlace de descarga
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = 'historial_pedidos.xlsx';
+      link.click();
+
+      // Liberar el objeto URL
+      URL.revokeObjectURL(url);
+    }
   </script>
 
 </body>
