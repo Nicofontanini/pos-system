@@ -159,7 +159,17 @@
         <div class="modal-content">
           <span class="close" onclick="closeHistoryModal()">&times;</span>
           <h2>Historial de Pedidos</h2>
+          <label>Fecha Unica:</label>
           <input type="date" id="filterDate" onchange="filterHistory()">
+          <div class="date-range-filter">
+            <label for="startDate">Desde:</label>
+            <input type="date" id="startDate">
+            
+            <label for="endDate">Hasta:</label>
+            <input type="date" id="endDate">
+            
+            <button onclick="filterHistoryByDateRange()">Filtrar</button>
+          </div>
           <div id="historyContainer" class="history-container"></div>
           <button onclick="printHistory()" class="print-button">Imprimir Historial</button>
           <button onclick="downloadExcel()" class="print-button">Descargar Excel</button> <!-- Botón nuevo -->
@@ -218,6 +228,7 @@
       <h2>Historial de Cierres de Caja</h2>
       <div id="cash-register-history" class="history-container"></div>
       <button onclick="printCashRegisterHistory()" class="print-button">Imprimir Historial</button>
+      <button onclick="downloadCashRegisterExcel()" class="print-button">Descargar Excel</button> <!-- Botón nuevo -->
     </div>
   </div>
 
@@ -301,16 +312,32 @@
   </script>
   <script>
     const fullscreenBtn = document.getElementById('fullscreenBtn');
-
     fullscreenBtn.addEventListener('click', () => {
-      if (document.documentElement.requestFullscreen) {
-        document.documentElement.requestFullscreen();
-      } else if (document.documentElement.mozRequestFullScreen) { // Firefox
-        document.documentElement.mozRequestFullScreen();
-      } else if (document.documentElement.webkitRequestFullscreen) { // Chrome, Safari, Opera
-        document.documentElement.webkitRequestFullscreen();
-      } else if (document.documentElement.msRequestFullscreen) { // IE/Edge
-        document.documentElement.msRequestFullscreen();
+      if (!document.fullscreenElement &&  // Si no estamos en pantalla completa
+        !document.mozFullScreenElement &&  // Para Firefox
+        !document.webkitFullscreenElement &&  // Para Chrome, Safari, Opera
+        !document.msFullscreenElement) {  // Para IE/Edge
+        // Entrar en pantalla completa
+        if (document.documentElement.requestFullscreen) {
+          document.documentElement.requestFullscreen();
+        } else if (document.documentElement.mozRequestFullScreen) { // Firefox
+          document.documentElement.mozRequestFullScreen();
+        } else if (document.documentElement.webkitRequestFullscreen) { // Chrome, Safari, Opera
+          document.documentElement.webkitRequestFullscreen();
+        } else if (document.documentElement.msRequestFullscreen) { // IE/Edge
+          document.documentElement.msRequestFullscreen();
+        }
+      } else {
+        // Salir del modo pantalla completa
+        if (document.exitFullscreen) {
+          document.exitFullscreen();
+        } else if (document.mozCancelFullScreen) { // Firefox
+          document.mozCancelFullScreen();
+        } else if (document.webkitExitFullscreen) { // Chrome, Safari, Opera
+          document.webkitExitFullscreen();
+        } else if (document.msExitFullscreen) { // IE/Edge
+          document.msExitFullscreen();
+        }
       }
     });
   </script>
@@ -430,14 +457,14 @@
     }
 
     const docenas = {
-      "Docena Tradicionales": ["Carne", "Pollo", "Verdura", "Cebolla", "Jamon", "Calabaza", "Picante", "Choclo", "Salchicha Alemana"],
+      "Docena Tradicionales": ["Carne", "Pollo", "Verdura", "Cebolla", "Jamon", "Calabaza", "Picante", "Choclo", "Salchicha Alemana", "Capresse"],
       "Docena Especiales": ["4 Quesos", "Crudo", "Vegana", "Panceta y Ciruela", "J Roque"],
       "Docena Vacio": ["Vacio Provolone", "Chesse Burger"],
       "Docena Imperdibles": ["Cordero", "Trucha", "Ciervo"],
       "Docena Combinada 1": {
         tipo: "combinada",
         combinaciones: [
-          { nombre: "Tradicionales", cantidad: 3, opciones: ["Carne", "Pollo", "Verdura", "Cebolla", "Jamon", "Calabaza", "Picante", "Choclo", "Salchicha Alemana"] },
+          { nombre: "Tradicionales", cantidad: 3, opciones: ["Carne", "Pollo", "Verdura", "Cebolla", "Jamon", "Calabaza", "Picante", "Choclo", "Salchicha Alemana", "Capresse"] },
           { nombre: "Especiales", cantidad: 3, opciones: ["4 Quesos", "Crudo", "Vegana", "Panceta y Ciruela", "J Roque"] },
           { nombre: "Vacio", cantidad: 3, opciones: ["Vacio Provolone", "Chesse Burger"] },
           { nombre: "Imperdibles", cantidad: 3, opciones: ["Cordero", "Trucha", "Ciervo"] }
@@ -446,7 +473,7 @@
       "Docena Combinada 2": {
         tipo: "combinada",
         combinaciones: [
-          { nombre: "Tradicionales", cantidad: 4, opciones: ["Carne", "Pollo", "Verdura", "Cebolla", "Jamon", "Calabaza", "Picante", "Choclo", "Salchicha Alemana"] },
+          { nombre: "Tradicionales", cantidad: 4, opciones: ["Carne", "Pollo", "Verdura", "Cebolla", "Jamon", "Calabaza", "Picante", "Choclo", "Salchicha Alemana", "Capresse"] },
           { nombre: "Especiales", cantidad: 4, opciones: ["4 Quesos", "Crudo", "Vegana", "Panceta y Ciruela", "J Roque"] },
           { nombre: "Imperdibles", cantidad: 4, opciones: ["Cordero", "Trucha", "Ciervo"] }
         ]
@@ -627,7 +654,7 @@
     // Función para seleccionar el vendedor
     function selectSeller(seller) {
       selectedSeller = seller;
-      alert(`Vendedor seleccionado: ${selectedSeller}`);
+      // alert(`Vendedor seleccionado: ${selectedSeller}`);
     }
 
     // Función para actualizar el nombre del pedido
@@ -1413,6 +1440,9 @@
       cart = []; // Limpiar el carrito local
       updateCartUI(); // Actualizar la interfaz de usuario
 
+      // Limpiar el campo del nombre del cliente
+      document.getElementById('orderName').value = '';
+
       // Mostrar botón de impresión
       const printOrderBtn = document.getElementById('printOrderBtn');
       printOrderBtn.style.display = 'block';
@@ -1506,7 +1536,8 @@
         </style>
     </head>
     <body>
-        <h2>Comanda</h2>
+      <h2>EMPANDAS KM11</h2>
+        <h3>Comanda</h3>
         <p>Fecha: ${date}</p>
         <p>Nombre del cliente: ${clientName}</p>
         <p>Vendedor: ${vendorName}</p>
@@ -1515,8 +1546,6 @@
                 <tr>
                     <th>Producto</th>
                     <th>Cantidad</th>
-                    <th>Precio Unit.</th>
-                    <th>Subtotal</th>
                 </tr>
             </thead>
             <tbody>
@@ -1524,8 +1553,6 @@
                     <tr>
                         <td>${item.name}</td>
                         <td>${item.quantity}</td>
-                        <td>$${item.price.toFixed(2)}</td>
-                        <td>$${(item.price * item.quantity).toFixed(2)}</td>
                     </tr>
                 `).join('')}
             </tbody>
@@ -1540,6 +1567,7 @@
             <p>Método de pago: ${orderData.paymentMethod}</p>
             ${paymentDetails}
         </div>
+         <h2>Gracias</h2>
     </body>
     </html>
   `;
@@ -1644,10 +1672,31 @@
       const date = document.getElementById('filterDate').value; // Obtener la fecha del filtro (si existe)
       socket.emit('get-order-history', { local, date }); // Enviar el local y la fecha al servidor
     }
-
+    function filterHistoryByDateRange() {
+  const startDate = document.getElementById('startDate').value;
+  const endDate = document.getElementById('endDate').value;
+  
+  if (!startDate || !endDate) {
+    alert('Por favor selecciona fechas de inicio y fin');
+    return;
+  }
+  
+  socket.emit('get-order-history-range', { 
+    local: currentLocal, 
+    startDate: startDate,
+    endDate: endDate 
+  });
+}
     function filterHistory() {
-      const date = document.getElementById('filterDate').value;
-      socket.emit('get-order-history', date);
+      const dateInput = document.getElementById('filterDate');
+      const date = dateInput.value;
+
+      if (!date) {
+        console.error('No se ha seleccionado fecha');
+        return;
+      }
+
+      socket.emit('get-order-history', { local: currentLocal, date: date });
     }
 
     socket.on('order-history', function (history) {
@@ -1894,41 +1943,128 @@
       loadSellerInfo();
     });
 
+    function downloadCashRegisterExcel() {
+  // Obtener los datos del historial de cierres de caja
+  const historyContainer = document.getElementById('cash-register-history');
+  const entries = Array.from(historyContainer.querySelectorAll('.cash-register-entry'));
+
+  // Crear un array de objetos con los datos
+  const data = entries.map(entry => {
+    const entryText = entry.textContent;
+    // Extraer los datos del texto del elemento
+    const match = entryText.match(
+      /Cierre #(\d+).*?Fecha: (.*?)Pagos procesados: (\d+).*?Monto total: \$([\d.]+).*?Local: (.*?)(?:\n|$)/s
+    );
+
+    // Procesar la fecha para separarla en fecha y hora
+    let fechaCompleta = match ? match[2].trim() : '';
+    let fechaPartes = fechaCompleta.split(', ');
+    let fecha = fechaPartes.length > 0 ? fechaPartes[0] : fechaCompleta;
+    let hora = fechaPartes.length > 1 ? fechaPartes[1] : '';
+
+    return {
+      'Cierre #': match ? match[1] : '',
+      'Fecha': fecha,
+      'Hora': hora,
+      'Pagos procesados': match ? match[3] : '',
+      'Monto total': match ? match[4] : '',
+      'Local': match ? match[5].trim() : ''
+    };
+  });
+
+  // Crear una hoja de cálculo
+  const worksheet = XLSX.utils.json_to_sheet(data);
+
+  // Crear un libro de trabajo y agregar la hoja
+  const workbook = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(workbook, worksheet, 'Cierres de Caja');
+
+  // Generar el archivo Excel
+  const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
+  const blob = new Blob([excelBuffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+
+  // Crear un enlace de descarga
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = 'historial_cierres_caja.xlsx';
+  link.click();
+
+  // Liberar el objeto URL
+  URL.revokeObjectURL(url);
+}
+
     function downloadExcel() {
-      // Obtener los datos del historial de pedidos
-      const historyContainer = document.getElementById('historyContainer');
-      const orders = Array.from(historyContainer.querySelectorAll('.order-card'));
+  // Obtener los datos del historial de pedidos
+  const historyContainer = document.getElementById('historyContainer');
+  const orders = Array.from(historyContainer.querySelectorAll('.order-card'));
 
-      // Crear un array de objetos con los datos
-      const data = orders.map(order => ({
-        Fecha: order.querySelector('p:nth-child(1)').textContent.replace('Fecha: ', ''),
-        'Nombre del Pedido': order.querySelector('p:nth-child(2)').textContent.replace('Nombre del pedido: ', ''),
-        Vendedor: order.querySelector('p:nth-child(3)').textContent.replace('Vendedor: ', ''),
-        Total: order.querySelector('p:nth-child(4)').textContent.replace('Total: $', ''),
-        'Método de Pago': order.querySelector('p:nth-child(5)').textContent.replace('Método de pago: ', '')
-      }));
-
-      // Crear una hoja de cálculo
-      const worksheet = XLSX.utils.json_to_sheet(data);
-
-      // Crear un libro de trabajo y agregar la hoja
-      const workbook = XLSX.utils.book_new();
-      XLSX.utils.book_append_sheet(workbook, worksheet, 'Historial de Pedidos');
-
-      // Generar el archivo Excel
-      const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
-      const blob = new Blob([excelBuffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
-
-      // Crear un enlace de descarga
-      const url = URL.createObjectURL(blob);
-      const link = document.createElement('a');
-      link.href = url;
-      link.download = 'historial_pedidos.xlsx';
-      link.click();
-
-      // Liberar el objeto URL
-      URL.revokeObjectURL(url);
+  // Crear un array de objetos con los datos
+  const data = orders.map(order => {
+    // Obtener el texto completo de la fecha
+    const fullDateText = order.querySelector('p:nth-child(1)').textContent.replace('Fecha: ', '');
+    
+    // Separar la fecha y la hora manualmente
+    let dateOnly = '';
+    let timeOnly = '';
+    
+    try {
+      // Intenta crear un objeto Date
+      const dateObj = new Date(fullDateText);
+      
+      // Verifica si la fecha es válida
+      if (!isNaN(dateObj.getTime())) {
+        // Si es válida, extrae fecha y hora
+        dateOnly = dateObj.toLocaleDateString();
+        timeOnly = dateObj.toLocaleTimeString();
+      } else {
+        // Si no es válida, intenta dividir manualmente
+        const parts = fullDateText.split(', ');
+        if (parts.length === 2) {
+          dateOnly = parts[0];
+          timeOnly = parts[1];
+        } else {
+          // Si falla, usa el texto completo como fecha
+          dateOnly = fullDateText;
+        }
+      }
+    } catch (e) {
+      console.error("Error al procesar la fecha:", fullDateText, e);
+      // En caso de error, usar el texto original
+      dateOnly = fullDateText;
     }
+    
+    return {
+      Fecha: dateOnly,
+      Hora: timeOnly,
+      'Nombre del Pedido': order.querySelector('p:nth-child(2)').textContent.replace('Nombre del pedido: ', ''),
+      Vendedor: order.querySelector('p:nth-child(3)').textContent.replace('Vendedor: ', ''),
+      Total: order.querySelector('p:nth-child(4)').textContent.replace('Total: $', ''),
+      'Método de Pago': order.querySelector('p:nth-child(5)').textContent.replace('Método de pago: ', '')
+    };
+  });
+
+  // Crear una hoja de cálculo
+  const worksheet = XLSX.utils.json_to_sheet(data);
+
+  // Crear un libro de trabajo y agregar la hoja
+  const workbook = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(workbook, worksheet, 'Historial de Pedidos');
+
+  // Generar el archivo Excel
+  const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
+  const blob = new Blob([excelBuffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+
+  // Crear un enlace de descarga
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = 'historial_pedidos.xlsx';
+  link.click();
+
+  // Liberar el objeto URL
+  URL.revokeObjectURL(url);
+}
   </script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.4/xlsx.full.min.js"></script>
 

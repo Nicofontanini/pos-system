@@ -5,7 +5,7 @@
         "name": "Carne",
         "category": "Tradicionales",
         "price": 100,
-        "stock": -65,
+        "stock": 300,
         "description": "Carne seleccionada picada, Cebolla y Huevo duro.",
         "id": 1
       },
@@ -13,7 +13,7 @@
         "name": "Picante",
         "category": "Tradicionales",
         "price": 100,
-        "stock": 80,
+        "stock": 76,
         "description": "Carne cortada a cuchillo, Macerada con mix de pimientas, Aji picante.",
         "id": 4
       },
@@ -174,7 +174,7 @@
         "category": "Docena",
         "price": 28000,
         "stock": 100,
-        "description": "Carne, Pollo, Verdura, Cebolla, Jamon, Calabaza, Carne Picante, Choclo, Salchica Alemana.",
+        "description": "Carne, Pollo, Verdura, Cebolla, Jamon, Calabaza, Carne Picante, Choclo, Salchica Alemana, Capresse",
         "id": 24
       },
       {
@@ -345,7 +345,7 @@
         "name": "Carne",
         "category": "Tradicionales",
         "price": 100,
-        "stock": 73,
+        "stock": 100,
         "description": "Carne seleccionada picada, Cebolla y Huevo duro.",
         "id": 1
       },
@@ -353,7 +353,7 @@
         "name": "Picante",
         "category": "Tradicionales",
         "price": 100,
-        "stock": 98,
+        "stock": 95,
         "description": "Carne cortada a cuchillo, Macerada con mix de pimientas, Aji picante.",
         "id": 4
       },
@@ -361,7 +361,7 @@
         "name": "Pollo",
         "category": "Tradicionales",
         "price": 100,
-        "stock": 88,
+        "stock": 86,
         "description": "Pechuga fileteadas, Salteadas con curry, Cortadas a cuchillo, Con cebolla y huevo duro.",
         "id": 5
       },
@@ -514,7 +514,7 @@
         "category": "Docena",
         "price": 28000,
         "stock": 100,
-        "description": "Carne, Pollo, Verdura, Cebolla, Jamon, Calabaza, Carne Picante, Choclo, Salchica Alemana.",
+        "description": "Carne, Pollo, Verdura, Cebolla, Jamon, Calabaza, Carne Picante, Choclo, Salchica Alemana, Capresse",
         "id": 24
       },
       {

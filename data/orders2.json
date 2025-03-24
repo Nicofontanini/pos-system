@@ -1,5 +1,47 @@
 [
   {
+  "date": "2025-03-19T13:46:41.833Z",
+  "items": [
+    {
+      "id": 4,
+      "name": "Picante",
+      "price": 100,
+      "quantity": 1,
+      "details": null
+    }
+  ],
+  "total": 100,
+  "paymentMethod": "efectivo",
+  "paymentAmounts": {
+    "efectivo": 100,
+    "transferencia": 0
+  },
+  "local": "local1",
+  "orderName": "ddsad",
+  "sellerName": "Maxi"
+},
+{
+  "date": "2025-03-20T13:46:41.833Z",
+  "items": [
+    {
+      "id": 4,
+      "name": "Picante",
+      "price": 100,
+      "quantity": 1,
+      "details": null
+    }
+  ],
+  "total": 100,
+  "paymentMethod": "efectivo",
+  "paymentAmounts": {
+    "efectivo": 100,
+    "transferencia": 0
+  },
+  "local": "local1",
+  "orderName": "ddsad",
+  "sellerName": "Maxi"
+},
+  {
     "date": "2025-03-19T18:56:42.113Z",
     "items": [
       {
@@ -40,5 +82,138 @@
     "local": "local2",
     "orderName": "Nico",
     "sellerName": "Maxi"
+  },
+  {
+    "date": "2025-03-21T11:54:31.703Z",
+    "items": [
+      {
+        "id": 1,
+        "name": "Carne",
+        "price": 100,
+        "quantity": 1,
+        "details": null
+      }
+    ],
+    "total": 100,
+    "paymentMethod": "efectivo",
+    "paymentAmounts": {
+      "efectivo": 100,
+      "transferencia": 0
+    },
+    "local": "local2",
+    "orderName": "nico",
+    "sellerName": "Maxi"
+  },
+  {
+    "date": "2025-03-21T11:56:41.144Z",
+    "items": [
+      {
+        "id": 4,
+        "name": "Picante",
+        "price": 100,
+        "quantity": 1,
+        "details": null
+      }
+    ],
+    "total": 100,
+    "paymentMethod": "efectivo",
+    "paymentAmounts": {
+      "efectivo": 100,
+      "transferencia": 0
+    },
+    "local": "local2",
+    "orderName": "dasdas",
+    "sellerName": "Maxi"
+  },
+  {
+    "date": "2025-03-21T12:04:39.911Z",
+    "items": [
+      {
+        "id": 4,
+        "name": "Picante",
+        "price": 100,
+        "quantity": 1,
+        "details": null
+      }
+    ],
+    "total": 100,
+    "paymentMethod": "efectivo",
+    "paymentAmounts": {
+      "efectivo": 100,
+      "transferencia": 0
+    },
+    "local": "local2",
+    "orderName": "",
+    "sellerName": "nico"
+  },
+  {
+    "date": "2025-03-21T12:13:17.342Z",
+    "items": [
+      {
+        "id": 5,
+        "name": "Pollo",
+        "price": 100,
+        "quantity": 1,
+        "details": null
+      }
+    ],
+    "total": 100,
+    "paymentMethod": "efectivo",
+    "paymentAmounts": {
+      "efectivo": 100,
+      "transferencia": 0
+    },
+    "local": "local2",
+    "orderName": "loco",
+    "sellerName": "nico"
+  },
+  {
+    "date": "2025-03-21T12:15:00.894Z",
+    "items": [
+      {
+        "id": 4,
+        "name": "Picante",
+        "price": 100,
+        "quantity": 1,
+        "details": null
+      },
+      {
+        "id": 5,
+        "name": "Pollo",
+        "price": 100,
+        "quantity": 1,
+        "details": null
+      }
+    ],
+    "total": 200,
+    "paymentMethod": "efectivo",
+    "paymentAmounts": {
+      "efectivo": 200,
+      "transferencia": 0
+    },
+    "local": "local2",
+    "orderName": "sda",
+    "sellerName": "nico"
+  },
+  {
+    "date": "2025-03-21T12:24:08.589Z",
+    "items": [
+      {
+        "id": 1,
+        "name": "Carne",
+        "price": 100,
+        "quantity": 1,
+        "details": null
+      }
+    ],
+    "total": 100,
+    "paymentMethod": "efectivo",
+    "paymentAmounts": {
+      "efectivo": 100,
+      "transferencia": 0
+    },
+    "local": "local2",
+    "orderName": "sdasda",
+    "sellerName": "nico"
   }
 ]

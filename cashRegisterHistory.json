@@ -244,5 +244,29 @@
     "totalPayments": 1,
     "totalAmount": 100,
     "local": "local2"
+  },
+  {
+    "date": "2025-03-21T11:56:56.808Z",
+    "totalPayments": 1,
+    "totalAmount": 100,
+    "local": "local2"
+  },
+  {
+    "date": "2025-03-21T12:00:48.839Z",
+    "totalPayments": 1,
+    "totalAmount": 100,
+    "local": "local1"
+  },
+  {
+    "date": "2025-03-21T14:51:02.604Z",
+    "totalPayments": 0,
+    "totalAmount": 0,
+    "local": "local1"
+  },
+  {
+    "date": "2025-03-24T12:53:24.954Z",
+    "totalPayments": 0,
+    "totalAmount": 0,
+    "local": "local2"
   }
 ]

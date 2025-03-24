@@ -506,12 +506,12 @@ io.on('connection', (socket) => {
 
   socket.on('process-order', (orderData) => {
     const { local, items, sellerName } = orderData;
-  
+
     // Validación básica de entrada
     if (!orderData || !local || !['local1', 'local2'].includes(local) || !Array.isArray(items) || items.length === 0) {
       return socket.emit('error', 'Datos de pedido inválidos o local no válido');
     }
-  
+
     // Actualizar el stock de los productos vendidos
     items.forEach(item => {
       if (item.details) {
@@ -536,26 +536,26 @@ io.on('connection', (socket) => {
         }
       }
     });
-  
+
     // Guardar el inventario actualizado
     writeInventory(inventory);
-  
+
     // Leer los pedidos previos
     const orders = readOrders(local);
     if (!orders) {
       return socket.emit('error', 'Error al leer los pedidos');
     }
-  
+
     // Añadir el nuevo pedido y guardarlo
     orders.push({
       ...orderData,
       sellerName // Incluir el nombre del vendedor en el pedido
     });
     writeOrders(local, orders);
-  
+
     // Limpiar el carrito
     carts[local] = []; // Limpiar el carrito del local correspondiente
-  
+
     // Emitir evento de actualización de stock para todos los clientes
     const stockUpdates = items.map(item => {
       const product = inventory[local].products.find(p => p.id === item.id);
@@ -565,10 +565,10 @@ io.on('connection', (socket) => {
         product: product ? { stock: product.stock } : null
       };
     });
-  
+
     // Emitir el evento de actualización del stock
     io.emit('stock-update', { local, items: stockUpdates });
-  
+
     // Emitir evento para limpiar el carrito en el cliente
     io.emit('cart-updated', { local, cart: [] });
   });
@@ -591,33 +591,53 @@ io.on('connection', (socket) => {
     io.emit('product-added', { location: local, product: docena });
   });
 
-  socket.on('get-order-history', ({ local, date }) => {
-    let orders = readOrders(local); // Leer solo los pedidos del local correspondiente
+  socket.on('get-order-history-range', ({ local, startDate, endDate }) => {
+    let orders = readOrders(local);
 
-    if (date) {
-      const startOfDay = new Date(date);
-      const endOfDay = new Date(date);
-      endOfDay.setDate(endOfDay.getDate() + 1);
+    if (startDate && endDate) {
+      // Crear fecha de inicio (00:00:00)
+      const start = new Date(startDate);
+      start.setHours(0, 0, 0, 0);
+
+      // Crear fecha de fin (23:59:59)
+      const end = new Date(endDate);
+      end.setHours(23, 59, 59, 999);
 
       orders = orders.filter(order => {
         const orderDate = new Date(order.date);
-        return orderDate >= startOfDay && orderDate < endOfDay;
+        return orderDate >= start && orderDate <= end;
+      });
+
+      console.log('Filtrando por rango de fechas:', startDate, 'hasta', endDate);
+      console.log('Órdenes filtradas:', orders.length);
+    }
+
+    socket.emit('order-history', orders);
+  });
+  socket.on('get-order-history', ({ local, date }) => {
+    let orders = readOrders(local);
+
+    if (date) {
+      orders = orders.filter(order => {
+        // Extraer solo la parte de la fecha (YYYY-MM-DD)
+        const orderDateOnly = order.date.split('T')[0];
+        return orderDateOnly === date;
       });
     }
 
-    socket.emit('order-history', orders); // Enviar solo los pedidos del local correspondiente
+    socket.emit('order-history', orders);
   });
 
   let cashRegister = {
     totalPayments: 0,
     totalAmount: 0
   };
-  
+
   // Ruta para obtener los contadores
   app.get('/cash-register', (req, res) => {
     res.json(cashRegister);
   });
-  
+
   // Ruta para actualizar los contadores
   app.post('/cash-register', (req, res) => {
     const { totalPayments, totalAmount } = req.body;
@@ -676,56 +696,56 @@ io.on('connection', (socket) => {
 
   app.post('/clean-old-data', (req, res) => {
     const local = req.headers['x-local']; // Obtener el local desde la cabecera
-  
+
     try {
       // Calcular la fecha límite (5 días atrás)
       const fiveDaysAgo = new Date();
       fiveDaysAgo.setDate(fiveDaysAgo.getDate() - 5);
-  
+
       // Limpiar orders.json y orders2.json según el local
       const ordersFilePath = path.join(__dirname, 'data', 'orders.json');
       const orders2FilePath = path.join(__dirname, 'data', 'orders2.json');
-  
+
       let orders = JSON.parse(fs.readFileSync(ordersFilePath, 'utf8'));
       let orders2 = JSON.parse(fs.readFileSync(orders2FilePath, 'utf8'));
-  
+
       // Filtrar los pedidos según el local
       const filteredOrders = orders.filter(order => {
         const orderDate = new Date(order.date);
         return orderDate >= fiveDaysAgo && order.local === local;
       });
-  
+
       const filteredOrders2 = orders2.filter(order => {
         const orderDate = new Date(order.date);
         return orderDate >= fiveDaysAgo && order.local === local;
       });
-  
+
       // Guardar los pedidos filtrados
       fs.writeFileSync(ordersFilePath, JSON.stringify(filteredOrders, null, 2));
       fs.writeFileSync(orders2FilePath, JSON.stringify(filteredOrders2, null, 2));
-  
+
       // Limpiar sellers_history.json
       const sellersHistoryPath = path.join(__dirname, 'data', 'sellers_history.json');
       let sellersHistory = JSON.parse(fs.readFileSync(sellersHistoryPath, 'utf8'));
-  
+
       const filteredSellersHistory = sellersHistory.filter(entry => {
         const entryDate = new Date(entry.updatedAt);
         return entryDate >= fiveDaysAgo && entry.local === local;
       });
-  
+
       fs.writeFileSync(sellersHistoryPath, JSON.stringify(filteredSellersHistory, null, 2));
-  
+
       // Limpiar cashRegisterHistory.json
       const cashRegisterHistoryPath = path.join(__dirname, 'data', 'cashRegisterHistory.json');
       let cashRegisterHistory = JSON.parse(fs.readFileSync(cashRegisterHistoryPath, 'utf8'));
-  
+
       const filteredCashRegisterHistory = cashRegisterHistory.filter(entry => {
         const entryDate = new Date(entry.date);
         return entryDate >= fiveDaysAgo && entry.local === local;
       });
-  
+
       fs.writeFileSync(cashRegisterHistoryPath, JSON.stringify(filteredCashRegisterHistory, null, 2));
-  
+
       res.status(200).json({ success: true, message: 'Datos antiguos eliminados correctamente' });
     } catch (error) {
       console.error('Error al limpiar los datos antiguos:', error);

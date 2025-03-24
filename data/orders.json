@@ -1,1 +1,128 @@
-[]
+[
+  {
+    "date": "2025-03-19T13:46:41.833Z",
+    "items": [
+      {
+        "id": 4,
+        "name": "Picante",
+        "price": 100,
+        "quantity": 1,
+        "details": null
+      }
+    ],
+    "total": 100,
+    "paymentMethod": "efectivo",
+    "paymentAmounts": {
+      "efectivo": 100,
+      "transferencia": 0
+    },
+    "local": "local1",
+    "orderName": "ddsad",
+    "sellerName": "Maxi"
+  },
+  {
+    "date": "2025-03-20T13:46:41.833Z",
+    "items": [
+      {
+        "id": 4,
+        "name": "Picante",
+        "price": 100,
+        "quantity": 1,
+        "details": null
+      }
+    ],
+    "total": 100,
+    "paymentMethod": "efectivo",
+    "paymentAmounts": {
+      "efectivo": 100,
+      "transferencia": 0
+    },
+    "local": "local1",
+    "orderName": "ddsad",
+    "sellerName": "Maxi"
+  },
+  {
+    "date": "2025-03-21T11:55:25.279Z",
+    "items": [
+      {
+        "id": 4,
+        "name": "Picante",
+        "price": 100,
+        "quantity": 1,
+        "details": null
+      }
+    ],
+    "total": 100,
+    "paymentMethod": "efectivo",
+    "paymentAmounts": {
+      "efectivo": 100,
+      "transferencia": 0
+    },
+    "local": "local1",
+    "orderName": "dasdas",
+    "sellerName": "Maxi"
+  },
+  {
+    "date": "2025-03-21T12:00:25.687Z",
+    "items": [
+      {
+        "id": 4,
+        "name": "Picante",
+        "price": 100,
+        "quantity": 1,
+        "details": null
+      }
+    ],
+    "total": 100,
+    "paymentMethod": "efectivo",
+    "paymentAmounts": {
+      "efectivo": 100,
+      "transferencia": 0
+    },
+    "local": "local1",
+    "orderName": "dasdas",
+    "sellerName": "Maxi"
+  },
+  {
+    "date": "2025-03-21T13:31:10.258Z",
+    "items": [
+      {
+        "id": 4,
+        "name": "Picante",
+        "price": 100,
+        "quantity": 1,
+        "details": null
+      }
+    ],
+    "total": 100,
+    "paymentMethod": "efectivo",
+    "paymentAmounts": {
+      "efectivo": 100,
+      "transferencia": 0
+    },
+    "local": "local1",
+    "orderName": "nico",
+    "sellerName": "Maxi"
+  },
+  {
+    "date": "2025-03-21T13:46:41.833Z",
+    "items": [
+      {
+        "id": 4,
+        "name": "Picante",
+        "price": 100,
+        "quantity": 1,
+        "details": null
+      }
+    ],
+    "total": 100,
+    "paymentMethod": "efectivo",
+    "paymentAmounts": {
+      "efectivo": 100,
+      "transferencia": 0
+    },
+    "local": "local1",
+    "orderName": "ddsad",
+    "sellerName": "Maxi"
+  }
+]
