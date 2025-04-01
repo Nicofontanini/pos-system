@@ -1,0 +1,32 @@
+[
+  {
+    "employeeName": "Nicolas",
+    "action": "ingreso",
+    "timestamp": "2025-03-27T14:37:47.545Z",
+    "local": "local2"
+  },
+  {
+    "employeeName": "Nico",
+    "action": "egreso",
+    "timestamp": "2025-03-27T14:38:05.528Z",
+    "local": "local2"
+  },
+  {
+    "employeeName": "maxi",
+    "action": "ingreso",
+    "timestamp": "2025-03-27T18:48:47.478Z",
+    "local": "local1"
+  },
+  {
+    "employeeName": "Nico",
+    "action": "ingreso",
+    "timestamp": "2025-03-29T13:04:56.949Z",
+    "local": "local2"
+  },
+  {
+    "employeeName": "nico",
+    "action": "ingreso",
+    "timestamp": "2025-04-01T12:19:31.312Z",
+    "local": "local2"
+  }
+]

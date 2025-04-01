@@ -160,22 +160,6 @@ body {
   color: #2c3e50;
 }
 
-.checkout-button {
-  width: 100%;
-  padding: 1rem;
-  background-color: #27ae60;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  font-size: 1.1rem;
-  cursor: pointer;
-}
-
-.checkout-button:disabled {
-  background-color: #95a5a6;
-  cursor: not-allowed;
-}
-
 /* Estilos para el modal de pago */
 .modal {
   display: none;
@@ -218,24 +202,6 @@ body {
   background-color: #f1f8f1;
 }
 
-
-.low-stock {
-  color: red;
-}
-
-.alert {
-  color: blue;
-  font-weight: bold;
-}
-
-.product-form {
-  margin: 20px 0;
-  padding: 15px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  background-color: #f9f9f9;
-}
-
 .product-form div {
   margin: 10px 0;
 }
@@ -250,59 +216,11 @@ body {
   width: 200px;
 }
 
-.error-message {
-  color: red;
-  margin-top: 5px;
-  display: none;
-}
-
 .actions {
   margin-top: 10px;
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
-}
-
-.edit-mode {
-  background-color: #fff3cd;
-}
-
-.delete-confirm {
-  background-color: #f8d7da;
-  padding: 10px;
-  margin: 5px 0;
-  border-radius: 4px;
-}
-
-/* Agregar estos estilos en la sección <style> del HTML */
-.modal {
-  display: none;
-  position: fixed;
-  z-index: 1000;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-}
-
-.modal-content {
-  background-color: #fefefe;
-  margin: auto;
-  padding: 20px;
-  border: 1px solid #888;
-  width: 80%;
-  max-width: 500px;
-  border-radius: 8px;
-  position: relative;
-}
-
-.close {
-  position: absolute;
-  right: 15px;
-  top: 10px;
-  font-size: 24px;
-  cursor: pointer;
 }
 
 .payment-options {
@@ -366,22 +284,6 @@ body {
   margin-top: 15px;
   padding: 10px;
   border-top: 1px solid #ddd;
-}
-
-.checkout-button {
-  background-color: #28a745;
-  color: white;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 16px;
-  width: 100%;
-}
-
-.checkout-button:disabled {
-  background-color: #cccccc;
-  cursor: not-allowed;
 }
 
 .cart-item {
@@ -755,23 +657,6 @@ body {
   margin-bottom: 1rem;
 }
 
-.checkout-button {
-  width: 100%;
-  padding: 1rem;
-  background-color: #27ae60;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  font-size: 1.1rem;
-  cursor: pointer;
-  transition: background-color 0.3s;
-}
-
-.checkout-button:disabled {
-  background-color: #95a5a6;
-  cursor: not-allowed;
-}
-
 .checkout-button:hover:not(:disabled) {
   background-color: #219653;
 }
@@ -780,6 +665,7 @@ body {
 .modal {
   display: none;
   position: fixed;
+  z-index: 1000;
   top: 0;
   left: 0;
   width: 100%;
@@ -790,12 +676,15 @@ body {
 }
 
 .modal-content {
-  background-color: white;
-  padding: 2rem;
+  background-color: #fefefe;
+  padding: 20px;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  width: 80%;
   max-width: 500px;
-  width: 90%;
+  margin: auto;
+  border: 1px solid #888;
+  position: relative;
 }
 
 .close {
@@ -804,12 +693,6 @@ body {
   right: 1rem;
   font-size: 1.5rem;
   cursor: pointer;
-}
-
-.product-form {
-  display: none;
-  opacity: 0;
-  transition: opacity 0.3s ease-in-out;
 }
 
 .product-form.show {
@@ -831,10 +714,6 @@ body {
   background-color: #45a049;
 }
 
-.low-stock {
-  color: red;
-}
-
 .alert {
   color: blue;
   font-weight: bold;
@@ -846,6 +725,9 @@ body {
   border: 1px solid #ccc;
   border-radius: 5px;
   background-color: #f9f9f9;
+  display: none;
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
 }
 
 .product-form div {
@@ -982,15 +864,17 @@ body {
 }
 
 .checkout-button {
+  width: 100%;
+  padding: 10px 20px;
   background-color: #28a745;
   color: white;
-  padding: 10px 20px;
   border: none;
   border-radius: 4px;
+  font-size: 1.1rem;
   cursor: pointer;
-  font-size: 16px;
-  width: 100%;
+  transition: background-color 0.3s;
 }
+
 
 .checkout-button:disabled {
   background-color: #cccccc;
@@ -1184,7 +1068,8 @@ body {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  gap: 10px; /* Espacio entre las empanadas */
+  gap: 10px;
+  /* Espacio entre las empanadas */
 }
 
 /* Estilos para cada ítem de empanada */
@@ -1196,7 +1081,8 @@ body {
   padding: 10px;
   border-radius: 8px;
   border: 1px solid #ddd;
-  width: calc(50% - 10px); /* Dos columnas por fila */
+  width: calc(50% - 10px);
+  /* Dos columnas por fila */
 }
 
 .empanada-item span {
@@ -1228,7 +1114,8 @@ body {
   width: 100%;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.5);
-  overflow: auto; /* Permite el desplazamiento si el contenido es muy largo */
+  overflow: auto;
+  /* Permite el desplazamiento si el contenido es muy largo */
 }
 
 .modal-content {
@@ -1236,8 +1123,268 @@ body {
   margin: auto;
   padding: 20px;
   border-radius: 8px;
-  width: 90%; /* Ancho relativo para dispositivos móviles */
-  max-width: 500px; /* Ancho máximo para pantallas grandes */
-  max-height: 100%; /* Altura máxima del modal */
-  overflow-y: auto; /* Hace que el contenido sea desplazable verticalmente */
+  width: 90%;
+  /* Ancho relativo para dispositivos móviles */
+  max-width: 500px;
+  /* Ancho máximo para pantallas grandes */
+  max-height: 100%;
+  /* Altura máxima del modal */
+  overflow-y: auto;
+  /* Hace que el contenido sea desplazable verticalmente */
+}
+
+/* Agrega estos estilos */
+.log-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.log-button {
+  padding: 10px 15px;
+  border: none;
+  border-radius: 4px;
+  color: white;
+  cursor: pointer;
+  font-size: 16px;
+  flex: 1;
+}
+
+.log-button.ingreso {
+  background-color: #28a745;
+}
+
+.log-button.egreso {
+  background-color: #dc3545;
+}
+
+.filter-section {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.filter-section div {
+  display: flex;
+  flex-direction: column;
+}
+
+.log-entry {
+  padding: 10px;
+  border-bottom: 1px solid #eee;
+  display: flex;
+  justify-content: space-between;
+}
+
+.log-entry.ingreso {
+  background-color: #e6ffed;
+}
+
+.log-entry.egreso {
+  background-color: #ffe6e6;
+}
+
+.log-entry-info {
+  flex: 1;
+}
+
+.log-entry-time {
+  color: #666;
+  font-size: 0.9em;
+}
+
+
+/* Agrega estos estilos */
+.log-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.log-button {
+  padding: 10px 15px;
+  border: none;
+  border-radius: 4px;
+  color: white;
+  cursor: pointer;
+  font-size: 16px;
+  flex: 1;
+}
+
+.log-button.ingreso {
+  background-color: #28a745;
+}
+
+.log-button.egreso {
+  background-color: #dc3545;
+}
+
+.filter-section {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.filter-section div {
+  display: flex;
+  flex-direction: column;
+}
+
+.log-entry {
+  padding: 10px;
+  border-bottom: 1px solid #eee;
+  display: flex;
+  justify-content: space-between;
+}
+
+.log-entry.ingreso {
+  background-color: #e6ffed;
+}
+
+.log-entry.egreso {
+  background-color: #ffe6e6;
+}
+
+.log-entry-info {
+  flex: 1;
+}
+
+.log-entry-time {
+  color: #666;
+  font-size: 0.9em;
+}
+
+.toggle-details {
+  background-color: #4CAF50;
+  color: white;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-bottom: 10px;
+}
+
+.details-content {
+  padding: 10px;
+  background-color: white;
+  border-radius: 4px;
+  margin-top: 10px;
+}
+
+.summary-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 10px 0;
+}
+
+.summary-table th,
+.summary-table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+.summary-table th {
+  background-color: #f2f2f2;
+}
+
+.summary-table tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+/* Agregar estos estilos */
+.cash-register-entry {
+  border: 1px solid #ddd;
+  padding: 15px;
+  margin-bottom: 20px;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.entry-header {
+  margin-bottom: 15px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #eee;
+}
+
+.entry-header h3 {
+  margin-top: 0;
+  color: #2c3e50;
+}
+
+.toggle-details {
+  background-color: #3498db;
+  color: white;
+  padding: 8px 15px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-bottom: 15px;
+  font-size: 14px;
+  transition: background-color 0.3s;
+}
+
+.toggle-details:hover {
+  background-color: #2980b9;
+}
+
+.details-content {
+  padding: 15px;
+  background-color: white;
+  border-radius: 6px;
+  margin-top: 10px;
+  border: 1px solid #eee;
+}
+
+.summary-table,
+.payment-table,
+.orders-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 15px 0;
+  font-size: 14px;
+}
+
+.summary-table th,
+.summary-table td,
+.payment-table th,
+.payment-table td,
+.orders-table th,
+.orders-table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+.summary-table th,
+.payment-table th,
+.orders-table th {
+  background-color: #f2f2f2;
+  font-weight: bold;
+}
+
+.summary-table tr:nth-child(even),
+.payment-table tr:nth-child(even),
+.orders-table tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.total-row {
+  background-color: #f2f2f2 !important;
+  font-weight: bold;
+}
+
+.payment-table .total-row td {
+  background-color: #eaf7ea !important;
+}
+
+.orders-table {
+  font-size: 13px;
+}
+
+.orders-table tr:hover {
+  background-color: #f5f5f5;
 }

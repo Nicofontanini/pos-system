@@ -5,7 +5,7 @@
         "name": "Carne",
         "category": "Tradicionales",
         "price": 100,
-        "stock": 300,
+        "stock": 298,
         "description": "Carne seleccionada picada, Cebolla y Huevo duro.",
         "id": 1
       },
@@ -13,7 +13,7 @@
         "name": "Picante",
         "category": "Tradicionales",
         "price": 100,
-        "stock": 76,
+        "stock": 75,
         "description": "Carne cortada a cuchillo, Macerada con mix de pimientas, Aji picante.",
         "id": 4
       },
@@ -191,7 +191,7 @@
         "price": 36500,
         "stock": 100,
         "description": "Vacio Provolone, Chesse Burger.",
-        "id": 25
+        "id": 26
       },
       {
         "name": "Docena Imperdibles",
@@ -199,7 +199,7 @@
         "price": 39000,
         "stock": 100,
         "description": "Cordero, Trucha, Ciervo.",
-        "id": 26
+        "id": 27
       },
       {
         "name": "Docena Combinada 1",
@@ -207,7 +207,7 @@
         "price": 34500,
         "stock": 100,
         "description": "3 Tradicionales, 3 Especiales, 3 Vacio, 3 Imperdibles.",
-        "id": 27
+        "id": 28
       },
       {
         "name": "Docena Combinada 2",
@@ -215,7 +215,7 @@
         "price": 33500,
         "stock": 100,
         "description": "4 Tradicionales, 4 Especiales, 4 Imperdibles.",
-        "id": 28
+        "id": 29
       },
       {
         "name": "Clásica",
@@ -223,360 +223,12 @@
         "price": 10000,
         "stock": 100,
         "description": "Clasica.",
-        "id": 29
-      },
-      {
-        "name": "Completa",
-        "category": "Hamburgesas",
-        "price": 10000,
-        "stock": 100,
-        "description": "Completa.",
-        "id": 30
-      },
-      {
-        "name": "El Point - Mediterranea",
-        "category": "Hamburgesas",
-        "price": 15000,
-        "stock": 100,
-        "description": "Completa.",
-        "id": 32
-      },
-      {
-        "name": "Adicional Huevo",
-        "category": "Hamburgesas",
-        "price": 500,
-        "stock": 100,
-        "description": "Huevo.",
-        "id": 33
-      },
-      {
-        "name": "Adicional Queso",
-        "category": "Hamburgesas",
-        "price": 500,
-        "stock": 100,
-        "description": "Queso.",
-        "id": 34
-      },
-      {
-        "name": "Adicional Hamburgesa",
-        "category": "Hamburgesas",
-        "price": 2000,
-        "stock": 100,
-        "description": "Hamburgesa.",
-        "id": 35
-      },
-      {
-        "name": "Pan Arabe",
-        "category": "Hamburgesas",
-        "price": 5000,
-        "stock": 100,
-        "description": "Jamon y Queso.",
-        "id": 36
-      },
-      {
-        "name": "Cono",
-        "category": "Papas Fritas",
-        "price": 5000,
-        "stock": 100,
-        "description": "Cono.",
-        "id": 37
-      },
-      {
-        "name": "Cheddar, Panceta y Verdeo",
-        "category": "Papas Fritas",
-        "price": 8000,
-        "stock": 100,
-        "description": "Cheddar, Panceta y Verdeo.",
-        "id": 38
-      },
-      {
-        "name": "Pancho",
-        "category": "Extra",
-        "price": 5000,
-        "stock": 100,
-        "description": "Pancho.",
-        "id": 39
-      },
-      {
-        "name": "Sandwich Pollo",
-        "category": "Extra",
-        "price": 17000,
-        "stock": 100,
-        "description": "Sandwich Pollo.",
-        "id": 39
-      },
-      {
-        "name": "Falafel x 5u",
-        "category": "Extra",
-        "price": 9000,
-        "stock": 100,
-        "description": "Falafel x 5u.",
-        "id": 40
-      },
-      {
-        "name": "Taqueños x 5u",
-        "category": "Extra",
-        "price": 15000,
-        "stock": 100,
-        "description": "Taqueños x 5u.",
-        "id": 41
-      },
-      {
-        "name": "Miel 1kg",
-        "category": "Extra",
-        "price": 8000,
-        "stock": 100,
-        "description": "Miel 1kg.",
-        "id": 42
-      },
-      {
-        "name": "Bebidas 500cc",
-        "category": "Extra",
-        "price": 2500,
-        "stock": 99,
-        "description": "Bebidas 500cc.",
-        "id": 43
-      }
-    ]
-  },
-  "local2": {
-    "products": [
-      {
-        "name": "Carne",
-        "category": "Tradicionales",
-        "price": 100,
-        "stock": 100,
-        "description": "Carne seleccionada picada, Cebolla y Huevo duro.",
-        "id": 1
-      },
-      {
-        "name": "Picante",
-        "category": "Tradicionales",
-        "price": 100,
-        "stock": 95,
-        "description": "Carne cortada a cuchillo, Macerada con mix de pimientas, Aji picante.",
-        "id": 4
-      },
-      {
-        "name": "Pollo",
-        "category": "Tradicionales",
-        "price": 100,
-        "stock": 86,
-        "description": "Pechuga fileteadas, Salteadas con curry, Cortadas a cuchillo, Con cebolla y huevo duro.",
-        "id": 5
-      },
-      {
-        "name": "Verdura",
-        "category": "Tradicionales",
-        "price": 100,
-        "stock": 200,
-        "description": "Espinaca, Zanahorai, Cebolla, Huevo duro y verdeo.",
-        "id": 6
-      },
-      {
-        "name": "Choclo",
-        "category": "Tradicionales",
-        "price": 100,
-        "stock": 100,
-        "description": "Granos de chochlo y cebolla salteados, Choclo cremoso y muzzarella.",
-        "id": 7
-      },
-      {
-        "name": "Cebolla y Muzza",
-        "category": "Tradicionales",
-        "price": 200,
-        "stock": 100,
-        "description": "Cebollas Salteadas con crema y verdeo, Pizca de oregano y granos de choclo.",
-        "id": 8
-      },
-      {
-        "name": "Jamon y Muzza",
-        "category": "Tradicionales",
-        "price": 200,
-        "stock": 100,
-        "description": "Jamon cortado en daditos, queso tybo y muzzarella y oregano.",
-        "id": 9
-      },
-      {
-        "name": "Calabaza",
-        "category": "Tradicionales",
-        "price": 200,
-        "stock": 100,
-        "description": "Pure de calabaza, con cebolla y granos de choclo rehogados y muzzarella.",
-        "id": 10
-      },
-      {
-        "name": "Salchicha Alemana",
-        "category": "Tradicionales",
-        "price": 200,
-        "stock": 100,
-        "description": "Salchicha Alemana, ahumada con salsa barbacoa, mostaza y muzzarella.",
-        "id": 11
-      },
-      {
-        "name": "Capresse",
-        "category": "Tradicionales",
-        "price": 200,
-        "stock": 100,
-        "description": "Tomates naturales cubeteados, sin piel ni semillas, albahaca y muzzarella.",
-        "id": 12
-      },
-      {
-        "name": "4 Quesos",
-        "category": "Especiales",
-        "price": 200,
-        "stock": 100,
-        "description": "Cinco quesos, gouda, parmesano, sbrinz, roquefort y muzzarella.",
-        "id": 13
-      },
-      {
-        "name": "Panceta y ciruela",
-        "category": "Especiales",
-        "price": 200,
-        "stock": 100,
-        "description": "Panceta, ciruelas y muzzarella.",
-        "id": 14
-      },
-      {
-        "name": "Jamon crudo",
-        "category": "Especiales",
-        "price": 200,
-        "stock": 100,
-        "description": "Jamon crudo, parmesano, tomates secos y muzzarella.",
-        "id": 15
-      },
-      {
-        "name": "Jamon y roquefort",
-        "category": "Especiales",
-        "price": 200,
-        "stock": 100,
-        "description": "Jamon cortado en daditos, queso tybo y muzzarella, oregano y queso roquefort.",
-        "id": 16
-      },
-      {
-        "name": "Vegan",
-        "category": "Especiales",
-        "price": 200,
-        "stock": 100,
-        "description": "Soja texturizada, espinaca, zanahoria, cebolla y choclo.",
-        "id": 17
-      },
-      {
-        "name": "Cheese burger",
-        "category": "Imperdibles",
-        "price": 200,
-        "stock": 100,
-        "description": "Vacio cortado a cuchillo, hamburgesa casera, panceta crujiente, queso cheddar y cebolla.",
-        "id": 18
-      },
-      {
-        "name": "Vacio/Provolone",
-        "category": "Especiales",
-        "price": 200,
-        "stock": 100,
-        "description": "Vacio cortado a cuchillo, provolone, cebolla y verdeo.",
-        "id": 19
-      },
-      {
-        "name": "Vacio/Provolone",
-        "category": "Especiales",
-        "price": 200,
-        "stock": 100,
-        "description": "Vacio cortado a cuchillo, provolone, cebolla y verdeo.",
-        "id": 20
-      },
-      {
-        "name": "Cordero",
-        "category": "Imperdibles",
-        "price": 200,
-        "stock": 100,
-        "description": "Cordero a la cerveza con miel y romero desmecha y cebolla.",
-        "id": 21
-      },
-      {
-        "name": "Trucha",
-        "category": "Imperdibles",
-        "price": 200,
-        "stock": 100,
-        "description": "Trucha arcoiris, sin espinas con cebolla, morron y verdeo.",
-        "id": 22
-      },
-      {
-        "name": "Ciervo",
-        "category": "Imperdibles",
-        "price": 200,
-        "stock": 100,
-        "description": "Ciervo macerado al merken, gisado con cebollas, verdeo y salsa.",
-        "id": 23
-      },
-      {
-        "name": "Docena Tradicionales",
-        "category": "Docena",
-        "price": 28000,
-        "stock": 100,
-        "description": "Carne, Pollo, Verdura, Cebolla, Jamon, Calabaza, Carne Picante, Choclo, Salchica Alemana, Capresse",
-        "id": 24
-      },
-      {
-        "name": "Docena Especiales",
-        "category": "Docena",
-        "price": 32000,
-        "stock": 100,
-        "description": "4 Quesos, Crudo, Vegana, Panceta y Ciruela, J Roque.",
-        "id": 25
-      },
-      {
-        "name": "Docena Vacio",
-        "category": "Docena",
-        "price": 36500,
-        "stock": 100,
-        "description": "Vacio Provolone, Chesse Burger.",
-        "id": 25
-      },
-      {
-        "name": "Docena Imperdibles",
-        "category": "Docena",
-        "price": 39000,
-        "stock": 100,
-        "description": "Cordero, Trucha, Ciervo.",
-        "id": 26
-      },
-      {
-        "name": "Docena Combinada 1",
-        "category": "Docena",
-        "price": 34500,
-        "stock": 100,
-        "description": "3 Tradicionales, 3 Especiales, 3 Vacio, 3 Imperdibles.",
-        "id": 27
-      },
-      {
-        "name": "Docena Combinada 2",
-        "category": "Docena",
-        "price": 33500,
-        "stock": 100,
-        "description": "4 Tradicionales, 4 Especiales, 4 Imperdibles.",
-        "id": 28
-      },
-      {
-        "name": "Clásica",
-        "category": "Hamburgesas",
-        "price": 10000,
-        "stock": 100,
-        "description": "Clasica.",
-        "id": 29
-      },
-      {
-        "name": "Completa",
-        "category": "Hamburgesas",
-        "price": 10000,
-        "stock": 100,
-        "description": "Completa.",
         "id": 30
       },
       {
         "name": "Completa",
         "category": "Hamburgesas",
-        "price": 12000,
+        "price": 10000,
         "stock": 100,
         "description": "Completa.",
         "id": 31
@@ -651,7 +303,7 @@
         "price": 17000,
         "stock": 100,
         "description": "Sandwich Pollo.",
-        "id": 39
+        "id": 40
       },
       {
         "name": "Falafel x 5u",
@@ -659,7 +311,7 @@
         "price": 9000,
         "stock": 100,
         "description": "Falafel x 5u.",
-        "id": 40
+        "id": 41
       },
       {
         "name": "Taqueños x 5u",
@@ -667,7 +319,7 @@
         "price": 15000,
         "stock": 100,
         "description": "Taqueños x 5u.",
-        "id": 41
+        "id": 42
       },
       {
         "name": "Miel 1kg",
@@ -675,7 +327,355 @@
         "price": 8000,
         "stock": 100,
         "description": "Miel 1kg.",
+        "id": 43
+      },
+      {
+        "name": "Bebidas 500cc",
+        "category": "Extra",
+        "price": 2500,
+        "stock": 99,
+        "description": "Bebidas 500cc.",
+        "id": 44
+      }
+    ]
+  },
+  "local2": {
+    "products": [
+      {
+        "name": "Carne",
+        "category": "Tradicionales",
+        "price": 100,
+        "stock": 33,
+        "description": "Carne seleccionada picada, Cebolla y Huevo duro.",
+        "id": 1
+      },
+      {
+        "name": "Picante",
+        "category": "Tradicionales",
+        "price": 100,
+        "stock": 47,
+        "description": "Carne cortada a cuchillo, Macerada con mix de pimientas, Aji picante.",
+        "id": 4
+      },
+      {
+        "name": "Pollo",
+        "category": "Tradicionales",
+        "price": 100,
+        "stock": 56,
+        "description": "Pechuga fileteadas, Salteadas con curry, Cortadas a cuchillo, Con cebolla y huevo duro.",
+        "id": 5
+      },
+      {
+        "name": "Verdura",
+        "category": "Tradicionales",
+        "price": 100,
+        "stock": 194,
+        "description": "Espinaca, Zanahorai, Cebolla, Huevo duro y verdeo.",
+        "id": 6
+      },
+      {
+        "name": "Choclo",
+        "category": "Tradicionales",
+        "price": 100,
+        "stock": 97,
+        "description": "Granos de chochlo y cebolla salteados, Choclo cremoso y muzzarella.",
+        "id": 7
+      },
+      {
+        "name": "Cebolla y Muzza",
+        "category": "Tradicionales",
+        "price": 200,
+        "stock": 98,
+        "description": "Cebollas Salteadas con crema y verdeo, Pizca de oregano y granos de choclo.",
+        "id": 8
+      },
+      {
+        "name": "Jamon y Muzza",
+        "category": "Tradicionales",
+        "price": 200,
+        "stock": 99,
+        "description": "Jamon cortado en daditos, queso tybo y muzzarella y oregano.",
+        "id": 9
+      },
+      {
+        "name": "Calabaza",
+        "category": "Tradicionales",
+        "price": 200,
+        "stock": 98,
+        "description": "Pure de calabaza, con cebolla y granos de choclo rehogados y muzzarella.",
+        "id": 10
+      },
+      {
+        "name": "Salchicha Alemana",
+        "category": "Tradicionales",
+        "price": 200,
+        "stock": 98,
+        "description": "Salchicha Alemana, ahumada con salsa barbacoa, mostaza y muzzarella.",
+        "id": 11
+      },
+      {
+        "name": "Capresse",
+        "category": "Tradicionales",
+        "price": 200,
+        "stock": 99,
+        "description": "Tomates naturales cubeteados, sin piel ni semillas, albahaca y muzzarella.",
+        "id": 12
+      },
+      {
+        "name": "4 Quesos",
+        "category": "Especiales",
+        "price": 200,
+        "stock": 97,
+        "description": "Cinco quesos, gouda, parmesano, sbrinz, roquefort y muzzarella.",
+        "id": 13
+      },
+      {
+        "name": "Panceta y ciruela",
+        "category": "Especiales",
+        "price": 200,
+        "stock": 100,
+        "description": "Panceta, ciruelas y muzzarella.",
+        "id": 14
+      },
+      {
+        "name": "Jamon crudo",
+        "category": "Especiales",
+        "price": 200,
+        "stock": 100,
+        "description": "Jamon crudo, parmesano, tomates secos y muzzarella.",
+        "id": 15
+      },
+      {
+        "name": "Jamon y roquefort",
+        "category": "Especiales",
+        "price": 200,
+        "stock": 100,
+        "description": "Jamon cortado en daditos, queso tybo y muzzarella, oregano y queso roquefort.",
+        "id": 16
+      },
+      {
+        "name": "Vegan",
+        "category": "Especiales",
+        "price": 200,
+        "stock": 100,
+        "description": "Soja texturizada, espinaca, zanahoria, cebolla y choclo.",
+        "id": 17
+      },
+      {
+        "name": "Cheese burger",
+        "category": "Imperdibles",
+        "price": 200,
+        "stock": 100,
+        "description": "Vacio cortado a cuchillo, hamburgesa casera, panceta crujiente, queso cheddar y cebolla.",
+        "id": 18
+      },
+      {
+        "name": "Vacio/Provolone",
+        "category": "Especiales",
+        "price": 200,
+        "stock": 100,
+        "description": "Vacio cortado a cuchillo, provolone, cebolla y verdeo.",
+        "id": 19
+      },
+      {
+        "name": "Vacio/Provolone",
+        "category": "Especiales",
+        "price": 200,
+        "stock": 99,
+        "description": "Vacio cortado a cuchillo, provolone, cebolla y verdeo.",
+        "id": 20
+      },
+      {
+        "name": "Cordero",
+        "category": "Imperdibles",
+        "price": 200,
+        "stock": 81,
+        "description": "Cordero a la cerveza con miel y romero desmecha y cebolla.",
+        "id": 21
+      },
+      {
+        "name": "Trucha",
+        "category": "Imperdibles",
+        "price": 200,
+        "stock": 95,
+        "description": "Trucha arcoiris, sin espinas con cebolla, morron y verdeo.",
+        "id": 22
+      },
+      {
+        "name": "Ciervo",
+        "category": "Imperdibles",
+        "price": 200,
+        "stock": 94,
+        "description": "Ciervo macerado al merken, gisado con cebollas, verdeo y salsa.",
+        "id": 23
+      },
+      {
+        "name": "Docena Tradicionales",
+        "category": "Docena",
+        "price": 28000,
+        "stock": 100,
+        "description": "Carne, Pollo, Verdura, Cebolla, Jamon, Calabaza, Carne Picante, Choclo, Salchica Alemana, Capresse",
+        "id": 24
+      },
+      {
+        "name": "Docena Especiales",
+        "category": "Docena",
+        "price": 32000,
+        "stock": 100,
+        "description": "4 Quesos, Crudo, Vegana, Panceta y Ciruela, J Roque.",
+        "id": 25
+      },
+      {
+        "name": "Docena Vacio",
+        "category": "Docena",
+        "price": 36500,
+        "stock": 100,
+        "description": "Vacio Provolone, Chesse Burger.",
+        "id": 26
+      },
+      {
+        "name": "Docena Imperdibles",
+        "category": "Docena",
+        "price": 39000,
+        "stock": 100,
+        "description": "Cordero, Trucha, Ciervo.",
+        "id": 27
+      },
+      {
+        "name": "Docena Combinada 1",
+        "category": "Docena",
+        "price": 34500,
+        "stock": 100,
+        "description": "3 Tradicionales, 3 Especiales, 3 Vacio, 3 Imperdibles.",
+        "id": 28
+      },
+      {
+        "name": "Docena Combinada 2",
+        "category": "Docena",
+        "price": 33500,
+        "stock": 100,
+        "description": "4 Tradicionales, 4 Especiales, 4 Imperdibles.",
+        "id": 29
+      },
+      {
+        "name": "Clásica",
+        "category": "Hamburgesas",
+        "price": 10000,
+        "stock": 100,
+        "description": "Clasica.",
+        "id": 30
+      },
+      {
+        "name": "Completa",
+        "category": "Hamburgesas",
+        "price": 10000,
+        "stock": 100,
+        "description": "Completa.",
+        "id": 31
+      },
+      {
+        "name": "Completa",
+        "category": "Hamburgesas",
+        "price": 12000,
+        "stock": 100,
+        "description": "Completa.",
+        "id": 32
+      },
+      {
+        "name": "El Point - Mediterranea",
+        "category": "Hamburgesas",
+        "price": 15000,
+        "stock": 100,
+        "description": "Completa.",
+        "id": 33
+      },
+      {
+        "name": "Adicional Huevo",
+        "category": "Hamburgesas",
+        "price": 500,
+        "stock": 100,
+        "description": "Huevo.",
+        "id": 34
+      },
+      {
+        "name": "Adicional Queso",
+        "category": "Hamburgesas",
+        "price": 500,
+        "stock": 100,
+        "description": "Queso.",
+        "id": 35
+      },
+      {
+        "name": "Adicional Hamburgesa",
+        "category": "Hamburgesas",
+        "price": 2000,
+        "stock": 100,
+        "description": "Hamburgesa.",
+        "id": 36
+      },
+      {
+        "name": "Pan Arabe",
+        "category": "Hamburgesas",
+        "price": 5000,
+        "stock": 100,
+        "description": "Jamon y Queso.",
+        "id": 37
+      },
+      {
+        "name": "Cono",
+        "category": "Papas Fritas",
+        "price": 5000,
+        "stock": 100,
+        "description": "Cono.",
+        "id": 38
+      },
+      {
+        "name": "Cheddar, Panceta y Verdeo",
+        "category": "Papas Fritas",
+        "price": 8000,
+        "stock": 100,
+        "description": "Cheddar, Panceta y Verdeo.",
+        "id": 39
+      },
+      {
+        "name": "Pancho",
+        "category": "Extra",
+        "price": 5000,
+        "stock": 100,
+        "description": "Pancho.",
+        "id": 40
+      },
+      {
+        "name": "Sandwich Pollo",
+        "category": "Extra",
+        "price": 17000,
+        "stock": 100,
+        "description": "Sandwich Pollo.",
+        "id": 41
+      },
+      {
+        "name": "Falafel x 5u",
+        "category": "Extra",
+        "price": 9000,
+        "stock": 100,
+        "description": "Falafel x 5u.",
         "id": 42
+      },
+      {
+        "name": "Taqueños x 5u",
+        "category": "Extra",
+        "price": 15000,
+        "stock": 100,
+        "description": "Taqueños x 5u.",
+        "id": 43
+      },
+      {
+        "name": "Miel 1kg",
+        "category": "Extra",
+        "price": 8000,
+        "stock": 100,
+        "description": "Miel 1kg.",
+        "id": 44
       },
       {
         "name": "Bebidas 500cc",
@@ -683,7 +683,7 @@
         "price": 2500,
         "stock": 100,
         "description": "Bebidas 500cc.",
-        "id": 43
+        "id": 45
       }
     ]
   }

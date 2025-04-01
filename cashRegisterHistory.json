@@ -1,272 +1,43 @@
 [
   {
-    "date": "2025-03-18T09:56:46.090Z",
-    "totalPayments": 0,
-    "totalAmount": 0,
-    "local": "local1"
-  },
-  {
-    "date": "2025-03-18T09:56:50.826Z",
-    "totalPayments": 0,
-    "totalAmount": 0,
-    "local": "local1"
-  },
-  {
-    "date": "2025-03-18T10:05:45.753Z",
-    "totalPayments": 0,
-    "totalAmount": 0,
-    "local": "local1"
-  },
-  {
-    "date": "2025-03-18T10:12:01.897Z",
-    "totalPayments": 0,
-    "totalAmount": 0,
-    "local": "local1"
-  },
-  {
-    "date": "2025-03-18T10:12:01.897Z",
-    "totalPayments": 0,
-    "totalAmount": 0,
-    "local": "local1"
-  },
-  {
-    "date": "2025-03-18T10:44:54.530Z",
-    "totalPayments": 0,
-    "totalAmount": 0,
-    "local": "local1"
-  },
-  {
-    "date": "2025-03-18T10:47:22.713Z",
+    "date": "2025-04-01T12:00:03.851Z",
     "totalPayments": 1,
-    "totalAmount": 100,
-    "local": "local1"
-  },
-  {
-    "date": "2025-03-18T10:47:34.667Z",
-    "totalPayments": 0,
-    "totalAmount": 0,
-    "local": "local1"
-  },
-  {
-    "date": "2025-03-18T10:47:48.730Z",
-    "totalPayments": 1,
-    "totalAmount": 100,
-    "local": "local1"
-  },
-  {
-    "date": "2025-03-18T10:47:51.657Z",
-    "totalPayments": 0,
-    "totalAmount": 0,
-    "local": "local1"
-  },
-  {
-    "date": "2025-03-18T10:48:06.762Z",
-    "totalPayments": 0,
-    "totalAmount": 0,
-    "local": "local1"
-  },
-  {
-    "date": "2025-03-18T10:50:38.450Z",
-    "totalPayments": 0,
-    "totalAmount": 0,
-    "local": "local1"
-  },
-  {
-    "date": "2025-03-18T10:51:02.738Z",
-    "totalPayments": 0,
-    "totalAmount": 0,
-    "local": "local1"
-  },
-  {
-    "date": "2025-03-18T11:04:02.769Z",
-    "totalPayments": 1,
-    "totalAmount": 100,
-    "local": "local1"
-  },
-  {
-    "date": "2025-03-18T11:04:20.544Z",
-    "totalPayments": 2,
     "totalAmount": 200,
-    "local": "local1"
-  },
-  {
-    "date": "2025-03-18T11:04:25.905Z",
-    "totalPayments": 0,
-    "totalAmount": 0,
-    "local": "local1"
-  },
-  {
-    "date": "2025-03-18T11:04:45.880Z",
-    "totalPayments": 2,
-    "totalAmount": 200,
-    "local": "local1"
-  },
-  {
-    "date": "2025-03-18T11:07:42.273Z",
-    "totalPayments": 0,
-    "totalAmount": 0,
-    "local": "local1"
-  },
-  {
-    "date": "2025-03-18T11:09:09.504Z",
-    "totalPayments": 1,
-    "totalAmount": 100,
-    "local": "local1"
-  },
-  {
-    "date": "2025-03-18T11:09:14.096Z",
-    "totalPayments": 0,
-    "totalAmount": 0,
-    "local": "local1"
-  },
-  {
-    "date": "2025-03-18T11:12:27.144Z",
-    "totalPayments": 2,
-    "totalAmount": 200,
-    "local": "local1"
-  },
-  {
-    "date": "2025-03-18T11:12:31.280Z",
-    "totalPayments": 0,
-    "totalAmount": 0,
-    "local": "local1"
-  },
-  {
-    "date": "2025-03-18T11:12:49.999Z",
-    "totalPayments": 1,
-    "totalAmount": 100,
-    "local": "local1"
-  },
-  {
-    "date": "2025-03-18T11:12:54.129Z",
-    "totalPayments": 0,
-    "totalAmount": 0,
-    "local": "local1"
-  },
-  {
-    "date": "2025-03-18T11:13:07.480Z",
-    "totalPayments": 0,
-    "totalAmount": 0,
-    "local": "local1"
-  },
-  {
-    "date": "2025-03-18T11:13:32.952Z",
-    "totalPayments": 1,
-    "totalAmount": 100,
-    "local": "local1"
-  },
-  {
-    "date": "2025-03-18T11:13:36.352Z",
-    "totalPayments": 0,
-    "totalAmount": 0,
-    "local": "local1"
-  },
-  {
-    "date": "2025-03-18T11:29:51.295Z",
-    "totalPayments": 1,
-    "totalAmount": 100,
-    "local": "local1"
-  },
-  {
-    "date": "2025-03-19T11:53:26.100Z",
-    "totalPayments": 0,
-    "totalAmount": 0,
-    "local": "local2"
-  },
-  {
-    "date": "2025-03-19T12:02:22.354Z",
-    "totalPayments": 1,
-    "totalAmount": 100,
-    "local": "local1"
-  },
-  {
-    "date": "2025-03-19T12:02:26.362Z",
-    "totalPayments": 1,
-    "totalAmount": 100,
-    "local": "local1"
-  },
-  {
-    "date": "2025-03-19T12:02:30.082Z",
-    "totalPayments": 1,
-    "totalAmount": 100,
-    "local": "local1"
-  },
-  {
-    "date": "2025-03-19T12:02:33.170Z",
-    "totalPayments": 0,
-    "totalAmount": 0,
-    "local": "local1"
-  },
-  {
-    "date": "2025-03-19T12:24:45.433Z",
-    "totalPayments": 1,
-    "totalAmount": 100,
-    "local": "local1"
-  },
-  {
-    "date": "2025-03-19T12:54:51.271Z",
-    "totalPayments": 2,
-    "totalAmount": 200,
-    "local": "local2"
-  },
-  {
-    "date": "2025-03-19T12:54:55.358Z",
-    "totalPayments": 0,
-    "totalAmount": 0,
-    "local": "local2"
-  },
-  {
-    "date": "2025-03-19T12:55:14.535Z",
-    "totalPayments": 0,
-    "totalAmount": 0,
-    "local": "local2"
-  },
-  {
-    "date": "2025-03-19T12:56:36.934Z",
-    "totalPayments": 1,
-    "totalAmount": 100,
-    "local": "local2"
-  },
-  {
-    "date": "2025-03-19T12:56:40.287Z",
-    "totalPayments": 1,
-    "totalAmount": 100,
-    "local": "local2"
-  },
-  {
-    "date": "2025-03-19T18:57:48.937Z",
-    "totalPayments": 1,
-    "totalAmount": 100,
-    "local": "local2"
-  },
-  {
-    "date": "2025-03-19T18:57:51.882Z",
-    "totalPayments": 1,
-    "totalAmount": 100,
-    "local": "local2"
-  },
-  {
-    "date": "2025-03-21T11:56:56.808Z",
-    "totalPayments": 1,
-    "totalAmount": 100,
-    "local": "local2"
-  },
-  {
-    "date": "2025-03-21T12:00:48.839Z",
-    "totalPayments": 1,
-    "totalAmount": 100,
-    "local": "local1"
-  },
-  {
-    "date": "2025-03-21T14:51:02.604Z",
-    "totalPayments": 0,
-    "totalAmount": 0,
-    "local": "local1"
-  },
-  {
-    "date": "2025-03-24T12:53:24.954Z",
-    "totalPayments": 0,
-    "totalAmount": 0,
-    "local": "local2"
+    "local": "local2",
+    "closeTime": "2025-04-01T12:00:03.855Z",
+    "startTime": "2025-03-31T13:07:26.509Z",
+    "productSummary": [
+      {
+        "name": "Carne",
+        "price": 100,
+        "quantitySold": 1,
+        "totalSold": 100,
+        "initialStock": 34,
+        "remainingStock": 33
+      },
+      {
+        "name": "Picante",
+        "price": 100,
+        "quantitySold": 1,
+        "totalSold": 100,
+        "initialStock": 48,
+        "remainingStock": 47
+      }
+    ],
+    "paymentSummary": {
+      "efectivo": 200,
+      "transferencia": 0,
+      "mixto": 0,
+      "total": 200
+    },
+    "ordersCount": 1,
+    "orders": [
+      {
+        "total": 200,
+        "paymentMethod": "efectivo",
+        "orderName": "dasdas",
+        "sellerName": "nico"
+      }
+    ]
   }
 ]

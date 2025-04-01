@@ -672,20 +672,122 @@ io.on('connection', (socket) => {
   }
 
   // Manejar el evento de cierre de caja
-  socket.on('close-cash-register', (closeData) => {
-    // Leer el historial actual
+// Agregar al inicio del archivo
+let lastCashRegisterClose = {
+  local1: null,
+  local2: null
+};
+
+// Modificar el evento de cierre de caja
+socket.on('close-cash-register', async (closeData) => {
+  try {
+    const { local } = closeData;
+    
+    // 1. Obtener órdenes desde el último cierre
+    const orders = readOrders(local);
+    const lastCloseTime = lastCashRegisterClose[local] || new Date(0);
+    
+    const newOrders = orders.filter(order => 
+      new Date(order.date) > new Date(lastCloseTime) && 
+      order.local === local
+    );
+
+    // 2. Calcular resumen de productos vendidos y stock restante
+    const productSummary = {};
+    const inventory = readInventory();
+    
+    newOrders.forEach(order => {
+      order.items.forEach(item => {
+        if (!productSummary[item.id]) {
+          const product = inventory[local].products.find(p => p.id === item.id);
+          productSummary[item.id] = {
+            name: item.name,
+            price: item.price,
+            quantitySold: 0,
+            totalSold: 0,
+            initialStock: product ? product.stock + item.quantity : 0, // Stock antes de la venta
+            remainingStock: product ? product.stock : 0 // Stock actual
+          };
+        }
+        productSummary[item.id].quantitySold += item.quantity;
+        productSummary[item.id].totalSold += item.price * item.quantity;
+      });
+    });
+
+    // 3. Calcular resumen de métodos de pago solo para este cierre
+    const paymentSummary = {
+      efectivo: 0,
+      transferencia: 0,
+      mixto: 0,
+      total: closeData.totalAmount
+    };
+
+    newOrders.forEach(order => {
+      if (order.paymentMethod === 'mixto') {
+        paymentSummary.mixto += order.total;
+        paymentSummary.efectivo += order.paymentAmounts?.efectivo || 0;
+        paymentSummary.transferencia += order.paymentAmounts?.transferencia || 0;
+      } else if (order.paymentMethod === 'efectivo') {
+        paymentSummary.efectivo += order.total;
+      } else if (order.paymentMethod === 'transferencia') {
+        paymentSummary.transferencia += order.total;
+      }
+    });
+
+    // 4. Crear objeto de cierre con información precisa
+    const detailedClose = {
+      ...closeData,
+      closeTime: new Date().toISOString(),
+      startTime: lastCloseTime || newOrders[0]?.date || new Date().toISOString(),
+      productSummary: Object.values(productSummary),
+      paymentSummary,
+      ordersCount: newOrders.length,
+      orders: newOrders.map(order => ({
+        id: order.id,
+        total: order.total,
+        paymentMethod: order.paymentMethod,
+        orderName: order.orderName,
+        sellerName: order.sellerName
+      }))
+    };
+
+    // 5. Actualizar última hora de cierre
+    lastCashRegisterClose[local] = detailedClose.closeTime;
+
+    // 6. Guardar en el historial
     const history = readCashRegisterHistory();
-
-    // Agregar el nuevo cierre de caja
-    history.push(closeData);
-
-    // Guardar el historial actualizado
+    history.push(detailedClose);
     writeCashRegisterHistory(history);
 
-    // Emitir el historial actualizado a todos los clientes
-    socket.emit('update-cash-register-history', history);
-  });
+    // 7. Emitir el historial actualizado
+    io.emit('update-cash-register-history', history);
 
+      // 8. Reiniciar los contadores para el próximo cierre
+      cashRegister.totalPayments = 0;
+      cashRegister.totalAmount = 0;
+      
+      // Emitir el estado actualizado de los contadores
+      io.emit('cash-register-updated', cashRegister);
+      
+      // 9. Emitir el historial actualizado
+      io.emit('update-cash-register-history', history);
+    
+  } catch (error) {
+    console.error('Error en cierre de caja:', error);
+  }
+});
+
+// Al iniciar el servidor, cargar el último cierre
+function loadLastCloseTimes() {
+  const history = readCashRegisterHistory();
+  history.forEach(entry => {
+    if (entry.local && entry.closeTime) {
+      lastCashRegisterClose[entry.local] = entry.closeTime;
+    }
+  });
+}
+
+loadLastCloseTimes();
   socket.on('get-cash-register-history', () => {
     // Leer el historial desde el archivo JSON
     const history = readCashRegisterHistory();
@@ -752,6 +854,71 @@ io.on('connection', (socket) => {
       res.status(500).json({ success: false, message: 'Error al limpiar los datos antiguos' });
     }
   });
+
+  // Agrega al inicio con las otras constantes de rutas
+const employeeLogsPath = path.join(__dirname, 'data', 'employee_logs.json');
+
+// Función para leer los logs de empleados
+function readEmployeeLogs() {
+  try {
+    return JSON.parse(fs.readFileSync(employeeLogsPath, 'utf8'));
+  } catch (error) {
+    return [];
+  }
+}
+
+// Función para escribir los logs de empleados
+function writeEmployeeLogs(logs) {
+  fs.writeFileSync(employeeLogsPath, JSON.stringify(logs, null, 2));
+}
+
+// Ruta para registrar ingreso/egreso
+app.post('/log-employee', (req, res) => {
+  const { employeeName, action } = req.body; // action: 'ingreso' o 'egreso'
+  const logs = readEmployeeLogs();
+  
+  const newLog = {
+    employeeName,
+    action,
+    timestamp: new Date().toISOString(),
+    local: req.headers['x-local'] || 'unknown'
+  };
+  
+  logs.push(newLog);
+  writeEmployeeLogs(logs);
+  
+  // Emitir a todos los clientes para actualización en tiempo real
+  io.emit('employee-log-updated', newLog);
+  
+  res.status(200).json({ success: true });
+});
+
+// Ruta para obtener logs filtrados
+app.get('/get-employee-logs', (req, res) => {
+  const { startDate, endDate, employeeName } = req.query;
+  let logs = readEmployeeLogs();
+  
+  // Filtrar por fecha si se proporciona
+  if (startDate && endDate) {
+    const start = new Date(startDate);
+    const end = new Date(endDate);
+    end.setHours(23, 59, 59, 999); // Hasta el final del día
+    
+    logs = logs.filter(log => {
+      const logDate = new Date(log.timestamp);
+      return logDate >= start && logDate <= end;
+    });
+  }
+  
+  // Filtrar por nombre si se proporciona
+  if (employeeName) {
+    logs = logs.filter(log => 
+      log.employeeName.toLowerCase().includes(employeeName.toLowerCase())
+    );
+  }
+  
+  res.json(logs);
+});
 
   // Manejar la desconexión
   socket.on('disconnect', () => {

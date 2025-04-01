@@ -1,10 +1,14 @@
 {
+  "counters": {
     "local1": {
       "totalPayments": 0,
-      "totalAmount": 0
+      "totalAmount": 0,
+      "lastCloseTime": null
     },
     "local2": {
       "totalPayments": 0,
-      "totalAmount": 0
+      "totalAmount": 0,
+      "lastCloseTime": null
     }
   }
+}

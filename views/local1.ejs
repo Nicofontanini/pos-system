@@ -28,6 +28,10 @@
           <button onclick="closeCashRegister()" class="btn-mostrarFormulario">Cierre de Caja</button>
           <button onclick="showCashRegisterHistoryModal()" class="btn-mostrarFormulario">Consultar Historial de
             Cierres</button>
+
+            <!-- En tu dropdown de acciones, agrega estos botones -->
+<button onclick="showEmployeeLogModal()">Registrar Ingreso/Egreso</button>
+<button onclick="showEmployeeLogHistory()">Ver Historial de Asistencia</button>
           <!-- <button onclick="cleanOldOrders()" class="btn-limpiar">Limpiar Pedidos Antiguos</button> -->
         </div>
       </div>
@@ -245,6 +249,49 @@
       </div>
     </div>
   </div>
+
+  <!-- Agrega esto con los otros modales -->
+<div id="employeeLogModal" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="closeEmployeeLogModal()">&times;</span>
+    <h2>Registro de Empleado</h2>
+    <div>
+      <label for="logEmployeeName">Nombre del Empleado:</label>
+      <input type="text" id="logEmployeeName" placeholder="Ingrese el nombre">
+    </div>
+    <div class="log-actions">
+      <button onclick="logEmployeeAction('ingreso')" class="log-button ingreso">Registrar Ingreso</button>
+      <button onclick="logEmployeeAction('egreso')" class="log-button egreso">Registrar Egreso</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal para ver historial -->
+<div id="employeeLogHistoryModal" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="closeEmployeeLogHistoryModal()">&times;</span>
+    <h2>Historial de Ingresos/Egresos</h2>
+    
+    <div class="filter-section">
+      <div>
+        <label>Desde:</label>
+        <input type="date" id="logStartDate">
+      </div>
+      <div>
+        <label>Hasta:</label>
+        <input type="date" id="logEndDate">
+      </div>
+      <div>
+        <label>Empleado:</label>
+        <input type="text" id="logEmployeeFilter" placeholder="Filtrar por nombre">
+      </div>
+      <button onclick="filterEmployeeLogs()">Filtrar</button>
+    </div>
+    
+    <div id="employeeLogsContainer" class="history-container"></div>
+    <button onclick="downloadEmployeeLogsExcel()" class="print-button">Descargar Excel</button>
+  </div>
+</div>
 
   <!-- Formulario para agregar nuevas docenas -->
   <!-- <div class="docena-form" id="docenaForm">
@@ -1487,7 +1534,7 @@
           <h4>${item.name}</h4>
           <ul>
             ${item.details.map(detail => `
-              <li style="list-style-type: none;">${detail.quantity} de ${detail.name}</li>
+              <li style="list-style-type: none;">${detail.name} ${detail.quantity}</li>
             `).join('')}
           </ul>
         </div>
@@ -1882,24 +1929,135 @@
       socket.emit('get-cash-register-history');
     }
 
-    socket.on('update-cash-register-history', (history) => {
-      const historyContainer = document.getElementById('cash-register-history');
-      historyContainer.innerHTML = '';
+    // Actualizar la función que muestra el historial
+socket.on('update-cash-register-history', (history) => {
+  const historyContainer = document.getElementById('cash-register-history');
+  historyContainer.innerHTML = '';
 
-      history.forEach((entry, index) => {
-        const entryElement = document.createElement('div');
-        entryElement.className = 'cash-register-entry';
-        entryElement.innerHTML = `
-      <p><strong>Cierre #${index + 1}</strong></p>
-      <p>Fecha: ${new Date(entry.date).toLocaleString()}</p>
-      <p>Pagos procesados: ${entry.totalPayments}</p>
-      <p>Monto total: $${entry.totalAmount.toFixed(2)}</p>
-      <p><strong>Local:</strong> ${entry.local}</p>
+  // Ordenar del más reciente al más antiguo
+  history.reverse().forEach((entry, index) => {
+    const entryElement = document.createElement('div');
+    entryElement.className = 'cash-register-entry';
+    
+    // Formatear fechas
+    const closeTime = new Date(entry.closeTime);
+    const startTime = new Date(entry.startTime);
+    const formattedCloseTime = closeTime.toLocaleDateString() + ' ' + closeTime.toLocaleTimeString();
+    const formattedStartTime = startTime.toLocaleDateString() + ' ' + startTime.toLocaleTimeString();
+    
+    // Crear resumen de productos con stock
+    let productsHTML = `
+      <h4>Productos Vendidos (${entry.productSummary.length}):</h4>
+      <table class="summary-table">
+        <tr>
+          <th>Producto</th>
+          <th>Precio</th>
+          <th>Vendidos</th>
+          <th>Stock Inicial</th>
+          <th>Stock Restante</th>
+          <th>Total</th>
+        </tr>
+    `;
+    
+    entry.productSummary.forEach(product => {
+      productsHTML += `
+        <tr>
+          <td>${product.name}</td>
+          <td>$${product.price.toFixed(2)}</td>
+          <td>${product.quantitySold}</td>
+          <td>${product.initialStock}</td>
+          <td class="${product.remainingStock <= 5 ? 'low-stock' : ''}">${product.remainingStock}</td>
+          <td>$${product.totalSold.toFixed(2)}</td>
+        </tr>
+      `;
+    });
+    
+    productsHTML += '</table>';
+    
+    // Crear resumen de pagos detallado
+    let paymentsHTML = `
+      <h4>Métodos de Pago:</h4>
+      <table class="payment-table">
+        <tr>
+          <th>Método</th>
+          <th>Monto</th>
+          <th>% del Total</th>
+        </tr>
+        <tr>
+          <td>Efectivo</td>
+          <td>$${entry.paymentSummary.efectivo.toFixed(2)}</td>
+          <td>${((entry.paymentSummary.efectivo / entry.paymentSummary.total) * 100).toFixed(1)}%</td>
+        </tr>
+        <tr>
+          <td>Transferencia</td>
+          <td>$${entry.paymentSummary.transferencia.toFixed(2)}</td>
+          <td>${((entry.paymentSummary.transferencia / entry.paymentSummary.total) * 100).toFixed(1)}%</td>
+        </tr>
+        <tr>
+          <td>Mixto</td>
+          <td>$${entry.paymentSummary.mixto.toFixed(2)}</td>
+          <td>${((entry.paymentSummary.mixto / entry.paymentSummary.total) * 100).toFixed(1)}%</td>
+        </tr>
+        <tr class="total-row">
+          <td><strong>TOTAL</strong></td>
+          <td><strong>$${entry.paymentSummary.total.toFixed(2)}</strong></td>
+          <td>100%</td>
+        </tr>
+      </table>
+    `;
+    
+    entryElement.innerHTML = `
+      <div class="entry-header">
+        <h3>Cierre #${history.length - index} - ${formattedCloseTime}</h3>
+        <p><strong>Local:</strong> ${entry.local.toUpperCase()}</p>
+        <p><strong>Período:</strong> ${formattedStartTime} a ${formattedCloseTime}</p>
+        <p><strong>Total Ventas:</strong> $${entry.paymentSummary.total.toFixed(2)}</p>
+        <p><strong>Pedidos Procesados:</strong> ${entry.ordersCount}</p>
+      </div>
+      <div class="entry-details">
+        <button class="toggle-details" onclick="toggleDetails(this)">Mostrar Detalles</button>
+        <div class="details-content" style="display:none;">
+          ${productsHTML}
+          ${paymentsHTML}
+          <h4>Pedidos incluidos (${entry.orders.length}):</h4>
+          <table class="orders-table">
+            <tr>
+              <th>ID</th>
+              <th>Nombre</th>
+              <th>Vendedor</th>
+              <th>Total</th>
+              <th>Método</th>
+            </tr>
+            ${entry.orders.map(order => `
+              <tr>
+                <td>${order.id}</td>
+                <td>${order.orderName || 'Sin nombre'}</td>
+                <td>${order.sellerName || 'Sin vendedor'}</td>
+                <td>$${order.total.toFixed(2)}</td>
+                <td>${order.paymentMethod}</td>
+              </tr>
+            `).join('')}
+          </table>
+        </div>
+      </div>
       <hr>
     `;
-        historyContainer.appendChild(entryElement);
-      });
-    });
+    
+    historyContainer.appendChild(entryElement);
+  });
+});
+
+// Función para mostrar/ocultar detalles
+function toggleDetails(button) {
+  const details = button.nextElementSibling;
+  if (details.style.display === 'none') {
+    details.style.display = 'block';
+    button.textContent = 'Ocultar Detalles';
+  } else {
+    details.style.display = 'none';
+    button.textContent = 'Mostrar Detalles';
+  }
+}
     // Función para abrir el modal del historial de cierres de caja
     function showCashRegisterHistoryModal() {
       const modal = document.getElementById('cashRegisterHistoryModal');
@@ -1944,53 +2102,52 @@
     });
 
     function downloadCashRegisterExcel() {
-  // Obtener los datos del historial de cierres de caja
   const historyContainer = document.getElementById('cash-register-history');
   const entries = Array.from(historyContainer.querySelectorAll('.cash-register-entry'));
-
-  // Crear un array de objetos con los datos
+  
   const data = entries.map(entry => {
     const entryText = entry.textContent;
-    // Extraer los datos del texto del elemento
-    const match = entryText.match(
-      /Cierre #(\d+).*?Fecha: (.*?)Pagos procesados: (\d+).*?Monto total: \$([\d.]+).*?Local: (.*?)(?:\n|$)/s
-    );
-
-    // Procesar la fecha para separarla en fecha y hora
-    let fechaCompleta = match ? match[2].trim() : '';
-    let fechaPartes = fechaCompleta.split(', ');
-    let fecha = fechaPartes.length > 0 ? fechaPartes[0] : fechaCompleta;
-    let hora = fechaPartes.length > 1 ? fechaPartes[1] : '';
-
+    const date = entry.querySelector('.entry-header h3').textContent.split(' - ')[1].trim();
+    const local = entry.querySelector('.entry-header p:nth-child(2)').textContent.replace('Local: ', '').trim();
+    const total = entry.querySelector('.entry-header p:nth-child(3)').textContent.replace('Total Ventas: $', '').trim();
+    const ordersCount = entry.querySelector('.entry-header p:nth-child(4)').textContent.replace('Pedidos Procesados: ', '').trim();
+    
+    // Obtener detalles de productos si están visibles
+    let productsInfo = '';
+    const productsTable = entry.querySelector('.summary-table');
+    if (productsTable) {
+      const rows = Array.from(productsTable.querySelectorAll('tr'));
+      productsInfo = rows.slice(1).map(row => {
+        const cells = Array.from(row.querySelectorAll('td'));
+        return `${cells[0].textContent}: ${cells[2].textContent} x $${cells[1].textContent} = $${cells[3].textContent}`;
+      }).join('; ');
+    }
+    
     return {
-      'Cierre #': match ? match[1] : '',
-      'Fecha': fecha,
-      'Hora': hora,
-      'Pagos procesados': match ? match[3] : '',
-      'Monto total': match ? match[4] : '',
-      'Local': match ? match[5].trim() : ''
+      'Cierre': entry.querySelector('.entry-header h3').textContent.split(' - ')[0].trim(),
+      'Fecha': date,
+      'Local': local,
+      'Total Ventas': total,
+      'Pedidos Procesados': ordersCount,
+      'Productos Vendidos': productsInfo
     };
   });
 
-  // Crear una hoja de cálculo
+  // Crear hoja de cálculo
   const worksheet = XLSX.utils.json_to_sheet(data);
-
-  // Crear un libro de trabajo y agregar la hoja
   const workbook = XLSX.utils.book_new();
   XLSX.utils.book_append_sheet(workbook, worksheet, 'Cierres de Caja');
 
-  // Generar el archivo Excel
+  // Generar archivo
   const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
   const blob = new Blob([excelBuffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
 
-  // Crear un enlace de descarga
+  // Descargar
   const url = URL.createObjectURL(blob);
   const link = document.createElement('a');
   link.href = url;
-  link.download = 'historial_cierres_caja.xlsx';
+  link.download = 'historial_cierres_caja_detallado.xlsx';
   link.click();
-
-  // Liberar el objeto URL
   URL.revokeObjectURL(url);
 }
 
@@ -2065,6 +2222,166 @@
   // Liberar el objeto URL
   URL.revokeObjectURL(url);
 }
+
+// Función para mostrar el modal de registro
+function showEmployeeLogModal() {
+  document.getElementById('employeeLogModal').style.display = 'block';
+}
+
+function closeEmployeeLogModal() {
+  document.getElementById('employeeLogModal').style.display = 'none';
+}
+
+// Función para registrar acción
+function logEmployeeAction(action) {
+  const employeeName = document.getElementById('logEmployeeName').value;
+  if (!employeeName) {
+    alert('Por favor ingrese el nombre del empleado');
+    return;
+  }
+
+  const local = window.location.pathname.includes('local1') ? 'local1' : 'local2';
+  
+  fetch('/log-employee', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-Local': local
+    },
+    body: JSON.stringify({ employeeName, action })
+  })
+  .then(response => response.json())
+  .then(data => {
+    if (data.success) {
+      alert(`Registro de ${action} exitoso para ${employeeName}`);
+      document.getElementById('logEmployeeName').value = '';
+      closeEmployeeLogModal();
+    }
+  })
+  .catch(error => {
+    console.error('Error:', error);
+    alert('Error al registrar la acción');
+  });
+}
+
+// Función para mostrar el historial
+function showEmployeeLogHistory() {
+  document.getElementById('employeeLogHistoryModal').style.display = 'block';
+  loadEmployeeLogs();
+}
+
+function closeEmployeeLogHistoryModal() {
+  document.getElementById('employeeLogHistoryModal').style.display = 'none';
+}
+
+// Función para cargar los logs
+function loadEmployeeLogs() {
+  const startDate = document.getElementById('logStartDate').value;
+  const endDate = document.getElementById('logEndDate').value;
+  const employeeName = document.getElementById('logEmployeeFilter').value;
+  
+  let url = '/get-employee-logs?';
+  if (startDate) url += `startDate=${startDate}&`;
+  if (endDate) url += `endDate=${endDate}&`;
+  if (employeeName) url += `employeeName=${employeeName}&`;
+  
+  fetch(url)
+    .then(response => response.json())
+    .then(logs => {
+      const container = document.getElementById('employeeLogsContainer');
+      container.innerHTML = '';
+      
+      if (logs.length === 0) {
+        container.innerHTML = '<p>No se encontraron registros</p>';
+        return;
+      }
+      
+      logs.forEach(log => {
+        const logElement = document.createElement('div');
+        logElement.className = `log-entry ${log.action}`;
+        
+        const date = new Date(log.timestamp);
+        
+        logElement.innerHTML = `
+          <div class="log-entry-info">
+            <strong>${log.employeeName}</strong> - ${log.action === 'ingreso' ? 'Ingresó' : 'Salió'}
+            <div class="log-entry-time">
+              ${date.toLocaleDateString()} ${date.toLocaleTimeString()} - ${log.local}
+            </div>
+          </div>
+        `;
+        
+        container.appendChild(logElement);
+      });
+    });
+}
+
+// Función para filtrar
+function filterEmployeeLogs() {
+  loadEmployeeLogs();
+}
+
+// Función para descargar Excel
+function downloadEmployeeLogsExcel() {
+  const startDate = document.getElementById('logStartDate').value;
+  const endDate = document.getElementById('logEndDate').value;
+  const employeeName = document.getElementById('logEmployeeFilter').value;
+  
+  let url = '/get-employee-logs?';
+  if (startDate) url += `startDate=${startDate}&`;
+  if (endDate) url += `endDate=${endDate}&`;
+  if (employeeName) url += `employeeName=${employeeName}&`;
+  
+  fetch(url)
+    .then(response => response.json())
+    .then(logs => {
+      // Preparar datos para Excel
+      const data = logs.map(log => {
+        const date = new Date(log.timestamp);
+        return {
+          'Nombre': log.employeeName,
+          'Acción': log.action === 'ingreso' ? 'Ingreso' : 'Egreso',
+          'Fecha': date.toLocaleDateString(),
+          'Hora': date.toLocaleTimeString(),
+          'Local': log.local,
+          'Fecha Completa': log.timestamp
+        };
+      });
+      
+      // Crear hoja de cálculo
+      const worksheet = XLSX.utils.json_to_sheet(data);
+      const workbook = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(workbook, worksheet, 'Registros');
+      
+      // Generar archivo
+      const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
+      const blob = new Blob([excelBuffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+      
+      // Descargar
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      
+      // Nombre del archivo con fechas si hay filtro
+      let fileName = 'registros_empleados';
+      if (startDate || endDate) {
+        fileName += `_${startDate || 'inicio'}_${endDate || 'hoy'}`;
+      }
+      fileName += '.xlsx';
+      
+      link.download = fileName;
+      link.click();
+      URL.revokeObjectURL(url);
+    });
+}
+
+// Escuchar actualizaciones en tiempo real
+socket.on('employee-log-updated', function(newLog) {
+  // Si el modal de historial está abierto, actualizar
+  if (document.getElementById('employeeLogHistoryModal').style.display === 'block') {
+    loadEmployeeLogs();
+  }
+});
   </script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.4/xlsx.full.min.js"></script>
 

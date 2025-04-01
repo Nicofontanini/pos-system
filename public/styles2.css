@@ -1,0 +1,375 @@
+  .alert {
+    color: blue;
+    font-weight: bold;
+  }
+
+  .product-form {
+    margin: 20px 0;
+    padding: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+  }
+
+  .product-form div {
+    margin: 10px 0;
+  }
+
+  .product-form label {
+    display: inline-block;
+    width: 100px;
+  }
+
+  .product-form input {
+    padding: 5px;
+    width: 200px;
+  }
+
+  .error-message {
+    color: red;
+    margin-top: 5px;
+    display: none;
+  }
+
+  .actions {
+    margin-top: 10px;
+  }
+
+  .edit-mode {
+    background-color: #fff3cd;
+  }
+
+  .delete-confirm {
+    background-color: #f8d7da;
+    padding: 10px;
+    margin: 5px 0;
+    border-radius: 4px;
+  }
+
+  .transfer-form {
+    margin-top: 10px;
+    padding: 5px;
+    border: 1px solid #ddd;
+    background-color: #f5f5f5;
+    border-radius: 4px;
+  }
+
+  /* Agregar estos estilos en la sección <style> del HTML */
+  .modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+  }
+
+  .modal-content {
+    background-color: #fefefe;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 500px;
+    border-radius: 8px;
+    position: relative;
+  }
+
+  .close {
+    position: absolute;
+    right: 15px;
+    top: 10px;
+    font-size: 24px;
+    cursor: pointer;
+  }
+
+  .payment-options {
+    display: flex;
+    gap: 10px;
+    margin: 15px 0;
+  }
+
+  .payment-input {
+    margin: 10px 0;
+  }
+
+  .payment-summary {
+    margin: 15px 0;
+    padding: 10px;
+    background-color: #f8f9fa;
+    border-radius: 4px;
+  }
+
+  .print-button {
+    background-color: #28a745;
+    color: white;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+
+  .history-container {
+    max-height: 400px;
+    overflow-y: auto;
+    padding: 15px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  .order-card {
+    border: 1px solid #ddd;
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 4px;
+  }
+
+  .remaining-amount {
+    color: #dc3545;
+    font-weight: bold;
+  }
+
+  .completed-payment {
+    color: #28a745;
+    font-weight: bold;
+  }
+
+  /* Agregar a la sección de estilos */
+  .cart-actions {
+    margin-top: 15px;
+    padding: 10px;
+    border-top: 1px solid #ddd;
+  }
+
+  .checkout-button {
+    background-color: #28a745;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    width: 100%;
+  }
+
+  .checkout-button:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+  }
+
+  .cart-item {
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .cart-item button {
+    margin-left: 5px;
+    padding: 15px 20px;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+  }
+
+  .cart-item button:hover {
+    opacity: 0.8;
+  }
+
+  .product-detail {
+    width: 50%;
+  }
+
+  /* Agrega estos estilos */
+.log-actions {
+display: flex;
+gap: 10px;
+margin-top: 20px;
+}
+
+.log-button {
+padding: 10px 15px;
+border: none;
+border-radius: 4px;
+color: white;
+cursor: pointer;
+font-size: 16px;
+flex: 1;
+}
+
+.log-button.ingreso {
+background-color: #28a745;
+}
+
+.log-button.egreso {
+background-color: #dc3545;
+}
+
+.filter-section {
+display: grid;
+grid-template-columns: repeat(2, 1fr);
+gap: 10px;
+margin-bottom: 15px;
+}
+
+.filter-section div {
+display: flex;
+flex-direction: column;
+}
+
+.log-entry {
+padding: 10px;
+border-bottom: 1px solid #eee;
+display: flex;
+justify-content: space-between;
+}
+
+.log-entry.ingreso {
+background-color: #e6ffed;
+}
+
+.log-entry.egreso {
+background-color: #ffe6e6;
+}
+
+.log-entry-info {
+flex: 1;
+}
+
+.log-entry-time {
+color: #666;
+font-size: 0.9em;
+}
+
+.toggle-details {
+background-color: #4CAF50;
+color: white;
+padding: 8px 12px;
+border: none;
+border-radius: 4px;
+cursor: pointer;
+margin-bottom: 10px;
+}
+
+.details-content {
+padding: 10px;
+background-color: white;
+border-radius: 4px;
+margin-top: 10px;
+}
+
+.summary-table {
+width: 100%;
+border-collapse: collapse;
+margin: 10px 0;
+}
+
+.summary-table th, .summary-table td {
+border: 1px solid #ddd;
+padding: 8px;
+text-align: left;
+}
+
+.summary-table th {
+background-color: #f2f2f2;
+}
+
+.summary-table tr:nth-child(even) {
+background-color: #f9f9f9;
+}
+
+/* Agregar estos estilos */
+.cash-register-entry {
+border: 1px solid #ddd;
+padding: 15px;
+margin-bottom: 20px;
+border-radius: 8px;
+background-color: #f9f9f9;
+box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.entry-header {
+margin-bottom: 15px;
+padding-bottom: 10px;
+border-bottom: 1px solid #eee;
+}
+
+.entry-header h3 {
+margin-top: 0;
+color: #2c3e50;
+}
+
+.toggle-details {
+background-color: #3498db;
+color: white;
+padding: 8px 15px;
+border: none;
+border-radius: 4px;
+cursor: pointer;
+margin-bottom: 15px;
+font-size: 14px;
+transition: background-color 0.3s;
+}
+
+.toggle-details:hover {
+background-color: #2980b9;
+}
+
+.details-content {
+padding: 15px;
+background-color: white;
+border-radius: 6px;
+margin-top: 10px;
+border: 1px solid #eee;
+}
+
+.summary-table, .payment-table, .orders-table {
+width: 100%;
+border-collapse: collapse;
+margin: 15px 0;
+font-size: 14px;
+}
+
+.summary-table th, .summary-table td,
+.payment-table th, .payment-table td,
+.orders-table th, .orders-table td {
+border: 1px solid #ddd;
+padding: 8px;
+text-align: left;
+}
+
+.summary-table th, .payment-table th, .orders-table th {
+background-color: #f2f2f2;
+font-weight: bold;
+}
+
+.summary-table tr:nth-child(even),
+.payment-table tr:nth-child(even),
+.orders-table tr:nth-child(even) {
+background-color: #f9f9f9;
+}
+
+.low-stock {
+color: #e74c3c;
+font-weight: bold;
+}
+
+.total-row {
+background-color: #f2f2f2 !important;
+font-weight: bold;
+}
+
+.payment-table .total-row td {
+background-color: #eaf7ea !important;
+}
+
+.orders-table {
+font-size: 13px;
+}
+
+.orders-table tr:hover {
+background-color: #f5f5f5;
+}

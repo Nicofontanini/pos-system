@@ -124,5 +124,54 @@
     "local": "local1",
     "orderName": "ddsad",
     "sellerName": "Maxi"
+  },
+  {
+    "date": "2025-03-31T12:16:11.434Z",
+    "items": [
+      {
+        "id": 1,
+        "name": "Carne",
+        "price": 100,
+        "quantity": 1,
+        "details": null
+      },
+      {
+        "id": 4,
+        "name": "Picante",
+        "price": 100,
+        "quantity": 1,
+        "details": null
+      }
+    ],
+    "total": 200,
+    "paymentMethod": "efectivo",
+    "paymentAmounts": {
+      "efectivo": 200,
+      "transferencia": 0
+    },
+    "local": "local1",
+    "orderName": "lucas",
+    "sellerName": "Maxi"
+  },
+  {
+    "date": "2025-03-31T12:16:52.289Z",
+    "items": [
+      {
+        "id": 1,
+        "name": "Carne",
+        "price": 100,
+        "quantity": 1,
+        "details": null
+      }
+    ],
+    "total": 100,
+    "paymentMethod": "efectivo",
+    "paymentAmounts": {
+      "efectivo": 100,
+      "transferencia": 0
+    },
+    "local": "local1",
+    "orderName": "nico",
+    "sellerName": "Maxi"
   }
 ]
