@@ -1,17 +1,6 @@
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: 'Arial', sans-serif;
-}
-
-body {
-  background-color: #f5f5f5;
-}
-
 .header {
-  background-color: #2c3e50;
-  color: white;
+  background-color: var(--color-primary);
+  color: var(--color-white);
   padding: 1rem;
   display: flex;
   justify-content: space-between;
@@ -25,8 +14,8 @@ body {
 .header-actions button {
   padding: 0.5rem 1rem;
   margin-left: 0.5rem;
-  background-color: #34495e;
-  color: white;
+  background-color: var(--color-secondary);
+  color: var(--color-white);
   border: none;
   border-radius: 4px;
   cursor: pointer;
@@ -65,30 +54,49 @@ body {
   padding: 1rem;
 }
 
+/* Clase base para tarjetas */
+.card {
+  background-color: var(--color-white);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  padding: 1rem;
+  box-shadow: var(--shadow-md);
+}
+
+/* Variantes de tarjetas */
+.card-hover {
+  transition: transform 0.2s;
+}
+
+.card-hover:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+}
+
 .product-card {
-  background-color: white;
-  border: 1px solid #ddd;
+  background-color: var(--color-white);
+  border: 1px solid var(--color-border);
   border-radius: 8px;
   padding: 1rem;
   cursor: pointer;
   transition: transform 0.2s;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--shadow-md);
 }
 
 .product-card:hover {
   transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--shadow-lg);
 }
 
 .product-card h3 {
   font-size: 1rem;
   margin-bottom: 0.5rem;
-  color: #2c3e50;
+  color: var(--color-text);
 }
 
 .product-card .price {
   font-size: 1.2rem;
-  color: #27ae60;
+  color: var(--color-success);
   font-weight: bold;
 }
 
@@ -1387,4 +1395,29 @@ body {
 
 .orders-table tr:hover {
   background-color: #f5f5f5;
+}
+
+/* Clase base para botones */
+.btn {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+/* Variantes de botones */
+.btn-primary {
+  background-color: var(--color-primary);
+  color: var(--color-white);
+}
+
+.btn-success {
+  background-color: var(--color-success);
+  color: var(--color-white);
+}
+
+.btn-danger {
+  background-color: var(--color-danger);
+  color: var(--color-white);
 }

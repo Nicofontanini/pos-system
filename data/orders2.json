@@ -2419,5 +2419,67 @@
     "local": "local2",
     "orderName": "sadas",
     "sellerName": "nico"
+  },
+  {
+    "date": "2025-04-02T15:48:27.900Z",
+    "items": [
+      {
+        "id": 1,
+        "name": "Carne",
+        "price": 100,
+        "quantity": 1,
+        "details": null
+      }
+    ],
+    "total": 100,
+    "originalTotal": 100,
+    "paymentMethod": "efectivo",
+    "surchargePercent": 0,
+    "paymentAmounts": {
+      "efectivo": 100,
+      "transferencia": 0
+    },
+    "local": "local2",
+    "orderName": "sadas",
+    "sellerName": "nico"
+  },
+  {
+    "date": "2025-04-02T15:48:56.243Z",
+    "items": [
+      {
+        "id": 27,
+        "name": "Docena Imperdibles",
+        "price": 39000,
+        "quantity": 1,
+        "details": [
+          {
+            "name": "Cordero",
+            "quantity": 12
+          }
+        ],
+        "gruposDetalle": [
+          {
+            "grupo": "Docena",
+            "empanadas": [
+              {
+                "name": "Cordero",
+                "quantity": 12
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "total": 39000,
+    "originalTotal": 39000,
+    "paymentMethod": "efectivo",
+    "surchargePercent": 0,
+    "paymentAmounts": {
+      "efectivo": 39000,
+      "transferencia": 0
+    },
+    "local": "local2",
+    "orderName": "sdad",
+    "sellerName": "nico"
   }
 ]

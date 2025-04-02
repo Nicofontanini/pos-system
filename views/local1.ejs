@@ -5,6 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Foodtruck KM11</title>
+  <link rel="stylesheet" href="/styles/base.css">
   <link rel="stylesheet" href="/styles/styles.css">
 </head>
 
@@ -582,9 +583,6 @@ function loadSellerInfo() {
     function updateOrderName() {
       orderName = document.getElementById('orderName').value;
     }
-
-    // Variable local para almacenar el carrito
-    // let cart = [];
 
     // Escuchar el evento cart-updated
     socket.on('cart-updated', function ({ local, cart: updatedCart }) {

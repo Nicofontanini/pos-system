@@ -345,7 +345,7 @@
         "name": "Carne",
         "category": "Tradicionales",
         "price": 100,
-        "stock": 31,
+        "stock": 30,
         "description": "Carne seleccionada picada, Cebolla y Huevo duro.",
         "id": 1
       },
@@ -489,7 +489,7 @@
         "name": "Cordero",
         "category": "Imperdibles",
         "price": 200,
-        "stock": 81,
+        "stock": 69,
         "description": "Cordero a la cerveza con miel y romero desmecha y cebolla.",
         "id": 21
       },

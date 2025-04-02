@@ -1,74 +1,112 @@
+/* Variables CSS para la página de login */
+:root {
+  /* Colores */
+  --login-primary: #2c3e50;
+  --login-secondary: #a3bffa;
+  --login-text-dark: #333;
+  --login-text-light: #666;
+  --login-white: #ffffff;
+  --login-border: #ccc;
+  --login-focus: #6e7dff;
+  --login-error: #ff4d4d;
+  
+  /* Espaciado */
+  --spacing-sm: 8px;
+  --spacing-md: 12px;
+  --spacing-lg: 20px;
+  --spacing-xl: 40px;
+  
+  /* Sombras */
+  --shadow-login: 0 10px 20px rgba(0, 0, 0, 0.1);
+  
+  /* Bordes */
+  --border-radius-sm: 8px;
+  --border-radius-lg: 12px;
+  
+  /* Transiciones */
+  --transition-default: 0.3s ease;
+}
+
+/* Reset y estilos base */
 body {
-    font-family: 'Arial', sans-serif;
-    background: linear-gradient(135deg, #2c3e50, #a3bffa);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    margin: 0;
-  }
+  font-family: 'Arial', sans-serif;
+  background: linear-gradient(135deg, var(--login-primary), var(--login-secondary));
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+}
 
-  .login-container {
-    background-color: #ffffff;
-    padding: 40px;
-    border-radius: 12px;
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-    width: 100%;
-    max-width: 400px;
-    text-align: center;
-  }
+/* Contenedor principal */
+.login-container {
+  background-color: var(--login-white);
+  padding: var(--spacing-xl);
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--shadow-login);
+  width: 100%;
+  max-width: 400px;
+  text-align: center;
+}
 
-  .login-container h2 {
-    font-size: 24px;
-    color: #333;
-    margin-bottom: 20px;
-  }
+.login-container h2 {
+  font-size: 24px;
+  color: var(--login-text-dark);
+  margin-bottom: var(--spacing-lg);
+}
 
-  label {
-    display: block;
-    font-size: 14px;
-    color: #666;
-    margin-bottom: 8px;
-  }
+/* Formularios */
+label {
+  display: block;
+  font-size: 14px;
+  color: var(--login-text-light);
+  margin-bottom: var(--spacing-sm);
+}
 
-  select, input[type="text"], input[type="password"] {
-    width: 100%;
-    padding: 12px;
-    margin-bottom: 20px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    font-size: 16px;
-    transition: border-color 0.3s ease;
-  }
+select, 
+input[type="text"], 
+input[type="password"] {
+  width: 100%;
+  padding: var(--spacing-md);
+  margin-bottom: var(--spacing-lg);
+  border: 1px solid var(--login-border);
+  border-radius: var(--border-radius-sm);
+  font-size: 16px;
+  transition: border-color var(--transition-default);
+}
 
-  select:focus, input[type="text"]:focus, input[type="password"]:focus {
-    border-color: #6e7dff;
-    outline: none;
-  }
+select:focus, 
+input[type="text"]:focus, 
+input[type="password"]:focus {
+  border-color: var(--login-focus);
+  outline: none;
+}
 
-  button {
-    background-color: #2c3e50;
-    color: white;
-    padding: 12px 20px;
-    border: none;
-    border-radius: 8px;
-    width: 100%;
-    font-size: 16px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
+/* Botones */
+button {
+  background-color: var(--login-primary);
+  color: var(--login-white);
+  padding: var(--spacing-md) var(--spacing-lg);
+  border: none;
+  border-radius: var(--border-radius-sm);
+  width: 100%;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color var(--transition-default);
+}
 
-  button:hover {
-    background-color: #a3bffa;
-  }
+button:hover {
+  background-color: var(--login-secondary);
+}
 
-  .error-message {
-    color: #ff4d4d;
-    margin-top: 15px;
-    font-size: 14px;
-    display: none;
-  }
+/* Mensajes de error */
+.error-message {
+  color: var(--login-error);
+  margin-top: var(--spacing-lg);
+  font-size: 14px;
+  display: none;
+}
 
-  .error-message.show {
-    display: block;
-  }
+.error-message.show {
+  display: block;
+}
