@@ -173,5 +173,164 @@
     "local": "local1",
     "orderName": "nico",
     "sellerName": "Maxi"
+  },
+  {
+    "date": "2025-04-01T13:21:54.093Z",
+    "items": [
+      {
+        "id": 1,
+        "name": "Carne",
+        "price": 100,
+        "quantity": 2,
+        "details": null
+      }
+    ],
+    "total": 200,
+    "paymentMethod": "efectivo",
+    "paymentAmounts": {
+      "efectivo": 200,
+      "transferencia": 0
+    },
+    "local": "local1",
+    "orderName": "nico",
+    "sellerName": "Maxi"
+  },
+  {
+    "date": "2025-04-02T13:21:50.981Z",
+    "items": [
+      {
+        "id": 1,
+        "name": "Carne",
+        "price": 100,
+        "quantity": 1,
+        "details": null
+      }
+    ],
+    "total": 100,
+    "paymentMethod": "tarjeta",
+    "paymentAmounts": {
+      "efectivo": 0,
+      "transferencia": 0,
+      "tarjeta": 100
+    },
+    "local": "local1",
+    "orderName": "",
+    "sellerName": ""
+  },
+  {
+    "date": "2025-04-02T13:25:05.381Z",
+    "items": [
+      {
+        "id": 1,
+        "name": "Carne",
+        "price": 100,
+        "quantity": 1,
+        "details": null
+      }
+    ],
+    "total": 100,
+    "paymentMethod": "tarjeta",
+    "paymentAmounts": {
+      "efectivo": 0,
+      "transferencia": 0,
+      "tarjeta": 100
+    },
+    "local": "local1",
+    "orderName": "",
+    "sellerName": ""
+  },
+  {
+    "date": "2025-04-02T13:27:38.749Z",
+    "items": [
+      {
+        "id": 1,
+        "name": "Carne",
+        "price": 100,
+        "quantity": 1,
+        "details": null
+      }
+    ],
+    "total": 110,
+    "originalTotal": 100,
+    "paymentMethod": "tarjeta",
+    "surchargePercent": 10,
+    "paymentAmounts": {
+      "efectivo": 0,
+      "transferencia": 0,
+      "tarjeta": 100
+    },
+    "local": "local1",
+    "orderName": "nico",
+    "sellerName": "Maxi"
+  },
+  {
+    "date": "2025-04-02T13:28:38.677Z",
+    "items": [
+      {
+        "id": 1,
+        "name": "Carne",
+        "price": 100,
+        "quantity": 1,
+        "details": null
+      }
+    ],
+    "total": 110,
+    "originalTotal": 100,
+    "paymentMethod": "tarjeta",
+    "surchargePercent": 10,
+    "paymentAmounts": {
+      "efectivo": 0,
+      "transferencia": 0,
+      "tarjeta": 100
+    },
+    "local": "local1",
+    "orderName": "nico",
+    "sellerName": "Maxi"
+  },
+  {
+    "date": "2025-04-02T14:13:04.831Z",
+    "items": [
+      {
+        "id": 1,
+        "name": "Carne",
+        "price": 100,
+        "quantity": 2,
+        "details": null
+      }
+    ],
+    "total": 200,
+    "originalTotal": 200,
+    "paymentMethod": "efectivo",
+    "surchargePercent": 0,
+    "paymentAmounts": {
+      "efectivo": 200,
+      "transferencia": 0
+    },
+    "local": "local1",
+    "orderName": "dasda",
+    "sellerName": ""
+  },
+  {
+    "date": "2025-04-02T15:06:56.050Z",
+    "items": [
+      {
+        "id": 1,
+        "name": "Carne",
+        "price": 100,
+        "quantity": 1,
+        "details": null
+      }
+    ],
+    "total": 100,
+    "originalTotal": 100,
+    "paymentMethod": "efectivo",
+    "surchargePercent": 0,
+    "paymentAmounts": {
+      "efectivo": 100,
+      "transferencia": 0
+    },
+    "local": "local1",
+    "orderName": "laura",
+    "sellerName": "nico"
   }
 ]

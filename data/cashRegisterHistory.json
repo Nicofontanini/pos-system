@@ -1,14 +1,92 @@
-{
-  "counters": {
-    "local1": {
-      "totalPayments": 0,
-      "totalAmount": 0,
-      "lastCloseTime": null
+[
+  {
+    "date": "2025-04-01T13:22:02.869Z",
+    "totalPayments": 1,
+    "totalAmount": 200,
+    "local": "local1",
+    "closeTime": "2025-04-01T13:22:02.870Z",
+    "startTime": "1970-01-01T00:00:00.000Z",
+    "productSummary": [
+      {
+        "name": "Carne",
+        "price": 100,
+        "quantitySold": 4,
+        "totalSold": 400,
+        "initialStock": 297,
+        "remainingStock": 296
+      },
+      {
+        "name": "Picante",
+        "price": 100,
+        "quantitySold": 7,
+        "totalSold": 700,
+        "initialStock": 76,
+        "remainingStock": 75
+      }
+    ],
+    "paymentSummary": {
+      "efectivo": 1100,
+      "transferencia": 0,
+      "mixto": 0,
+      "total": 200
     },
-    "local2": {
-      "totalPayments": 0,
-      "totalAmount": 0,
-      "lastCloseTime": null
-    }
+    "ordersCount": 9,
+    "orders": [
+      {
+        "total": 100,
+        "paymentMethod": "efectivo",
+        "orderName": "ddsad",
+        "sellerName": "Maxi"
+      },
+      {
+        "total": 100,
+        "paymentMethod": "efectivo",
+        "orderName": "ddsad",
+        "sellerName": "Maxi"
+      },
+      {
+        "total": 100,
+        "paymentMethod": "efectivo",
+        "orderName": "dasdas",
+        "sellerName": "Maxi"
+      },
+      {
+        "total": 100,
+        "paymentMethod": "efectivo",
+        "orderName": "dasdas",
+        "sellerName": "Maxi"
+      },
+      {
+        "total": 100,
+        "paymentMethod": "efectivo",
+        "orderName": "nico",
+        "sellerName": "Maxi"
+      },
+      {
+        "total": 100,
+        "paymentMethod": "efectivo",
+        "orderName": "ddsad",
+        "sellerName": "Maxi"
+      },
+      {
+        "total": 200,
+        "paymentMethod": "efectivo",
+        "orderName": "lucas",
+        "sellerName": "Maxi"
+      },
+      {
+        "total": 100,
+        "paymentMethod": "efectivo",
+        "orderName": "nico",
+        "sellerName": "Maxi"
+      },
+      {
+        "total": 200,
+        "paymentMethod": "efectivo",
+        "orderName": "nico",
+        "sellerName": "Maxi"
+      }
+    ]
   }
-}
+]
+  

@@ -28,5 +28,107 @@
     "action": "ingreso",
     "timestamp": "2025-04-01T12:19:31.312Z",
     "local": "local2"
+  },
+  {
+    "employeeName": "nico",
+    "action": "ingreso",
+    "timestamp": "2025-04-02T12:51:05.727Z",
+    "local": "local2"
+  },
+  {
+    "employeeName": "lopez",
+    "action": "ingreso",
+    "timestamp": "2025-04-02T14:11:48.148Z",
+    "local": "local1"
+  },
+  {
+    "employeeName": "lopelardo",
+    "action": "ingreso",
+    "timestamp": "2025-04-02T14:12:52.628Z",
+    "local": "local1"
+  },
+  {
+    "employeeName": "mame",
+    "action": "ingreso",
+    "timestamp": "2025-04-02T14:46:48.988Z",
+    "local": "local1"
+  },
+  {
+    "employeeName": "nico",
+    "action": "ingreso",
+    "timestamp": "2025-04-02T14:51:46.445Z",
+    "local": "local1"
+  },
+  {
+    "employeeName": "nico",
+    "action": "ingreso",
+    "timestamp": "2025-04-02T14:57:38.055Z",
+    "local": "local1"
+  },
+  {
+    "employeeName": "pedro",
+    "action": "ingreso",
+    "timestamp": "2025-04-02T15:02:34.965Z",
+    "local": "local1"
+  },
+  {
+    "employeeName": "mame",
+    "action": "egreso",
+    "timestamp": "2025-04-02T15:02:48.380Z",
+    "local": "local1"
+  },
+  {
+    "employeeName": "pedro",
+    "action": "ingreso",
+    "timestamp": "2025-04-02T15:02:58.236Z",
+    "local": "local1"
+  },
+  {
+    "employeeName": "lopelardo",
+    "action": "egreso",
+    "timestamp": "2025-04-02T15:04:02.181Z",
+    "local": "local1"
+  },
+  {
+    "employeeName": "lopez",
+    "action": "egreso",
+    "timestamp": "2025-04-02T15:04:08.421Z",
+    "local": "local1"
+  },
+  {
+    "employeeName": "pedro",
+    "action": "egreso",
+    "timestamp": "2025-04-02T15:04:21.797Z",
+    "local": "local1"
+  },
+  {
+    "employeeName": "nico",
+    "action": "ingreso",
+    "timestamp": "2025-04-02T15:04:52.935Z",
+    "local": "local1"
+  },
+  {
+    "employeeName": "dani",
+    "action": "ingreso",
+    "timestamp": "2025-04-02T15:05:06.472Z",
+    "local": "local1"
+  },
+  {
+    "employeeName": "Maxi",
+    "action": "egreso",
+    "timestamp": "2025-04-02T15:05:19.976Z",
+    "local": "local1"
+  },
+  {
+    "employeeName": "toto",
+    "action": "ingreso",
+    "timestamp": "2025-04-02T15:15:25.116Z",
+    "local": "local2"
+  },
+  {
+    "employeeName": "toto",
+    "action": "egreso",
+    "timestamp": "2025-04-02T15:15:33.860Z",
+    "local": "local2"
   }
 ]

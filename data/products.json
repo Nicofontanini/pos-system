@@ -5,7 +5,7 @@
         "name": "Carne",
         "category": "Tradicionales",
         "price": 100,
-        "stock": 298,
+        "stock": 289,
         "description": "Carne seleccionada picada, Cebolla y Huevo duro.",
         "id": 1
       },
@@ -345,7 +345,7 @@
         "name": "Carne",
         "category": "Tradicionales",
         "price": 100,
-        "stock": 33,
+        "stock": 31,
         "description": "Carne seleccionada picada, Cebolla y Huevo duro.",
         "id": 1
       },
