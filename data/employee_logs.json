@@ -130,5 +130,11 @@
     "action": "egreso",
     "timestamp": "2025-04-02T15:15:33.860Z",
     "local": "local2"
+  },
+  {
+    "employeeName": "dasdas",
+    "action": "ingreso",
+    "timestamp": "2025-04-03T13:37:38.025Z",
+    "local": "local1"
   }
 ]
