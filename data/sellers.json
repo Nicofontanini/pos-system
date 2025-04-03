@@ -12,7 +12,10 @@
       "name": "dani",
       "updatedAt": "2025-04-02T15:05:06.474Z"
     },
-    "vendedor4": null
+    "vendedor4": {
+      "name": "nico",
+      "updatedAt": "2025-04-03T23:07:41.091Z"
+    }
   },
   "local2": {
     "vendedor1": {
