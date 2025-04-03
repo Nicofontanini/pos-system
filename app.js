@@ -33,7 +33,8 @@ let lastCashRegisterClose = { local1: null, local2: null };
 // Authentication credentials
 const credentials = {
   local1: { user: 'admin1', password: bcrypt.hashSync('password1', 10) },
-  local2: { user: 'admin2', password: bcrypt.hashSync('password2', 10) }
+  local2: { user: 'admin2', password: bcrypt.hashSync('password2', 10) },
+  admin: { user: 'admin', password: bcrypt.hashSync('passworddaniel', 10) }
 };
 
 // Middleware setup
@@ -122,11 +123,13 @@ function authenticate(req, res, next) {
 
   console.log('Datos recibidos:', { user, local });
 
-  if (!['local1', 'local2'].includes(local)) {
+  if (!['local1', 'local2', 'admin'].includes(local)) {
     return res.status(400).json({ success: false, message: 'Local no válido' });
   }
 
-  if (user === credentials[local].user && bcrypt.compareSync(password, credentials[local].password)) {
+  const credential = credentials[local];
+
+  if (credential && user === credential.user && bcrypt.compareSync(password, credential.password)) {
     req.session.local = local;
     req.session.user = user;
     next();
@@ -136,11 +139,17 @@ function authenticate(req, res, next) {
 }
 
 function isAuthenticated(req, res, next) {
-  if (req.session.local && req.session.user) {
-    next();
-  } else {
-    res.redirect('/login');
+  if (req.session.user) {
+    // Para el admin, no necesitamos verificar el local
+    if (req.session.user === 'admindaniel' || req.session.local === 'admin') {
+      return next();
+    }
+    // Para los otros usuarios, verificamos el local
+    if (req.session.local === 'local1' || req.session.local === 'local2') {
+      return next();
+    }
   }
+  res.redirect('/login');
 }
 
 // Initialize data
@@ -170,7 +179,13 @@ app.get('/login', (req, res) => {
 });
 
 app.post('/login', authenticate, (req, res) => {
-  res.redirect(`/${req.session.local}`);
+  const { local } = req.body;
+
+  if (local === 'admin') {
+    return res.redirect('/admin');
+  } else {
+    return res.redirect(`/${local}`);
+  }
 });
 
 app.get('/logout', (req, res) => {
@@ -191,6 +206,14 @@ app.get('/local1', isAuthenticated, (req, res) => {
 app.get('/local2', isAuthenticated, (req, res) => {
   inventory = readInventory(); // Refresh data
   res.render('local2', { products: inventory.local2.products, user: req.session.user });
+});
+
+app.get('/admin', isAuthenticated, (req, res) => {
+  if (req.session.user !== 'admin') {
+    return res.redirect('/login');
+  }
+  inventory = readInventory(); // Refresh data
+  res.render('admin', { products: inventory.local1.products, user: req.session.user });
 });
 
 // Category routes
