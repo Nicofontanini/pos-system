@@ -150,5 +150,39 @@
         "sellerName": "nico"
       }
     ]
+  },
+  {
+    "date": "2025-04-03T13:00:38.540Z",
+    "totalPayments": 0,
+    "totalAmount": 0,
+    "local": "local1",
+    "closeTime": "2025-04-03T13:00:38.542Z",
+    "startTime": "2025-04-03T12:43:34.396Z",
+    "productSummary": [],
+    "paymentSummary": {
+      "efectivo": 0,
+      "transferencia": 0,
+      "mixto": 0,
+      "total": 0
+    },
+    "ordersCount": 0,
+    "orders": []
+  },
+  {
+    "date": "2025-04-03T13:02:47.116Z",
+    "totalPayments": 0,
+    "totalAmount": 0,
+    "local": "local1",
+    "closeTime": "2025-04-03T13:02:47.118Z",
+    "startTime": "2025-04-03T13:00:38.542Z",
+    "productSummary": [],
+    "paymentSummary": {
+      "efectivo": 0,
+      "transferencia": 0,
+      "mixto": 0,
+      "total": 0
+    },
+    "ordersCount": 0,
+    "orders": []
   }
 ]

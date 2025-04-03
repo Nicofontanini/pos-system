@@ -24,17 +24,14 @@
         <button class="dropbtn">Acciones</button>
         <div class="dropdown-content">
           <!-- Botones dentro del dropdown -->
-          <button onclick="showSellerModal()">Cambio de Turno</button>
-          <button onclick="showEmployeeHistoryModal()">Historial de Empleados</button>
-          <button onclick="showHistory()" class="history-button">Historial de Pedidos</button>
-          <button onclick="closeCashRegister()" class="btn-mostrarFormulario">Cierre de Caja</button>
-          <button onclick="showCashRegisterHistoryModal()" class="btn-mostrarFormulario">Consultar Historial de
-            Cierres</button>
-
-          <!-- En tu dropdown de acciones, agrega estos botones -->
+          <!-- <button onclick="showSellerModal()">Cambio de Turno</button> -->
+          <!-- <button onclick="showEmployeeHistoryModal()">Historial de Empleados</button> -->
           <button onclick="showEmployeeLogModal()">Registrar Ingreso/Egreso</button>
           <button onclick="showEmployeeLogHistory()">Ver Historial de Asistencia</button>
-          <!-- <button onclick="cleanOldOrders()" class="btn-limpiar">Limpiar Pedidos Antiguos</button> -->
+          <button onclick="showHistory()" class="history-button">Historial de Pedidos</button>
+          <button onclick="confirmCloseCashRegister()" class="btn-mostrarFormulario">Cierre de Caja</button>
+          <!-- <button onclick="showCashRegisterHistoryModal()" class="btn-mostrarFormulario">Consultar Historial de
+            Cierres</button> -->
         </div>
       </div>
     </div>
@@ -263,7 +260,7 @@
     </div>
   </div>
 
-  <!-- Agrega esto con los otros modales -->
+  <!-- Ingresos de empleados y egresos -->
   <div id="employeeLogModal" class="modal">
     <div class="modal-content">
       <span class="close" onclick="closeEmployeeLogModal()">&times;</span>
@@ -310,34 +307,10 @@
   <script src="/scripts/opencloseModal.js" defer></script>
   <script src="/scripts/dropdown.js" defer></script>
   <script src="/scripts/fullscreenBtn.js" defer></script>
+  <script src="/scripts/closeboxConfirme.js" defer></script>
   <script src="/socket.io/socket.io.js"></script>
   <script>
     const socket = io();
-
-    function cleanOldOrders() {
-      const local = window.location.pathname.includes('local1') ? 'local1' : 'local2';
-
-      fetch('/clean-old-data', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'X-Local': local // Enviar el local actual
-        }
-      })
-        .then(response => response.json())
-        .then(data => {
-          if (data.success) {
-            alert('Datos antiguos eliminados correctamente');
-            location.reload(); // Recargar la página para actualizar la lista de datos
-          } else {
-            alert('Error al eliminar datos antiguos');
-          }
-        })
-        .catch(error => {
-          console.error('Error:', error);
-          alert('Error al eliminar datos antiguos');
-        });
-    }
 
     function toggleDocenaForm() {
       const form = document.getElementById('docenaForm');
@@ -461,10 +434,7 @@
     <!DOCTYPE html>
     <html>
     <head>
-      <style>
-        body { font-family: Arial; }
-        .history-entry { margin-bottom: 20px; }
-      </style>
+  <link rel="stylesheet" href="/styles/base.css">
     </head>
     <body>
       <h2>Historial de Cambios de Empleados</h2>
@@ -557,16 +527,6 @@
           }
         });
     }
-
-    // // Asigna el nombre del boton al vendedor colocado
-    // document.getElementById('seller1Button').onclick = function () {
-    //   selectSeller(document.getElementById('seller1Button').textContent);
-    // };
-
-    // document.getElementById('seller2Button').onclick = function () {
-    //   selectSeller(document.getElementById('seller2Button').textContent);
-    // };
-
     // Función para actualizar el nombre del vendedor
     function updateSeller() {
       const seller = document.getElementById('sellerSelect').value;
@@ -628,9 +588,6 @@
     function updateOrderName() {
       orderName = document.getElementById('orderName').value;
     }
-
-    // Variable local para almacenar el carrito
-    // let cart = [];
 
     // Escuchar el evento cart-updated
     socket.on('cart-updated', function ({ local, cart: updatedCart }) {
@@ -1504,34 +1461,11 @@
     <!DOCTYPE html>
     <html>
     <head>
+      <link rel="stylesheet" href="/styles/base.css">
         <style>
-            body {
-                font-family: Arial, sans-serif;
-            }
             table {
-                width: 50%;
-                border-collapse: collapse;
-                margin: 20px 0;
-            }
-            th, td {
-                border: 1px solid #ddd;
-                padding: 1px;
-                text-align: left;
-            }
-            th {
-                background-color: #f2f2f2;
-            }
-            .total {
-                font-weight: bold;
-                font-size: 1.2em;
-                margin-top: 20px;
-            }
-            .payment-info {
-                margin-top: 20px;
-                padding: 10px;
-                border: 1px solid #ddd;
-                background-color: #f9f9f9;
-            }
+                width: 50%
+                };
         </style>
     </head>
     <body>
@@ -1627,12 +1561,7 @@
     <!DOCTYPE html>
     <html>
     <head>
-      <style>
-        body { font-family: Arial; }
-        table { width: 100%; border-collapse: collapse; }
-        th, td { border: 1px solid #ddd; padding: 1px; text-align: left; }
-        .total { font-weight: bold; }
-      </style>
+   <link rel="stylesheet" href="/styles/base.css">
     </head>
     <body>
       <h2>Pedido - ${date}</h2>
@@ -1724,10 +1653,7 @@
     <!DOCTYPE html>
     <html>
     <head>
-      <style>
-        body { font-family: Arial; }
-        .order-card { border: 1px solid #ddd; padding: 10px; margin: 10px 0; }
-      </style>
+     <link rel="stylesheet" href="/styles/base.css">
     </head>
     <body>
       <h2>Historial de Pedidos</h2>
@@ -1946,14 +1872,7 @@
     <!DOCTYPE html>
     <html>
     <head>
-      <style>
-        body { font-family: Arial, sans-serif; padding: 20px; }
-        table { width: 100%; border-collapse: collapse; margin: 5px 0; }
-        th, td { border: 1px solid #ddd; padding: 1px; text-align: left; }
-        th { background-color: #f2f2f2; }
-        .total { font-weight: bold; font-size: 1.2em; margin-top: 20px; }
-        .payment-info { margin-top: 20px; padding: 10px; border: 1px solid #ddd; background-color: #f9f9f9; }
-      </style>
+    <link rel="stylesheet" href="/styles/base.css">
     </head>
     <body>
       <h2>Historial de Cierres de Caja</h2>
@@ -2252,9 +2171,9 @@
     });
 
     function getSellerName(seller) {
-  if (!seller) return null;
-  return typeof seller === 'object' ? seller.name : seller;
-}
+      if (!seller) return null;
+      return typeof seller === 'object' ? seller.name : seller;
+    }
 
     socket.on('sellers-updated', (sellers) => {
       const local = window.location.pathname.includes('local1') ? 'local1' : 'local2';
