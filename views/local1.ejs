@@ -24,7 +24,7 @@
         <div class="dropdown-content">
           <!-- Botones dentro del dropdown -->
           <button onclick="showEmployeeLogModal()">Registrar Ingreso/Egreso</button>
-          <button onclick="showEmployeeLogHistory()">Ver Historial de Asistencia</button>
+          <!-- <button onclick="showEmployeeLogHistory()">Ver Historial de Asistencia</button> -->
           <button onclick="showHistory()" class="history-button">Historial de Pedidos</button>
           <button onclick="confirmCloseCashRegister()" class="btn-mostrarFormulario">Cierre de Caja</button>
           <!-- <button onclick="showCashRegisterHistoryModal()" class="btn-mostrarFormulario">Consultar Historial de
@@ -1865,14 +1865,14 @@
     }
 
     // Función para mostrar el historial
-    function showEmployeeLogHistory() {
-      document.getElementById('employeeLogHistoryModal').style.display = 'block';
-      loadEmployeeLogs();
-    }
+    // function showEmployeeLogHistory() {
+    //   document.getElementById('employeeLogHistoryModal').style.display = 'block';
+    //   loadEmployeeLogs();
+    // }
 
-    function closeEmployeeLogHistoryModal() {
-      document.getElementById('employeeLogHistoryModal').style.display = 'none';
-    }
+    // function closeEmployeeLogHistoryModal() {
+    //   document.getElementById('employeeLogHistoryModal').style.display = 'none';
+    // }
 
     // Función para cargar los logs
     function loadEmployeeLogs() {
