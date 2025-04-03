@@ -184,5 +184,38 @@
     },
     "ordersCount": 0,
     "orders": []
+  },
+  {
+    "date": "2025-04-03T22:52:22.720Z",
+    "totalPayments": 1,
+    "totalAmount": 105,
+    "local": "local1",
+    "closeTime": "2025-04-03T22:52:22.723Z",
+    "startTime": "2025-04-03T13:02:47.118Z",
+    "productSummary": [
+      {
+        "name": "Carne",
+        "price": 100,
+        "quantitySold": 1,
+        "totalSold": 100,
+        "initialStock": 289,
+        "remainingStock": 288
+      }
+    ],
+    "paymentSummary": {
+      "efectivo": 0,
+      "transferencia": 0,
+      "mixto": 0,
+      "total": 105
+    },
+    "ordersCount": 1,
+    "orders": [
+      {
+        "total": 105,
+        "paymentMethod": "tarjeta",
+        "orderName": "nico",
+        "sellerName": "dasdas"
+      }
+    ]
   }
 ]

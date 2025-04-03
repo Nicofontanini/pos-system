@@ -332,5 +332,29 @@
     "local": "local1",
     "orderName": "laura",
     "sellerName": "nico"
+  },
+  {
+    "date": "2025-04-03T22:51:33.832Z",
+    "items": [
+      {
+        "id": 1,
+        "name": "Carne",
+        "price": 100,
+        "quantity": 1,
+        "details": null
+      }
+    ],
+    "total": 105,
+    "originalTotal": 100,
+    "paymentMethod": "tarjeta",
+    "surchargePercent": 5,
+    "paymentAmounts": {
+      "efectivo": 0,
+      "transferencia": 0,
+      "tarjeta": 100
+    },
+    "local": "local1",
+    "orderName": "nico",
+    "sellerName": "dasdas"
   }
 ]

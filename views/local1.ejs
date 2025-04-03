@@ -23,8 +23,6 @@
         <button class="dropbtn">Acciones</button>
         <div class="dropdown-content">
           <!-- Botones dentro del dropdown -->
-          <!-- <button onclick="showSellerModal()">Cambio de Turno</button> -->
-          <!-- <button onclick="showEmployeeHistoryModal()">Historial de Empleados</button> -->
           <button onclick="showEmployeeLogModal()">Registrar Ingreso/Egreso</button>
           <button onclick="showEmployeeLogHistory()">Ver Historial de Asistencia</button>
           <button onclick="showHistory()" class="history-button">Historial de Pedidos</button>
@@ -383,76 +381,6 @@
     let selectedSeller = ''; // Variable para almacenar el vendedor seleccionado
     let totalPayments = 0; // Contador de pagos procesados
     let totalAmount = 0;   // Monto total generado
-
-  //   function printEmployeeHistory() {
-  //     const historyContent = document.getElementById('employeeHistoryContainer').innerHTML;
-  //     const printWindow = window.open('', '_blank');
-  //     printWindow.document.write(`
-  //   <!DOCTYPE html>
-  //   <html>
-  //   <head>
-  //   <link rel="stylesheet" href="/styles/base.css">
-  //   </head>
-  //   <body>
-  //     <h2>Historial de Cambios de Empleados</h2>
-  //     ${historyContent}
-  //   </body>
-  //   </html>
-  // `);
-  //     printWindow.document.close();
-  //     printWindow.print();
-  //   }
-    // Función para mostrar el modal de historial de empleados
-    // function showEmployeeHistoryModal() {
-    //   const modal = document.getElementById('employeeHistoryModal');
-    //   modal.style.display = 'block'; // Mostrar el modal
-    //   loadEmployeeHistory(); // Cargar el historial
-    // }
-
-    // Función para cerrar el modal de historial de empleados
-    // function closeEmployeeHistoryModal() {
-    //   document.getElementById('employeeHistoryModal').style.display = 'none';
-    // }
-
-    // Función para cargar el historial de empleados
-    // function loadEmployeeHistory() {
-    //   const local = window.location.pathname.includes('local1') ? 'local1' : 'local2';
-
-    //   fetch(`/get-sellers-history?local=${local}`)
-    //     .then(response => response.json())
-    //     .then(data => {
-    //       const container = document.getElementById('employeeHistoryContainer');
-    //       container.innerHTML = '';
-
-    //       data.forEach(entry => {
-    //         const entryElement = document.createElement('div');
-    //         entryElement.className = 'history-entry';
-    //         entryElement.innerHTML = `
-    //       <p><strong>Local:</strong> ${entry.local}</p>
-    //       <p><strong>Vendedor:</strong> ${entry.seller}</p>
-    //       <p><strong>Nombre anterior:</strong> ${entry.oldName || 'N/A'}</p>
-    //       <p><strong>Nombre nuevo:</strong> ${entry.newName}</p>
-    //       <p><strong>Fecha de cambio:</strong> ${new Date(entry.updatedAt).toLocaleString()}</p>
-    //       <hr>
-    //     `;
-    //         container.appendChild(entryElement);
-    //       });
-    //     })
-    //     .catch(error => {
-    //       console.error('Error al cargar el historial de empleados:', error);
-    //     });
-    // }
-    // Función para mostrar el modal de cambio de vendedor
-    // function showSellerModal() {
-    //   const modal = document.getElementById('sellerModal');
-    //   modal.style.display = 'block';
-    //   loadSellerInfo();
-    // }
-
-    // Función para cerrar el modal de cambio de vendedor
-    // function closeSellerModal() {
-    //   document.getElementById('sellerModal').style.display = 'none';
-    // }
 
     // Función para cargar la información de los vendedores
     function loadSellerInfo() {
@@ -1279,9 +1207,13 @@
       <p>Pago en efectivo: $${orderData.paymentAmounts.efectivo.toFixed(2)}</p>
       <p>Pago por transferencia: $${orderData.paymentAmounts.transferencia.toFixed(2)}</p>
     `;
-      } else {
+  } else {
         paymentDetails = `
       <p>Pago por ${orderData.paymentMethod}: $${orderData.total.toFixed(2)}</p>
+      ${orderData.paymentMethod === 'tarjeta' ? 
+        `<p>Subtotal: $${orderData.originalTotal.toFixed(2)}</p>
+         <p>Recargo (${orderData.surchargePercent}%): $${(orderData.total - orderData.originalTotal).toFixed(2)}</p>` 
+        : ''}
     `;
       }
 
