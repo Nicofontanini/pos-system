@@ -345,7 +345,7 @@
         "name": "Carne",
         "category": "Tradicionales",
         "price": 100,
-        "stock": 30,
+        "stock": 29,
         "description": "Carne seleccionada picada, Cebolla y Huevo duro.",
         "id": 1
       },
@@ -481,7 +481,7 @@
         "name": "Vacio/Provolone",
         "category": "Especiales",
         "price": 200,
-        "stock": 99,
+        "stock": 98,
         "description": "Vacio cortado a cuchillo, provolone, cebolla y verdeo.",
         "id": 20
       },
