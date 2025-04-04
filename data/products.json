@@ -5,7 +5,7 @@
         "name": "Carne",
         "category": "Tradicionales",
         "price": 100,
-        "stock": 296,
+        "stock": 25,
         "description": "Carne seleccionada picada, Cebolla y Huevo duro.",
         "id": 1
       },
@@ -13,7 +13,7 @@
         "name": "Picante",
         "category": "Tradicionales",
         "price": 100,
-        "stock": 73,
+        "stock": 113,
         "description": "Carne cortada a cuchillo, Macerada con mix de pimientas, Aji picante.",
         "id": 4
       },
@@ -345,7 +345,7 @@
         "name": "Carne",
         "category": "Tradicionales",
         "price": 100,
-        "stock": 6,
+        "stock": -1,
         "description": "Carne seleccionada picada, Cebolla y Huevo duro.",
         "id": 1
       },
@@ -353,7 +353,7 @@
         "name": "Picante",
         "category": "Tradicionales",
         "price": 100,
-        "stock": 47,
+        "stock": 7,
         "description": "Carne cortada a cuchillo, Macerada con mix de pimientas, Aji picante.",
         "id": 4
       },

@@ -309,3 +309,12 @@ function addToCart(productId, productName, productPrice) {
           if (element) element.remove();
         }
       });
+
+      // Escuchar el evento cart-updated
+    socket.on('cart-updated', function ({ local, cart: updatedCart }) {
+      // Solo actualizar si el carrito pertenece al local actual
+      if (local === (window.location.pathname.includes('local1') ? 'local1' : 'local2')) {
+        cart = updatedCart; // Actualizar el carrito local
+        updateCartUI(); // Actualizar la interfaz
+      }
+    });
