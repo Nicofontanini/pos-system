@@ -1,3 +1,10 @@
+ // Variables globales para el pago
+ let currentPaymentMethod = null;
+ let paymentAmounts = {
+   efectivo: 0,
+   transferencia: 0
+ };
+
 function showPaymentModal() {
     const modal = document.getElementById('paymentModal');
     const total = document.getElementById('cart-total').textContent;

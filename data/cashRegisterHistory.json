@@ -217,5 +217,118 @@
         "sellerName": "dasdas"
       }
     ]
+  },
+  {
+    "date": "2025-04-04T12:02:44.663Z",
+    "totalPayments": 1,
+    "totalAmount": 100,
+    "local": "local1",
+    "closeTime": "2025-04-04T12:02:44.664Z",
+    "startTime": "2025-04-03T22:52:22.723Z",
+    "productSummary": [
+      {
+        "name": "Carne",
+        "price": 100,
+        "quantitySold": 2,
+        "totalSold": 200,
+        "initialStock": 307,
+        "remainingStock": 306
+      }
+    ],
+    "paymentSummary": {
+      "efectivo": 200,
+      "transferencia": 0,
+      "mixto": 0,
+      "total": 100
+    },
+    "ordersCount": 2,
+    "orders": [
+      {
+        "total": 100,
+        "paymentMethod": "efectivo",
+        "orderName": "nico",
+        "sellerName": "dasdas"
+      },
+      {
+        "total": 100,
+        "paymentMethod": "efectivo",
+        "orderName": "nico",
+        "sellerName": "dasdas"
+      }
+    ]
+  },
+  {
+    "date": "2025-04-04T12:41:22.920Z",
+    "totalPayments": 1,
+    "totalAmount": 100,
+    "local": "local1",
+    "closeTime": "2025-04-04T12:41:22.923Z",
+    "startTime": "2025-04-04T12:02:44.664Z",
+    "productSummary": [
+      {
+        "name": "Carne",
+        "price": 100,
+        "quantitySold": 1,
+        "totalSold": 100,
+        "initialStock": 306,
+        "remainingStock": 305
+      }
+    ],
+    "paymentSummary": {
+      "efectivo": 100,
+      "transferencia": 0,
+      "mixto": 0,
+      "total": 100
+    },
+    "ordersCount": 1,
+    "orders": [
+      {
+        "total": 100,
+        "paymentMethod": "efectivo",
+        "orderName": "nico",
+        "sellerName": "dasdas"
+      }
+    ]
+  },
+  {
+    "date": "2025-04-04T12:41:44.537Z",
+    "totalPayments": 1,
+    "totalAmount": 200,
+    "local": "local1",
+    "closeTime": "2025-04-04T12:41:44.538Z",
+    "startTime": "2025-04-04T12:41:22.923Z",
+    "productSummary": [
+      {
+        "name": "Carne",
+        "price": 100,
+        "quantitySold": 1,
+        "totalSold": 100,
+        "initialStock": 305,
+        "remainingStock": 304
+      },
+      {
+        "name": "Picante",
+        "price": 100,
+        "quantitySold": 1,
+        "totalSold": 100,
+        "initialStock": 75,
+        "remainingStock": 74
+      }
+    ],
+    "paymentSummary": {
+      "efectivo": 200,
+      "transferencia": 0,
+      "mixto": 0,
+      "total": 200
+    },
+    "ordersCount": 1,
+    "orders": [
+      {
+        "total": 200,
+        "paymentMethod": "efectivo",
+        "orderName": "dasdas",
+        "sellerName": "locolindo"
+      }
+    ]
   }
 ]

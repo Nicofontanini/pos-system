@@ -379,5 +379,81 @@
     "local": "local1",
     "orderName": "nico",
     "sellerName": "dasdas"
+  },
+  {
+    "date": "2025-04-04T12:02:30.783Z",
+    "items": [
+      {
+        "id": 1,
+        "name": "Carne",
+        "price": 100,
+        "quantity": 1,
+        "details": null
+      }
+    ],
+    "total": 100,
+    "originalTotal": 100,
+    "paymentMethod": "efectivo",
+    "surchargePercent": 0,
+    "paymentAmounts": {
+      "efectivo": 100,
+      "transferencia": 0
+    },
+    "local": "local1",
+    "orderName": "nico",
+    "sellerName": "dasdas"
+  },
+  {
+    "date": "2025-04-04T12:41:14.128Z",
+    "items": [
+      {
+        "id": 1,
+        "name": "Carne",
+        "price": 100,
+        "quantity": 1,
+        "details": null
+      }
+    ],
+    "total": 100,
+    "originalTotal": 100,
+    "paymentMethod": "efectivo",
+    "surchargePercent": 0,
+    "paymentAmounts": {
+      "efectivo": 100,
+      "transferencia": 0
+    },
+    "local": "local1",
+    "orderName": "nico",
+    "sellerName": "dasdas"
+  },
+  {
+    "date": "2025-04-04T12:41:35.744Z",
+    "items": [
+      {
+        "id": 1,
+        "name": "Carne",
+        "price": 100,
+        "quantity": 1,
+        "details": null
+      },
+      {
+        "id": 4,
+        "name": "Picante",
+        "price": 100,
+        "quantity": 1,
+        "details": null
+      }
+    ],
+    "total": 200,
+    "originalTotal": 200,
+    "paymentMethod": "efectivo",
+    "surchargePercent": 0,
+    "paymentAmounts": {
+      "efectivo": 200,
+      "transferencia": 0
+    },
+    "local": "local1",
+    "orderName": "dasdas",
+    "sellerName": "locolindo"
   }
 ]

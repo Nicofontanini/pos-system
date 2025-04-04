@@ -166,5 +166,29 @@
     "action": "ingreso",
     "timestamp": "2025-04-04T11:42:39.168Z",
     "local": "local1"
+  },
+  {
+    "employeeName": "nico",
+    "action": "ingreso",
+    "timestamp": "2025-04-04T11:57:02.961Z",
+    "local": "local1"
+  },
+  {
+    "employeeName": "nico",
+    "action": "egreso",
+    "timestamp": "2025-04-04T11:57:14.016Z",
+    "local": "local1"
+  },
+  {
+    "employeeName": "loco",
+    "action": "ingreso",
+    "timestamp": "2025-04-04T11:58:27.995Z",
+    "local": "local2"
+  },
+  {
+    "employeeName": "loco",
+    "action": "egreso",
+    "timestamp": "2025-04-04T11:58:40.971Z",
+    "local": "local2"
   }
 ]
