@@ -39,10 +39,9 @@
         </div>
     </header>
 
-
     <!-- Formulario para agregar/editar productos -->
     <button id="toggleFormButton" onclick="toggleForm()" class="btn-mostrarFormulario">Mostrar Formulario</button>
-    <div class="product-form" id="productForm">
+    <div class="product-form" id="productForm" style="display: none;">
         <h3 id="formTitle">Agregar Nuevo Producto</h3>
         <input type="hidden" id="editProductId">
         <div>
@@ -126,27 +125,27 @@
                     <% }) %>
             </ul>
         </section>
-            <!-- Modal de Historial -->
-            <div id="historyModal" class="modal">
-                <div class="modal-content">
-                    <span class="close" onclick="closeHistoryModal()">&times;</span>
-                    <h2>Historial de Pedidos</h2>
-                    <label>Fecha Unica:</label>
-                    <input type="date" id="filterDate" onchange="filterHistory()">
-                    <div class="date-range-filter">
-                        <label for="startDate">Desde:</label>
-                        <input type="date" id="startDate">
+        <!-- Modal de Historial -->
+        <div id="historyModal" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="closeHistoryModal()">&times;</span>
+                <h2>Historial de Pedidos</h2>
+                <label>Fecha Unica:</label>
+                <input type="date" id="filterDate" onchange="filterHistory()">
+                <div class="date-range-filter">
+                    <label for="startDate">Desde:</label>
+                    <input type="date" id="startDate">
 
-                        <label for="endDate">Hasta:</label>
-                        <input type="date" id="endDate">
+                    <label for="endDate">Hasta:</label>
+                    <input type="date" id="endDate">
 
-                        <button onclick="filterHistoryByDateRange()">Filtrar</button>
-                    </div>
-                    <div id="historyContainer" class="history-container"></div>
-                    <button onclick="printHistory()" class="print-button">Imprimir Historial</button>
-                    <button onclick="downloadExcel()" class="print-button">Descargar Excel</button> <!-- Botón nuevo -->
+                    <button onclick="filterHistoryByDateRange()">Filtrar</button>
                 </div>
+                <div id="historyContainer" class="history-container"></div>
+                <button onclick="printHistory()" class="print-button">Imprimir Historial</button>
+                <button onclick="downloadExcel()" class="print-button">Descargar Excel</button> <!-- Botón nuevo -->
             </div>
+        </div>
     </main>
 
     <!-- Modal para el historial de cierres de caja -->
@@ -196,7 +195,6 @@
         let selectedSeller = ''; // Variable para almacenar el vendedor seleccionado
         let totalPayments = 0; // Contador de pagos procesados
         let totalAmount = 0;   // Monto total generado
-
 
     </script>
     <script src="/scripts/form.js"></script>

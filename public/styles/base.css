@@ -412,11 +412,21 @@ body {
 
 /* Formularios */
 .product-form {
-  margin: var(--spacing-xl) 0;
-  padding: var(--spacing-lg);
-  border: 1px solid var(--color-border);
-  border-radius: var(--border-radius-md);
-  background-color: var(--color-light);
+  display: none;
+  padding: 20px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: opacity 0.3s ease-in-out;
+}
+
+.product-form.show {
+  display: block;
+  opacity: 1;
+}
+
+.product-form:not(.show) {
+  opacity: 0;
 }
 
 .transfer-form {
