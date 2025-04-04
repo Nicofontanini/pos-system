@@ -5,7 +5,7 @@
         "name": "Carne",
         "category": "Tradicionales",
         "price": 100,
-        "stock": 302,
+        "stock": 296,
         "description": "Carne seleccionada picada, Cebolla y Huevo duro.",
         "id": 1
       },
@@ -85,7 +85,7 @@
         "name": "4 Quesos",
         "category": "Especiales",
         "price": 200,
-        "stock": 83,
+        "stock": 79,
         "description": "Cinco quesos, gouda, parmesano, sbrinz, roquefort y muzzarella.",
         "id": 13
       },
@@ -149,7 +149,7 @@
         "name": "Cordero",
         "category": "Imperdibles",
         "price": 200,
-        "stock": 75,
+        "stock": 71,
         "description": "Cordero a la cerveza con miel y romero desmecha y cebolla.",
         "id": 21
       },

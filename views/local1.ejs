@@ -323,7 +323,7 @@
       }
     });
 
-// Función para agregar productos al carrito
+/* // Función para agregar productos al carrito
 
     function addToCart(productId, productName, productPrice) {
       const docenaType = Object.keys(docenas).find(docena => productName.includes(docena));
@@ -352,9 +352,9 @@
           }
         });
       }
-    }
+    } */
 
-    function openDocenaModal(docena) {
+   /*  function openDocenaModal(docena) {
       const modal = document.getElementById('docenaModal');
       const title = document.getElementById('docenaModalTitle');
       const selection = document.getElementById('empanadasSelection');
@@ -403,9 +403,9 @@
       }
 
       modal.style.display = 'block';
-    }
+    } */
 
-    function closeDocenaModal() {
+    /* function closeDocenaModal() {
       document.getElementById('docenaModal').style.display = 'none';
       currentDocena = null;
     }
@@ -560,15 +560,15 @@
     function decrementProduct(productId) {
       const local = window.location.pathname.includes('local1') ? 'local1' : 'local2';
       socket.emit('decrement-product', { local, productId });
-    }
+    } */
 
-    // Función para eliminar un producto del carrito
+ /*    // Función para eliminar un producto del carrito
     function removeFromCart(productId) {
       const local = window.location.pathname.includes('local1') ? 'local1' : 'local2';
       socket.emit('remove-from-cart', { local, productId });
-    }
+    } */
 
-    // Función para actualizar la interfaz del carrito
+    /* // Función para actualizar la interfaz del carrito
     function updateCartUI() {
       const cartItemsElement = document.getElementById('cart-items');
       const cartTotalElement = document.getElementById('cart-total');
@@ -594,9 +594,9 @@
 
       cartTotalElement.textContent = total.toFixed(2); // Actualizar el total
       checkoutButton.disabled = cart.length === 0; // Habilitar/deshabilitar el botón de compra
-    }
+    } */
 
-    // Script para manejar el carrito y el pago
+    /* // Script para manejar el carrito y el pago
     document.addEventListener('DOMContentLoaded', function () {
       // Botón de checkout
       const checkoutButton = document.getElementById('checkoutButton');
@@ -628,7 +628,7 @@
         const element = document.getElementById(`product-${data.productId}`);
         if (element) element.remove();
       }
-    });
+    }); */
 
     socket.on('stock-update', function ({ local, items }) {
       // Verifica si el local es el correcto según la URL de la página
@@ -798,188 +798,13 @@
         }
       });
     }
-
-    // Función para registrar acción
-    function logEmployeeAction(action) {
-      const employeeName = document.getElementById('logEmployeeName').value;
-      if (!employeeName) {
-        alert('Por favor ingrese el nombre del empleado');
-        return;
-      }
-
-      const local = window.location.pathname.includes('local1') ? 'local1' : 'local2';
-
-      fetch('/log-employee', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'X-Local': local
-        },
-        body: JSON.stringify({ employeeName, action })
-      })
-        .then(response => response.json())
-        .then(data => {
-          if (data.success) {
-            alert(`Registro de ${action} exitoso para ${employeeName}`);
-            document.getElementById('logEmployeeName').value = '';
-            closeEmployeeLogModal();
-          }
-        })
-        .catch(error => {
-          console.error('Error:', error);
-          alert('Error al registrar la acción');
-        });
-    }
-
-   /*  // Función para cargar los logs
-    function loadEmployeeLogs() {
-      const startDate = document.getElementById('logStartDate').value;
-      const endDate = document.getElementById('logEndDate').value;
-      const employeeName = document.getElementById('logEmployeeFilter').value;
-
-      let url = '/get-employee-logs?';
-      if (startDate) url += `startDate=${startDate}&`;
-      if (endDate) url += `endDate=${endDate}&`;
-      if (employeeName) url += `employeeName=${employeeName}&`;
-
-      fetch(url)
-        .then(response => response.json())
-        .then(logs => {
-          const container = document.getElementById('employeeLogsContainer');
-          container.innerHTML = '';
-
-          if (logs.length === 0) {
-            container.innerHTML = '<p>No se encontraron registros</p>';
-            return;
-          }
-
-          logs.forEach(log => {
-            const logElement = document.createElement('div');
-            logElement.className = `log-entry ${log.action}`;
-
-            const date = new Date(log.timestamp);
-
-            logElement.innerHTML = `
-          <div class="log-entry-info">
-            <strong>${log.employeeName}</strong> - ${log.action === 'ingreso' ? 'Ingresó' : 'Salió'}
-            <div class="log-entry-time">
-              ${date.toLocaleDateString()} ${date.toLocaleTimeString()} - ${log.local}
-            </div>
-          </div>
-        `;
-
-            container.appendChild(logElement);
-          });
-        });
-    }
-
-    // Escuchar actualizaciones en tiempo real
-    socket.on('employee-log-updated', function (newLog) {
-      // Si el modal de historial está abierto, actualizar
-      if (document.getElementById('employeeLogHistoryModal').style.display === 'block') {
-        loadEmployeeLogs();
-      }
-    });
-
-    // Agregar esto junto a los otros manejadores de socket
-    socket.on('sellers-updated', (sellers) => {
-      const local = window.location.pathname.includes('local1') ? 'local1' : 'local2';
-      const localSellers = sellers[local];
-
-      for (let i = 1; i <= 4; i++) {
-        const button = document.getElementById(`seller${i}`);
-        if (button) {
-          const seller = localSellers[`vendedor${i}`];
-          const sellerName = seller ? (typeof seller === 'object' ? seller.name : seller) : 'Vacío';
-          button.textContent = sellerName;
-          button.disabled = sellerName === 'Vacío';
-        }
-      }
-    });
-
-    // Cargar vendedores al inicio
-    fetch('/get-current-sellers')
-      .then(response => response.json())
-      .then(sellers => {
-        const local = window.location.pathname.includes('local1') ? 'local1' : 'local2';
-        const localSellers = sellers[local];
-
-        for (let i = 1; i <= 4; i++) {
-          const button = document.getElementById(`seller${i}`);
-          if (button) {
-            const seller = localSellers[`vendedor${i}`];
-            const sellerName = seller ? (typeof seller === 'object' ? seller.name : seller) : 'Vacío';
-            button.textContent = sellerName;
-            button.disabled = sellerName === 'Vacío';
-          }
-        }
-      })
-      .catch(error => console.error('Error loading sellers:', error));
-
-    // Agregar cerca del inicio del script, después de la declaración del socket
-    function loadCurrentSellers() {
-      fetch('/get-current-sellers')
-        .then(response => response.json())
-        .then(sellers => {
-          const local = window.location.pathname.includes('local1') ? 'local1' : 'local2';
-          const localSellers = sellers[local];
-
-          // Actualizar los botones de vendedor
-          for (let i = 1; i <= 4; i++) {
-            const button = document.getElementById(`seller${i}`);
-            if (button) {
-              const sellerName = getSellerName(localSellers[`vendedor${i}`]);
-              button.textContent = sellerName || 'Vacío';
-              button.disabled = !sellerName;
-            }
-          }
-        })
-        .catch(error => console.error('Error loading sellers:', error));
-    }
-
-    // Cargar vendedores al iniciar la página
-    document.addEventListener('DOMContentLoaded', loadCurrentSellers);
-
-    // Actualizar cuando se reciban cambios
-    socket.on('sellers-updated', (sellers) => {
-      const local = window.location.pathname.includes('local1') ? 'local1' : 'local2';
-      const localSellers = sellers[local];
-
-      // Actualizar los botones de vendedor
-      for (let i = 1; i <= 4; i++) {
-        const button = document.getElementById(`seller${i}`);
-        if (button) {
-          const sellerName = localSellers[`vendedor${i}`];
-          button.textContent = sellerName || 'Vacío';
-          button.disabled = !sellerName;
-        }
-      }
-    });
-
-    function getSellerName(seller) {
-      if (!seller) return null;
-      return typeof seller === 'object' ? seller.name : seller;
-    }
-
-    socket.on('sellers-updated', (sellers) => {
-      const local = window.location.pathname.includes('local1') ? 'local1' : 'local2';
-      const localSellers = sellers[local];
-
-      // Actualizar los botones de vendedor
-      for (let i = 1; i <= 4; i++) {
-        const button = document.getElementById(`seller${i}`);
-        if (button) {
-          const sellerName = getSellerName(localSellers[`vendedor${i}`]);
-          button.textContent = sellerName || 'Vacío';
-          button.disabled = !sellerName;
-        }
-      }
-    }); */
+    
   </script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.4/xlsx.full.min.js"></script>
   <script src="/scripts/payment.js"></script>
   <script src="/scripts/Seller.js"></script>
   <script src="/scripts/historyPadidos.js"></script>
+  <script src="/scripts/cart.js"></script>
 </body>
 
 </html>

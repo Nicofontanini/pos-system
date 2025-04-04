@@ -88,6 +88,38 @@ function loadSellerInfo() {
     orderName = document.getElementById('orderName').value;
   }
 
+  // Función para registrar acción
+  function logEmployeeAction(action) {
+    const employeeName = document.getElementById('logEmployeeName').value;
+    if (!employeeName) {
+      alert('Por favor ingrese el nombre del empleado');
+      return;
+    }
+
+    const local = window.location.pathname.includes('local1') ? 'local1' : 'local2';
+
+    fetch('/log-employee', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Local': local
+      },
+      body: JSON.stringify({ employeeName, action })
+    })
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          alert(`Registro de ${action} exitoso para ${employeeName}`);
+          document.getElementById('logEmployeeName').value = '';
+          closeEmployeeLogModal();
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        alert('Error al registrar la acción');
+      });
+  }
+
    // Función para cargar los logs
    function loadEmployeeLogs() {
     const startDate = document.getElementById('logStartDate').value;

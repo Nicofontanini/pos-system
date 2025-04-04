@@ -524,5 +524,116 @@
     "local": "local1",
     "orderName": "adadsa",
     "sellerName": "pedropicapiedra"
+  },
+  {
+    "date": "2025-04-04T13:19:12.538Z",
+    "items": [
+      {
+        "id": 1,
+        "name": "Carne",
+        "price": 100,
+        "quantity": 1,
+        "details": null
+      }
+    ],
+    "total": 100,
+    "originalTotal": 100,
+    "paymentMethod": "efectivo",
+    "surchargePercent": 0,
+    "paymentAmounts": {
+      "efectivo": 100,
+      "transferencia": 0
+    },
+    "local": "local1",
+    "orderName": "nico",
+    "sellerName": "dasdas"
+  },
+  {
+    "date": "2025-04-04T13:20:07.106Z",
+    "items": [
+      {
+        "id": 1,
+        "name": "Carne",
+        "price": 100,
+        "quantity": 1,
+        "details": null
+      }
+    ],
+    "total": 100,
+    "originalTotal": 100,
+    "paymentMethod": "efectivo",
+    "surchargePercent": 0,
+    "paymentAmounts": {
+      "efectivo": 100,
+      "transferencia": 0
+    },
+    "local": "local1",
+    "orderName": "lucas",
+    "sellerName": "pedropicapiedra"
+  },
+  {
+    "date": "2025-04-04T13:20:34.466Z",
+    "items": [
+      {
+        "id": 29,
+        "name": "Docena Combinada 2",
+        "price": 33500,
+        "quantity": 1,
+        "details": [
+          {
+            "name": "Carne",
+            "quantity": 4
+          },
+          {
+            "name": "4 Quesos",
+            "quantity": 4
+          },
+          {
+            "name": "Cordero",
+            "quantity": 4
+          }
+        ],
+        "gruposDetalle": [
+          {
+            "grupo": "Tradicionales",
+            "empanadas": [
+              {
+                "name": "Carne",
+                "quantity": 4
+              }
+            ]
+          },
+          {
+            "grupo": "Especiales",
+            "empanadas": [
+              {
+                "name": "4 Quesos",
+                "quantity": 4
+              }
+            ]
+          },
+          {
+            "grupo": "Imperdibles",
+            "empanadas": [
+              {
+                "name": "Cordero",
+                "quantity": 4
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "total": 33500,
+    "originalTotal": 33500,
+    "paymentMethod": "efectivo",
+    "surchargePercent": 0,
+    "paymentAmounts": {
+      "efectivo": 33500,
+      "transferencia": 0
+    },
+    "local": "local1",
+    "orderName": "nico",
+    "sellerName": "dasdas"
   }
 ]

@@ -202,5 +202,17 @@
     "action": "egreso",
     "timestamp": "2025-04-04T12:54:24.826Z",
     "local": "local1"
+  },
+  {
+    "employeeName": "tuto",
+    "action": "ingreso",
+    "timestamp": "2025-04-04T12:58:19.819Z",
+    "local": "local1"
+  },
+  {
+    "employeeName": "locolindo",
+    "action": "egreso",
+    "timestamp": "2025-04-04T12:58:32.899Z",
+    "local": "local1"
   }
 ]

@@ -330,5 +330,111 @@
         "sellerName": "locolindo"
       }
     ]
+  },
+  {
+    "date": "2025-04-04T13:19:21.586Z",
+    "totalPayments": 1,
+    "totalAmount": 100,
+    "local": "local1",
+    "closeTime": "2025-04-04T13:19:21.588Z",
+    "startTime": "2025-04-04T12:41:44.538Z",
+    "productSummary": [
+      {
+        "name": "Carne",
+        "price": 100,
+        "quantitySold": 3,
+        "totalSold": 300,
+        "initialStock": 302,
+        "remainingStock": 301
+      },
+      {
+        "name": "Picante",
+        "price": 100,
+        "quantitySold": 1,
+        "totalSold": 100,
+        "initialStock": 74,
+        "remainingStock": 73
+      }
+    ],
+    "paymentSummary": {
+      "efectivo": 400,
+      "transferencia": 0,
+      "mixto": 0,
+      "total": 100
+    },
+    "ordersCount": 4,
+    "orders": [
+      {
+        "total": 100,
+        "paymentMethod": "efectivo",
+        "orderName": "sda",
+        "sellerName": "dani"
+      },
+      {
+        "total": 100,
+        "paymentMethod": "efectivo",
+        "orderName": "",
+        "sellerName": "locolindo"
+      },
+      {
+        "total": 100,
+        "paymentMethod": "efectivo",
+        "orderName": "adadsa",
+        "sellerName": "pedropicapiedra"
+      },
+      {
+        "total": 100,
+        "paymentMethod": "efectivo",
+        "orderName": "nico",
+        "sellerName": "dasdas"
+      }
+    ]
+  },
+  {
+    "date": "2025-04-04T13:20:53.731Z",
+    "totalPayments": 2,
+    "totalAmount": 33600,
+    "local": "local1",
+    "closeTime": "2025-04-04T13:20:53.732Z",
+    "startTime": "2025-04-04T13:19:21.588Z",
+    "productSummary": [
+      {
+        "name": "Carne",
+        "price": 100,
+        "quantitySold": 1,
+        "totalSold": 100,
+        "initialStock": 297,
+        "remainingStock": 296
+      },
+      {
+        "name": "Docena Combinada 2",
+        "price": 33500,
+        "quantitySold": 1,
+        "totalSold": 33500,
+        "initialStock": 101,
+        "remainingStock": 100
+      }
+    ],
+    "paymentSummary": {
+      "efectivo": 33600,
+      "transferencia": 0,
+      "mixto": 0,
+      "total": 33600
+    },
+    "ordersCount": 2,
+    "orders": [
+      {
+        "total": 100,
+        "paymentMethod": "efectivo",
+        "orderName": "lucas",
+        "sellerName": "pedropicapiedra"
+      },
+      {
+        "total": 33500,
+        "paymentMethod": "efectivo",
+        "orderName": "nico",
+        "sellerName": "dasdas"
+      }
+    ]
   }
 ]
