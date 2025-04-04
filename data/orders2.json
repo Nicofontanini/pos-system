@@ -2575,5 +2575,28 @@
     "local": "local2",
     "orderName": "lucas",
     "sellerName": "nico"
+  },
+  {
+    "date": "2025-04-04T12:49:26.337Z",
+    "items": [
+      {
+        "id": 1,
+        "name": "Carne",
+        "price": 100,
+        "quantity": 1,
+        "details": null
+      }
+    ],
+    "total": 100,
+    "originalTotal": 100,
+    "paymentMethod": "transferencia",
+    "surchargePercent": 0,
+    "paymentAmounts": {
+      "efectivo": 0,
+      "transferencia": 100
+    },
+    "local": "local2",
+    "orderName": "dasdas",
+    "sellerName": ""
   }
 ]

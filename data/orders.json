@@ -455,5 +455,28 @@
     "local": "local1",
     "orderName": "dasdas",
     "sellerName": "locolindo"
+  },
+  {
+    "date": "2025-04-04T12:52:01.745Z",
+    "items": [
+      {
+        "id": 1,
+        "name": "Carne",
+        "price": 100,
+        "quantity": 1,
+        "details": null
+      }
+    ],
+    "total": 100,
+    "originalTotal": 100,
+    "paymentMethod": "efectivo",
+    "surchargePercent": 0,
+    "paymentAmounts": {
+      "efectivo": 100,
+      "transferencia": 0
+    },
+    "local": "local1",
+    "orderName": "sda",
+    "sellerName": "dani"
   }
 ]
