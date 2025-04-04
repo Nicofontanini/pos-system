@@ -190,5 +190,17 @@
     "action": "egreso",
     "timestamp": "2025-04-04T11:58:40.971Z",
     "local": "local2"
+  },
+  {
+    "employeeName": "pedropicapiedra",
+    "action": "ingreso",
+    "timestamp": "2025-04-04T12:54:15.683Z",
+    "local": "local1"
+  },
+  {
+    "employeeName": "dani",
+    "action": "egreso",
+    "timestamp": "2025-04-04T12:54:24.826Z",
+    "local": "local1"
   }
 ]

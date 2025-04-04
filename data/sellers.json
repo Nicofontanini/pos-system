@@ -8,11 +8,11 @@
       "name": "locolindo",
       "updatedAt": "2025-04-04T11:24:46.773Z"
     },
-    "vendedor3": {
-      "name": "dani",
-      "updatedAt": "2025-04-02T15:05:06.474Z"
-    },
-    "vendedor4": null
+    "vendedor3": null,
+    "vendedor4": {
+      "name": "pedropicapiedra",
+      "updatedAt": "2025-04-04T12:54:15.684Z"
+    }
   },
   "local2": {
     "vendedor1": {
