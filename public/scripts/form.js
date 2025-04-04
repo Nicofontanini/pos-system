@@ -16,25 +16,3 @@ function toggleForm() {
       button.textContent = "Ocultar Formulario";
     }
   }
-
-  // Función para cargar las categorías
- /*  function loadCategories() {
-    const local = window.location.pathname.includes('local1') ? 'local1' : 'local2';
-    fetch(`/get-categories/${local}`)
-      .then(response => response.json())
-      .then(categories => {
-        const categoryFilter = document.getElementById('categoryFilter');
-        categoryFilter.innerHTML = '<option value="Todas">Todas las Categorías</option>';
-
-        categories.forEach(category => {
-          const option = document.createElement('option');
-          option.value = category;
-          option.textContent = category;
-          categoryFilter.appendChild(option);
-        });
-      })
-      .catch(error => console.error('Error al cargar las categorías:', error));
-  }
-
-  // Llamar a la función cuando la página cargue
-  document.addEventListener('DOMContentLoaded', loadCategories); */
