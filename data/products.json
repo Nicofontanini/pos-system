@@ -336,6 +336,14 @@
         "stock": 99,
         "description": "Bebidas 500cc.",
         "id": 44
+      },
+      {
+        "name": "Producto A",
+        "category": "Tradicionales",
+        "price": 200,
+        "stock": 100,
+        "description": "tan buenas",
+        "id": 46
       }
     ]
   },
@@ -684,6 +692,14 @@
         "stock": 100,
         "description": "Bebidas 500cc.",
         "id": 45
+      },
+      {
+        "name": "Producto A",
+        "category": "Tradicionales",
+        "price": 200,
+        "stock": 100,
+        "description": "tan buenas",
+        "id": 46
       }
     ]
   }
