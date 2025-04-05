@@ -549,6 +549,171 @@ app.post('/clean-old-data', (req, res) => {
   }
 });
 
+// Ruta para obtener un producto específico
+app.get('/api/product/:id', (req, res) => {
+  const productId = parseInt(req.params.id);
+  const local = req.query.local || 'local1';
+  const products = inventory[local].products;
+  const product = products.find(p => p.id === productId);
+  
+  if (!product) {
+    return res.status(404).json({ error: 'Producto no encontrado' });
+  }
+  
+  res.json(product);
+});
+
+// Ruta para obtener todos los productos disponibles
+app.get('/api/products', (req, res) => {
+  const local = req.query.local || 'local1';
+  const products = inventory[local].products;
+  res.json({ products });
+});
+
+// Ruta para agregar un nuevo producto
+app.post('/api/product', (req, res) => {
+  try {
+    const local = req.query.local || 'local1';
+    const newProduct = req.body;
+    
+    // Generar un nuevo ID
+    const lastProduct = inventory[local].products[inventory[local].products.length - 1];
+    const newId = lastProduct ? lastProduct.id + 1 : 1;
+    newProduct.id = newId;
+    
+    // Agregar el producto
+    inventory[local].products.push(newProduct);
+    
+    // Guardar los cambios en el archivo
+    fs.writeFileSync(productsPath, JSON.stringify(inventory, null, 2));
+    
+    res.json({ success: true, product: newProduct });
+  } catch (error) {
+    console.error('Error al agregar producto:', error);
+    res.status(500).json({ success: false, error: 'Error al agregar el producto' });
+  }
+});
+
+// Ruta para actualizar un producto existente
+app.put('/api/product/:id', (req, res) => {
+  try {
+    const local = req.query.local || 'local1';
+    const productId = parseInt(req.params.id);
+    const updatedProduct = req.body;
+    
+    const productIndex = inventory[local].products.findIndex(p => p.id === productId);
+    if (productIndex === -1) {
+      return res.status(404).json({ success: false, error: 'Producto no encontrado' });
+    }
+    
+    // Actualizar el producto
+    inventory[local].products[productIndex] = { ...inventory[local].products[productIndex], ...updatedProduct };
+    
+    // Guardar los cambios en el archivo
+    fs.writeFileSync(productsPath, JSON.stringify(inventory, null, 2));
+    
+    res.json({ success: true, product: inventory[local].products[productIndex] });
+  } catch (error) {
+    console.error('Error al actualizar producto:', error);
+    res.status(500).json({ success: false, error: 'Error al actualizar el producto' });
+  }
+});
+
+// Función auxiliar para actualizar el stock de productos componentes
+function updateComponentStock(productId, quantity, local) {
+  const product = inventory[local].products.find(p => p.id === productId);
+  if (product) {
+    product.stock -= quantity;
+    if (product.stock < 0) {
+      product.stock = 0;
+    }
+    
+    // Actualizar el archivo inmediatamente para reflejar los cambios
+    fs.writeFileSync(productsPath, JSON.stringify(inventory, null, 2));
+  }
+}
+
+// Ruta para realizar una venta
+app.post('/api/sale', (req, res) => {
+  try {
+    const local = req.query.local || 'local1';
+    const sale = req.body;
+    
+    // Preparar los datos de la venta con la información de los componentes
+    const saleWithComponents = {
+      ...sale,
+      items: sale.items.map(item => {
+        const product = inventory[local].products.find(p => p.id === item.productId);
+        if (product && product.isCompound) {
+          return {
+            ...item,
+            productDetails: {
+              name: product.name,
+              price: product.price,
+              components: product.components.map(component => {
+                const componentProduct = inventory[local].products.find(p => p.id === component.productId);
+                return {
+                  name: componentProduct ? componentProduct.name : 'Producto no encontrado',
+                  quantity: component.quantity * item.quantity
+                };
+              })
+            }
+          };
+        }
+        return item;
+      })
+    };
+    
+    // Verificar y actualizar el stock de productos
+    sale.items.forEach(item => {
+      const product = inventory[local].products.find(p => p.id === item.productId);
+      if (product) {
+        // Si es un producto compuesto, actualizar el stock de sus componentes
+        if (product.isCompound && product.components) {
+          product.components.forEach(component => {
+            const componentQuantity = component.quantity * item.quantity;
+            updateComponentStock(component.productId, componentQuantity, local);
+          });
+        }
+        
+        // Si es una docena, actualizar el stock de sus empanadas
+        if (product.category === "Docena" && product.details) {
+          product.details.forEach(detail => {
+            const empanada = inventory[local].products.find(p => p.name === detail.name);
+            if (empanada) {
+              empanada.stock -= (detail.quantity * item.quantity);
+              if (empanada.stock < 0) {
+                empanada.stock = 0;
+              }
+            }
+          });
+        }
+        
+        // Actualizar el stock del producto principal
+        product.stock -= item.quantity;
+        if (product.stock < 0) {
+          product.stock = 0;
+        }
+      }
+    });
+    
+    // Guardar los cambios en el archivo
+    fs.writeFileSync(productsPath, JSON.stringify(inventory, null, 2));
+    
+    // Emitir el evento de venta al socket
+    socket.emit('sale', {
+      ...saleWithComponents,
+      timestamp: new Date().toISOString(),
+      local: local
+    });
+    
+    res.json({ success: true });
+  } catch (error) {
+    console.error('Error al procesar venta:', error);
+    res.status(500).json({ success: false, error: 'Error al procesar la venta' });
+  }
+});
+
 // Start server
 const server = app.listen(port, () => {
   console.log(`Servidor corriendo en http://localhost:${port}`);
@@ -688,9 +853,17 @@ io.on('connection', (socket) => {
         item.details.forEach(detail => {
           const product = inventory[local].products.find(p => p.name === detail.name);
           if (product) {
+            // Si es un producto compuesto, actualizar el stock de sus componentes
+            if (product.isCompound && product.components) {
+              product.components.forEach(component => {
+                const componentQuantity = component.quantity * detail.quantity;
+                updateComponentStock(component.productId, componentQuantity, local);
+              });
+            }
+            
             product.stock -= detail.quantity;
             if (product.stock < 0) {
-              return socket.emit('error', `No hay suficiente stock para el producto ${product.name}`);
+              product.stock = 0;
             }
           }
         });
@@ -698,9 +871,17 @@ io.on('connection', (socket) => {
         // If it's not a dozen, subtract stock from the product directly
         const product = inventory[local].products.find(p => p.id === item.id);
         if (product) {
+          // Si es un producto compuesto, actualizar el stock de sus componentes
+          if (product.isCompound && product.components) {
+            product.components.forEach(component => {
+              const componentQuantity = component.quantity * item.quantity;
+              updateComponentStock(component.productId, componentQuantity, local);
+            });
+          }
+          
           product.stock -= item.quantity;
           if (product.stock < 0) {
-            return socket.emit('error', `No hay suficiente stock para el producto ${product.name}`);
+            product.stock = 0;
           }
         }
       }

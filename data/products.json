@@ -5,9 +5,11 @@
         "name": "Carne",
         "category": "Tradicionales",
         "price": 100,
-        "stock": 25,
+        "stock": 188,
         "description": "Carne seleccionada picada, Cebolla y Huevo duro.",
-        "id": 1
+        "id": 1,
+        "isCompound": false,
+        "components": []
       },
       {
         "name": "Picante",
@@ -344,6 +346,48 @@
         "stock": 100,
         "description": "tan buenas",
         "id": 46
+      },
+      {
+        "name": "dasda",
+        "category": "empanadas",
+        "price": 20,
+        "stock": 1,
+        "description": "adasd",
+        "id": 47
+      },
+      {
+        "name": "Producto i",
+        "category": "Tradicionales",
+        "price": 700,
+        "stock": 97,
+        "description": "tan dsa",
+        "isCompound": true,
+        "components": [
+          {
+            "productId": 1,
+            "quantity": 6
+          },
+          {
+            "productId": 4,
+            "quantity": 6
+          }
+        ],
+        "id": 48
+      },
+      {
+        "name": "Productot",
+        "category": "Tradicionales",
+        "price": 100,
+        "stock": 94,
+        "description": "tan dsa",
+        "isCompound": true,
+        "components": [
+          {
+            "productId": 1,
+            "quantity": 12
+          }
+        ],
+        "id": 49
       }
     ]
   },
@@ -700,6 +744,14 @@
         "stock": 100,
         "description": "tan buenas",
         "id": 46
+      },
+      {
+        "name": "dasda",
+        "category": "empanadas",
+        "price": 20,
+        "stock": 1,
+        "description": "adasd",
+        "id": 47
       }
     ]
   }

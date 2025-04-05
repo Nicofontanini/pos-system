@@ -704,5 +704,212 @@
     "local": "local1",
     "orderName": "lucas",
     "sellerName": "dasdas"
+  },
+  {
+    "date": "2025-04-04T23:43:39.788Z",
+    "items": [
+      {
+        "id": 48,
+        "name": "Producto i",
+        "price": 700,
+        "quantity": 1,
+        "details": null
+      }
+    ],
+    "total": 700,
+    "originalTotal": 700,
+    "paymentMethod": "transferencia",
+    "surchargePercent": 0,
+    "paymentAmounts": {
+      "efectivo": 0,
+      "transferencia": 700
+    },
+    "local": "local1",
+    "orderName": "nico",
+    "sellerName": "dasdas"
+  },
+  {
+    "date": "2025-04-04T23:46:12.780Z",
+    "items": [
+      {
+        "id": 48,
+        "name": "Producto i",
+        "price": 700,
+        "quantity": 1,
+        "details": null
+      }
+    ],
+    "total": 700,
+    "originalTotal": 700,
+    "paymentMethod": "efectivo",
+    "surchargePercent": 0,
+    "paymentAmounts": {
+      "efectivo": 700,
+      "transferencia": 0
+    },
+    "local": "local1",
+    "orderName": "nico",
+    "sellerName": "dasdas"
+  },
+  {
+    "date": "2025-04-04T23:48:48.284Z",
+    "items": [
+      {
+        "id": 48,
+        "name": "Producto i",
+        "price": 700,
+        "quantity": 1,
+        "details": null
+      }
+    ],
+    "total": 700,
+    "originalTotal": 700,
+    "paymentMethod": "efectivo",
+    "surchargePercent": 0,
+    "paymentAmounts": {
+      "efectivo": 700,
+      "transferencia": 0
+    },
+    "local": "local1",
+    "orderName": "nico",
+    "sellerName": "dasdas"
+  },
+  {
+    "date": "2025-04-04T23:50:43.388Z",
+    "items": [
+      {
+        "id": 49,
+        "name": "Productot",
+        "price": 100,
+        "quantity": 1,
+        "details": null
+      }
+    ],
+    "total": 100,
+    "originalTotal": 100,
+    "paymentMethod": "efectivo",
+    "surchargePercent": 0,
+    "paymentAmounts": {
+      "efectivo": 100,
+      "transferencia": 0
+    },
+    "local": "local1",
+    "orderName": "nico",
+    "sellerName": "dasdas"
+  },
+  {
+    "date": "2025-04-04T23:53:26.621Z",
+    "items": [
+      {
+        "id": 49,
+        "name": "Productot",
+        "price": 100,
+        "quantity": 1,
+        "details": null
+      }
+    ],
+    "total": 100,
+    "originalTotal": 100,
+    "paymentMethod": "efectivo",
+    "surchargePercent": 0,
+    "paymentAmounts": {
+      "efectivo": 100,
+      "transferencia": 0
+    },
+    "local": "local1",
+    "orderName": "nico",
+    "sellerName": "dasdas"
+  },
+  {
+    "date": "2025-04-04T23:53:54.300Z",
+    "items": [
+      {
+        "id": 49,
+        "name": "Productot",
+        "price": 100,
+        "quantity": 1,
+        "details": null
+      }
+    ],
+    "total": 100,
+    "originalTotal": 100,
+    "paymentMethod": "efectivo",
+    "surchargePercent": 0,
+    "paymentAmounts": {
+      "efectivo": 100,
+      "transferencia": 0
+    },
+    "local": "local1",
+    "orderName": "nico",
+    "sellerName": "dasdas"
+  },
+  {
+    "date": "2025-04-05T00:02:28.717Z",
+    "items": [
+      {
+        "id": 49,
+        "name": "Productot",
+        "price": 100,
+        "quantity": 1,
+        "details": null
+      }
+    ],
+    "total": 100,
+    "originalTotal": 100,
+    "paymentMethod": "efectivo",
+    "surchargePercent": 0,
+    "paymentAmounts": {
+      "efectivo": 100,
+      "transferencia": 0
+    },
+    "local": "local1",
+    "orderName": "sdaasd",
+    "sellerName": "dasdas"
+  },
+  {
+    "date": "2025-04-05T00:03:35.060Z",
+    "items": [
+      {
+        "id": 49,
+        "name": "Productot",
+        "price": 100,
+        "quantity": 1,
+        "details": null
+      }
+    ],
+    "total": 100,
+    "originalTotal": 100,
+    "paymentMethod": "efectivo",
+    "surchargePercent": 0,
+    "paymentAmounts": {
+      "efectivo": 100,
+      "transferencia": 0
+    },
+    "local": "local1",
+    "orderName": "nico",
+    "sellerName": "dasdas"
+  },
+  {
+    "date": "2025-04-05T00:05:16.853Z",
+    "items": [
+      {
+        "id": 49,
+        "name": "Productot",
+        "price": 100,
+        "quantity": 1,
+        "details": null
+      }
+    ],
+    "total": 100,
+    "originalTotal": 100,
+    "paymentMethod": "efectivo",
+    "surchargePercent": 0,
+    "paymentAmounts": {
+      "efectivo": 100,
+      "transferencia": 0
+    },
+    "local": "local1",
+    "orderName": "nico",
+    "sellerName": "dasdas"
   }
 ]
