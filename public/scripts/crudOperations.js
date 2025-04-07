@@ -9,8 +9,14 @@ function saveProduct() {
             const productId = item.querySelector('.compound-product-select').value;
             const quantity = parseInt(item.querySelector('.compound-quantity').value);
             if (productId && quantity > 0) {
+                // Obtener el nombre del producto seleccionado
+                const productName = item.querySelector('.compound-product-select').options[item.querySelector('.compound-product-select').selectedIndex].textContent;
+                // Eliminar el precio del nombre (si existe)
+                const name = productName.split(' - ')[0];
+                
                 compoundProducts.push({
                     productId: parseInt(productId),
+                    name: name,
                     quantity: quantity
                 });
             }

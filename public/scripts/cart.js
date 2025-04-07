@@ -14,23 +14,163 @@ function addToCart(productId, productName, productPrice) {
 
       openDocenaModal(currentDocena);
     } else {
-      // Si no es una docena, agregar el producto normalmente
-      const local = window.location.pathname.includes('local1') ? 'local1' : 'local2';
-      socket.emit('add-to-cart', {
+      // Obtener los detalles del producto
+      fetch(`/api/product/${productId}`)
+        .then(response => response.json())
+        .then(product => {
+          if (product.isCompound) {
+            // Para productos compuestos, mostrar el modal de edición
+            const item = {
+              id: productId,
+              name: productName,
+              price: productPrice,
+              quantity: 1,
+              details: product.components
+            };
+            
+            showEditCompoundModal(item);
+          } else {
+            // Para productos normales, agregar directamente al carrito
+            const local = window.location.pathname.includes('local1') ? 'local1' : 'local2';
+            socket.emit('add-to-cart', {
+              local: local,
+              product: {
+                id: productId,
+                name: productName,
+                price: productPrice,
+                quantity: 1
+              }
+            });
+          }
+        })
+        .catch(error => console.error('Error al obtener detalles del producto:', error));
+    }
+}
+
+// Función para mostrar el modal de edición
+function showEditCompoundModal(item) {
+    const modal = document.createElement('div');
+    modal.className = 'edit-compound-modal';
+    
+    // Obtener detalles completos de los productos
+    fetch('/api/products')
+      .then(response => response.json())
+      .then(data => {
+        const products = data.products;
+        
+        let modalContent = `
+          <div class="modal-content">
+            <h3>Editar ${item.name}</h3>
+            <div class="compound-components">`;
+            
+        item.details.forEach(component => {
+          const product = products.find(p => p.id === component.productId);
+          const productName = product ? product.name : `Producto ${component.productId}`;
+          
+          modalContent += `
+              <div class="component">
+                <label>${productName}:</label>
+                <div class="quantity-controls">
+                    <button class="decrement-btn" data-product-id="${component.productId}">-</button>
+                    <span class="quantity-display">${component.quantity}</span>
+                    <button class="increment-btn" data-product-id="${component.productId}">+</button>
+                </div>
+              </div>`;
+        });
+        
+        modalContent += `
+            </div>
+            <div class="modal-actions">
+              <button class="save-btn">Guardar y Agregar al Carrito</button>
+              <button class="cancel-btn">Cancelar</button>
+            </div>
+          </div>`;
+        
+        modal.innerHTML = modalContent;
+        document.body.appendChild(modal);
+        
+        // Asegurarse de que los botones existan antes de agregar los listeners
+        const saveBtn = modal.querySelector('.save-btn');
+        const cancelBtn = modal.querySelector('.cancel-btn');
+        
+        if (saveBtn && cancelBtn) {
+            saveBtn.addEventListener('click', () => {
+                saveCompoundChanges(item.id, modal, products, item.name, item.price);
+            });
+            
+            cancelBtn.addEventListener('click', () => {
+                modal.remove();
+            });
+        }
+
+        // Agregar listeners para los botones de incremento/decremento
+        const decrementBtns = modal.querySelectorAll('.decrement-btn');
+        const incrementBtns = modal.querySelectorAll('.increment-btn');
+        
+        decrementBtns.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const productId = parseInt(e.target.dataset.productId);
+                const quantityDisplay = e.target.nextElementSibling;
+                let quantity = parseInt(quantityDisplay.textContent);
+                
+                if (quantity > 0) {
+                    quantity--;
+                    quantityDisplay.textContent = quantity;
+                }
+            });
+        });
+
+        incrementBtns.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const productId = parseInt(e.target.dataset.productId);
+                const quantityDisplay = e.target.previousElementSibling;
+                let quantity = parseInt(quantityDisplay.textContent);
+                
+                quantity++;
+                quantityDisplay.textContent = quantity;
+            });
+        });
+      })
+      .catch(error => console.error('Error al obtener productos:', error));
+}
+
+// Función para guardar los cambios
+function saveCompoundChanges(itemId, modal, products, productName, productPrice) {
+    const decrementBtns = modal.querySelectorAll('.decrement-btn');
+    const newDetails = [];
+    
+    decrementBtns.forEach((btn, index) => {
+        const productId = parseInt(btn.dataset.productId);
+        const product = products.find(p => p.id === productId);
+        const productName = product ? product.name : `Producto ${productId}`;
+        const quantityDisplay = btn.nextElementSibling;
+        const quantity = parseInt(quantityDisplay.textContent);
+        
+        newDetails.push({
+            productId: productId,
+            name: productName,
+            quantity: quantity
+        });
+    });
+    
+    // Agregar al carrito
+    const local = window.location.pathname.includes('local1') ? 'local1' : 'local2';
+    socket.emit('add-to-cart', {
         local: local,
         product: {
-          id: productId,
-          name: productName,
-          price: productPrice,
-          quantity: 1,
-          details: null
+            id: itemId,
+            name: productName,
+            price: productPrice,
+            quantity: 1,
+            details: newDetails
         }
-      });
-    }
-  }
+    });
+    
+    modal.remove();
+}
 
-  // Función para actualizar la interfaz del carrito
-  function updateCartUI() {
+// Función para actualizar la interfaz del carrito
+function updateCartUI() {
     const cartItemsElement = document.getElementById('cart-items');
     const cartTotalElement = document.getElementById('cart-total');
     const checkoutButton = document.getElementById('checkoutButton');
@@ -42,28 +182,85 @@ function addToCart(productId, productName, productPrice) {
     cart.forEach((item) => {
       const itemElement = document.createElement('div');
       itemElement.className = 'cart-item';
-      itemElement.innerHTML = `
-    <p>${item.name} - $${item.price} x ${item.quantity}</p>
-    <button onclick="decrementProduct(${item.id})">-</button>
-    <span>${item.quantity}</span>
-    <button onclick="incrementProduct(${item.id})">+</button>
-    <button onclick="removeFromCart(${item.id})">Eliminar</button>
-  `;
-      cartItemsElement.appendChild(itemElement);
-      total += item.price * item.quantity; // Calcular el total
-    });
-
-    cartTotalElement.textContent = total.toFixed(2); // Actualizar el total
-    checkoutButton.disabled = cart.length === 0; // Habilitar/deshabilitar el botón de compra
-  }
-
-     // Función para eliminar un producto del carrito
-     function removeFromCart(productId) {
-        const local = window.location.pathname.includes('local1') ? 'local1' : 'local2';
-        socket.emit('remove-from-cart', { local, productId });
+      
+      // Construir el HTML del producto
+      let productDetails = ``;
+      if (item.details && item.details.length > 0) {
+        // Si es un producto compuesto, mostrar sus componentes
+        productDetails = `<div class="compound-details">
+          <h4>Componentes:</h4>
+          <ul>`;
+          
+          // Obtener nombres de productos componentes
+          fetch('/api/products')
+            .then(response => response.json())
+            .then(data => {
+              const products = data.products;
+              item.details.forEach(component => {
+                const componentProduct = products.find(p => p.id === component.productId);
+                const productName = componentProduct ? componentProduct.name : `Producto ${component.productId}`;
+                productDetails += `<li>${component.quantity} x ${productName}</li>`;
+              });
+              
+              productDetails += `</ul></div>`;
+              
+              // Actualizar el HTML del item
+              itemElement.innerHTML = `
+                <div class="product-info">
+                  <p>${item.name} - $${item.price} x ${item.quantity}</p>
+                  ${productDetails}
+                </div>
+                <div class="quantity-controls">
+                  <button onclick="decrementProduct(${item.id})">-</button>
+                  <span>${item.quantity}</span>
+                  <button onclick="incrementProduct(${item.id})">+</button>
+                </div>
+                <button onclick="removeFromCart(${item.id})">Eliminar</button>
+              `;
+              
+              // const editBtn = document.createElement('button');
+              // editBtn.className = 'edit-btn';
+              // editBtn.textContent = 'Editar Cantidades';
+              // editBtn.onclick = () => showEditCompoundModal(item);
+              // itemElement.appendChild(editBtn);
+              
+              cartItemsElement.appendChild(itemElement);
+              total += item.price * item.quantity;
+              cartTotalElement.textContent = total.toFixed(2);
+            })
+            .catch(error => console.error('Error al obtener productos:', error));
+          
+          return;
       }
 
-      // Función para procesar la venta
+      // Para productos no compuestos
+      itemElement.innerHTML = `
+        <div class="product-info">
+          <p>${item.name} - $${item.price} x ${item.quantity}</p>
+        </div>
+        <div class="quantity-controls">
+          <button onclick="decrementProduct(${item.id})">-</button>
+          <span>${item.quantity}</span>
+          <button onclick="incrementProduct(${item.id})">+</button>
+        </div>
+        <button onclick="removeFromCart(${item.id})">Eliminar</button>
+      `;
+      
+      cartItemsElement.appendChild(itemElement);
+      total += item.price * item.quantity;
+    });
+
+    cartTotalElement.textContent = total.toFixed(2);
+    checkoutButton.disabled = cart.length === 0;
+  }
+
+  // Función para eliminar un producto del carrito
+  function removeFromCart(productId) {
+    const local = window.location.pathname.includes('local1') ? 'local1' : 'local2';
+    socket.emit('remove-from-cart', { local, productId });
+  }
+
+  // Función para procesar la venta
 function processSale() {
     const cartItems = JSON.parse(localStorage.getItem('cart')) || [];
     const local = localStorage.getItem('currentLocal') || 'local1';
@@ -119,13 +316,13 @@ function processSale() {
                 if (data.success) {
                     // Limpiar el carrito
                     localStorage.removeItem('cart');
-                    updateCart();
+                    updateCartUI();
                     
                     // Mostrar mensaje de éxito
                     alert('Venta procesada exitosamente');
                     
                     // Actualizar la lista de productos
-                    loadProducts();
+                    products();
                 } else {
                     alert('Error al procesar la venta: ' + data.error);
                 }
@@ -335,6 +532,128 @@ function processSale() {
 
         // Filtrar solo las empanadas con cantidad > 0
         return empanadas.filter(empanada => empanada.quantity > 0);
+      }
+
+      // Función para mostrar el modal de edición
+      function showEditCompoundModal(item) {
+        const modal = document.createElement('div');
+        modal.className = 'edit-compound-modal';
+        
+        // Obtener detalles completos de los productos
+        fetch('/api/products')
+          .then(response => response.json())
+          .then(data => {
+            const products = data.products;
+            
+            let modalContent = `
+              <div class="modal-content">
+                <h3>Editar ${item.name}</h3>
+                <div class="compound-components">`;
+                
+            item.details.forEach(component => {
+              const product = products.find(p => p.id === component.productId);
+              const productName = product ? product.name : `Producto ${component.productId}`;
+              
+              modalContent += `
+                  <div class="component">
+                    <label>${productName}:</label>
+                    <div class="quantity-controls">
+                        <button class="decrement-btn" data-product-id="${component.productId}">-</button>
+                        <span class="quantity-display">${component.quantity}</span>
+                        <button class="increment-btn" data-product-id="${component.productId}">+</button>
+                    </div>
+                  </div>`;
+            });
+            
+            modalContent += `
+                </div>
+                <div class="modal-actions">
+                  <button class="save-btn">Aceptar</button>
+                  <button class="cancel-btn">Cancelar</button>
+                </div>
+              </div>`;
+            
+            modal.innerHTML = modalContent;
+            document.body.appendChild(modal);
+            
+            // Asegurarse de que los botones existan antes de agregar los listeners
+            const saveBtn = modal.querySelector('.save-btn');
+            const cancelBtn = modal.querySelector('.cancel-btn');
+            
+            if (saveBtn && cancelBtn) {
+                saveBtn.addEventListener('click', () => {
+                    saveCompoundChanges(item.id, modal, products, item.name, item.price);
+                });
+                
+                cancelBtn.addEventListener('click', () => {
+                    modal.remove();
+                });
+            }
+
+            // Agregar listeners para los botones de incremento/decremento
+            const decrementBtns = modal.querySelectorAll('.decrement-btn');
+            const incrementBtns = modal.querySelectorAll('.increment-btn');
+            
+            decrementBtns.forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const productId = parseInt(e.target.dataset.productId);
+                    const quantityDisplay = e.target.nextElementSibling;
+                    let quantity = parseInt(quantityDisplay.textContent);
+                    
+                    if (quantity > 0) {
+                        quantity--;
+                        quantityDisplay.textContent = quantity;
+                    }
+                });
+            });
+
+            incrementBtns.forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const productId = parseInt(e.target.dataset.productId);
+                    const quantityDisplay = e.target.previousElementSibling;
+                    let quantity = parseInt(quantityDisplay.textContent);
+                    
+                    quantity++;
+                    quantityDisplay.textContent = quantity;
+                });
+            });
+          })
+          .catch(error => console.error('Error al obtener productos:', error));
+      }
+
+      // Función para guardar los cambios
+      function saveCompoundChanges(itemId, modal, products, productName, productPrice) {
+        const decrementBtns = modal.querySelectorAll('.decrement-btn');
+        const newDetails = [];
+        
+        decrementBtns.forEach((btn, index) => {
+            const productId = parseInt(btn.dataset.productId);
+            const product = products.find(p => p.id === productId);
+            const productName = product ? product.name : `Producto ${productId}`;
+            const quantityDisplay = btn.nextElementSibling;
+            const quantity = parseInt(quantityDisplay.textContent);
+            
+            newDetails.push({
+                productId: productId,
+                name: productName,
+                quantity: quantity
+            });
+        });
+        
+        // Agregar al carrito
+        const local = window.location.pathname.includes('local1') ? 'local1' : 'local2';
+        socket.emit('add-to-cart', {
+            local: local,
+            product: {
+                id: itemId,
+                name: productName,
+                price: productPrice,
+                quantity: 1,
+                details: newDetails
+            }
+        });
+        
+        modal.remove();
       }
 
       // Función para incrementar la cantidad de un producto

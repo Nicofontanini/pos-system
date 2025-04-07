@@ -5,7 +5,7 @@
         "name": "Carne",
         "category": "Tradicionales",
         "price": 100,
-        "stock": 188,
+        "stock": 168,
         "description": "Carne seleccionada picada, Cebolla y Huevo duro.",
         "id": 1,
         "isCompound": false,
@@ -15,7 +15,7 @@
         "name": "Picante",
         "category": "Tradicionales",
         "price": 100,
-        "stock": 113,
+        "stock": 107,
         "description": "Carne cortada a cuchillo, Macerada con mix de pimientas, Aji picante.",
         "id": 4
       },
@@ -39,7 +39,7 @@
         "name": "Choclo",
         "category": "Tradicionales",
         "price": 100,
-        "stock": 100,
+        "stock": 94,
         "description": "Granos de chochlo y cebolla salteados, Choclo cremoso y muzzarella.",
         "id": 7
       },
@@ -55,7 +55,7 @@
         "name": "Jamon y Muzza",
         "category": "Tradicionales",
         "price": 200,
-        "stock": 100,
+        "stock": 0,
         "description": "Jamon cortado en daditos, queso tybo y muzzarella y oregano.",
         "id": 9
       },
@@ -95,7 +95,7 @@
         "name": "Panceta y ciruela",
         "category": "Especiales",
         "price": 200,
-        "stock": 100,
+        "stock": 94,
         "description": "Panceta, ciruelas y muzzarella.",
         "id": 14
       },
@@ -135,7 +135,7 @@
         "name": "Vacio/Provolone",
         "category": "Especiales",
         "price": 200,
-        "stock": 100,
+        "stock": 23,
         "description": "Vacio cortado a cuchillo, provolone, cebolla y verdeo.",
         "id": 19
       },
@@ -143,7 +143,7 @@
         "name": "Vacio/Provolone",
         "category": "Especiales",
         "price": 200,
-        "stock": 100,
+        "stock": 90,
         "description": "Vacio cortado a cuchillo, provolone, cebolla y verdeo.",
         "id": 20
       },
@@ -358,18 +358,14 @@
       {
         "name": "Producto i",
         "category": "Tradicionales",
-        "price": 700,
+        "price": 400,
         "stock": 97,
         "description": "tan dsa",
         "isCompound": true,
         "components": [
           {
-            "productId": 1,
-            "quantity": 6
-          },
-          {
-            "productId": 4,
-            "quantity": 6
+            "productId": 18,
+            "quantity": 1
           }
         ],
         "id": 48
@@ -388,6 +384,106 @@
           }
         ],
         "id": 49
+      },
+      {
+        "name": "Producto nico",
+        "category": "Tradicionales",
+        "price": 1600,
+        "stock": 100,
+        "description": "teson",
+        "isCompound": true,
+        "components": [
+          {
+            "productId": 1,
+            "name": "Carne",
+            "quantity": 6
+          },
+          {
+            "productId": 4,
+            "name": "Picante",
+            "quantity": 6
+          },
+          {
+            "productId": 14,
+            "name": "Panceta y ciruela",
+            "quantity": 6
+          },
+          {
+            "productId": 19,
+            "name": "Choclo",
+            "quantity": 6
+          }
+        ],
+        "id": 50
+      },
+      {
+        "name": "Producto q",
+        "category": "Tradicionales",
+        "price": 1200,
+        "stock": 100,
+        "description": "tan dsa",
+        "isCompound": true,
+        "components": [
+          {
+            "productId": 17,
+            "quantity": 6
+          },
+          {
+            "productId": 8,
+            "quantity": 6
+          }
+        ],
+        "id": 51
+      },
+      {
+        "name": "Producto fas",
+        "category": "Tradicionales",
+        "price": 1400,
+        "stock": 100,
+        "description": "tan dsa",
+        "isCompound": true,
+        "components": [
+          {
+            "productId": 21,
+            "quantity": 0
+          },
+          {
+            "productId": 20,
+            "quantity": 0
+          }
+        ],
+        "id": 52
+      },
+      {
+        "name": "Producto fasddad",
+        "category": "Tradicionales",
+        "price": 1400,
+        "stock": 100,
+        "description": "tan dsa",
+        "isCompound": false,
+        "components": [],
+        "id": 53
+      },
+      {
+        "name": "dadadad222",
+        "category": "Tradicionales",
+        "price": 1400,
+        "stock": 96,
+        "description": "tan dsa",
+        "isCompound": true,
+        "components": [
+          {
+            "productId": 20,
+            "name": "Vacio/Provolone",
+            "quantity": 6
+          },
+          {
+            "productId": 9,
+            "name": "Jamon y Muzza",
+            "quantity": 6
+          }
+        ],
+        "id": 54
       }
     ]
   },

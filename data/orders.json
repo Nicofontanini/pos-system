@@ -911,5 +911,1868 @@
     "local": "local1",
     "orderName": "nico",
     "sellerName": "dasdas"
+  },
+  {
+    "date": "2025-04-05T14:51:49.762Z",
+    "items": [
+      {
+        "id": 49,
+        "name": "Productot",
+        "price": 100,
+        "quantity": 1,
+        "details": [
+          {
+            "productId": 1,
+            "quantity": 12
+          }
+        ]
+      }
+    ],
+    "total": 100,
+    "originalTotal": 100,
+    "paymentMethod": "efectivo",
+    "surchargePercent": 0,
+    "paymentAmounts": {
+      "efectivo": 100,
+      "transferencia": 0
+    },
+    "local": "local1",
+    "orderName": "nico",
+    "sellerName": "dasdas"
+  },
+  {
+    "date": "2025-04-05T15:02:06.705Z",
+    "items": [
+      {
+        "id": 1,
+        "name": "Carne",
+        "price": 100,
+        "quantity": 1,
+        "details": null
+      },
+      {
+        "id": 49,
+        "name": "Productot",
+        "price": 100,
+        "quantity": 1,
+        "details": [
+          {
+            "productId": 1,
+            "quantity": 3
+          }
+        ]
+      }
+    ],
+    "total": 200,
+    "originalTotal": 200,
+    "paymentMethod": "efectivo",
+    "surchargePercent": 0,
+    "paymentAmounts": {
+      "efectivo": 200,
+      "transferencia": 0
+    },
+    "local": "local1",
+    "orderName": "nico",
+    "sellerName": "dasdas"
+  },
+  {
+    "date": "2025-04-05T15:04:19.177Z",
+    "items": [
+      {
+        "id": 50,
+        "name": "Producto nico",
+        "price": 1600,
+        "quantity": 1,
+        "details": [
+          {
+            "productId": 1,
+            "quantity": 3
+          },
+          {
+            "productId": 4,
+            "quantity": 3
+          },
+          {
+            "productId": 14,
+            "quantity": 3
+          },
+          {
+            "productId": 19,
+            "quantity": 3
+          }
+        ]
+      }
+    ],
+    "total": 1600,
+    "originalTotal": 1600,
+    "paymentMethod": "efectivo",
+    "surchargePercent": 0,
+    "paymentAmounts": {
+      "efectivo": 1600,
+      "transferencia": 0
+    },
+    "local": "local1",
+    "orderName": "dasdas",
+    "sellerName": "dasdas"
+  },
+  {
+    "date": "2025-04-05T15:05:46.201Z",
+    "items": [
+      {
+        "id": 50,
+        "name": "Producto nico",
+        "price": 1600,
+        "quantity": 1,
+        "details": [
+          {
+            "productId": 1,
+            "quantity": 6
+          },
+          {
+            "productId": 4,
+            "quantity": 6
+          },
+          {
+            "productId": 14,
+            "quantity": 6
+          },
+          {
+            "productId": 19,
+            "quantity": 6
+          }
+        ]
+      }
+    ],
+    "total": 1600,
+    "originalTotal": 1600,
+    "paymentMethod": "efectivo",
+    "surchargePercent": 0,
+    "paymentAmounts": {
+      "efectivo": 1600,
+      "transferencia": 0
+    },
+    "local": "local1",
+    "orderName": "nico",
+    "sellerName": "dasdas"
+  },
+  {
+    "date": "2025-04-05T15:08:28.443Z",
+    "items": [
+      {
+        "id": 1,
+        "name": "Carne",
+        "price": 100,
+        "quantity": 1,
+        "details": null
+      }
+    ],
+    "total": 100,
+    "originalTotal": 100,
+    "paymentMethod": "efectivo",
+    "surchargePercent": 0,
+    "paymentAmounts": {
+      "efectivo": 100,
+      "transferencia": 0
+    },
+    "local": "local1",
+    "orderName": "nico",
+    "sellerName": "dasdas"
+  },
+  {
+    "date": "2025-04-05T15:09:00.793Z",
+    "items": [
+      {
+        "id": 24,
+        "name": "Docena Tradicionales",
+        "price": 28000,
+        "quantity": 1,
+        "details": [
+          {
+            "name": "Carne",
+            "quantity": 12
+          }
+        ],
+        "gruposDetalle": [
+          {
+            "grupo": "Docena",
+            "empanadas": [
+              {
+                "name": "Carne",
+                "quantity": 12
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "total": 28000,
+    "originalTotal": 28000,
+    "paymentMethod": "efectivo",
+    "surchargePercent": 0,
+    "paymentAmounts": {
+      "efectivo": 28000,
+      "transferencia": 0
+    },
+    "local": "local1",
+    "orderName": "nico",
+    "sellerName": "dasdas"
+  },
+  {
+    "date": "2025-04-05T15:10:43.714Z",
+    "items": [
+      {
+        "id": 50,
+        "name": "Producto nico",
+        "price": 1600,
+        "quantity": 1,
+        "details": [
+          {
+            "productId": 1,
+            "quantity": 6
+          },
+          {
+            "productId": 4,
+            "quantity": 6
+          },
+          {
+            "productId": 14,
+            "quantity": 6
+          },
+          {
+            "productId": 19,
+            "quantity": 0
+          }
+        ]
+      }
+    ],
+    "total": 1600,
+    "originalTotal": 1600,
+    "paymentMethod": "efectivo",
+    "surchargePercent": 0,
+    "paymentAmounts": {
+      "efectivo": 1600,
+      "transferencia": 0
+    },
+    "local": "local1",
+    "orderName": "nico",
+    "sellerName": "dasdas"
+  },
+  {
+    "date": "2025-04-05T15:11:41.650Z",
+    "items": [
+      {
+        "id": 50,
+        "name": "Producto nico",
+        "price": 1600,
+        "quantity": 1,
+        "details": [
+          {
+            "productId": 1,
+            "quantity": 12
+          },
+          {
+            "productId": 4,
+            "quantity": null
+          },
+          {
+            "productId": 14,
+            "quantity": null
+          },
+          {
+            "productId": 19,
+            "quantity": null
+          }
+        ]
+      }
+    ],
+    "total": 1600,
+    "originalTotal": 1600,
+    "paymentMethod": "efectivo",
+    "surchargePercent": 0,
+    "paymentAmounts": {
+      "efectivo": 1600,
+      "transferencia": 0
+    },
+    "local": "local1",
+    "orderName": "dasdas",
+    "sellerName": "dasdas"
+  },
+  {
+    "date": "2025-04-05T15:15:24.674Z",
+    "items": [
+      {
+        "id": 50,
+        "name": "Producto nico",
+        "price": 1600,
+        "quantity": 1,
+        "details": [
+          {
+            "productId": 1,
+            "quantity": 6
+          },
+          {
+            "productId": 4,
+            "quantity": 0
+          },
+          {
+            "productId": 14,
+            "quantity": 0
+          },
+          {
+            "productId": 19,
+            "quantity": 0
+          }
+        ]
+      }
+    ],
+    "total": 1600,
+    "originalTotal": 1600,
+    "paymentMethod": "efectivo",
+    "surchargePercent": 0,
+    "paymentAmounts": {
+      "efectivo": 1600,
+      "transferencia": 0
+    },
+    "local": "local1",
+    "orderName": "dasdas",
+    "sellerName": "dasdas"
+  },
+  {
+    "date": "2025-04-05T15:18:09.066Z",
+    "items": [
+      {
+        "id": 50,
+        "name": "Producto nico",
+        "price": 1600,
+        "quantity": 1,
+        "details": [
+          {
+            "productId": 1,
+            "quantity": 6
+          },
+          {
+            "productId": 4,
+            "quantity": 6
+          },
+          {
+            "productId": 14,
+            "quantity": 6
+          },
+          {
+            "productId": 19,
+            "quantity": 6
+          }
+        ]
+      }
+    ],
+    "total": 1600,
+    "originalTotal": 1600,
+    "paymentMethod": "efectivo",
+    "surchargePercent": 0,
+    "paymentAmounts": {
+      "efectivo": 1600,
+      "transferencia": 0
+    },
+    "local": "local1",
+    "orderName": "nico",
+    "sellerName": "dasdas"
+  },
+  {
+    "date": "2025-04-05T15:20:11.762Z",
+    "items": [
+      {
+        "id": 50,
+        "name": "Producto nico",
+        "price": 1600,
+        "quantity": 1,
+        "details": [
+          {
+            "productId": 1,
+            "quantity": 6
+          },
+          {
+            "productId": 4,
+            "quantity": 6
+          },
+          {
+            "productId": 14,
+            "quantity": 6
+          },
+          {
+            "productId": 19,
+            "quantity": 6
+          }
+        ]
+      }
+    ],
+    "total": 1600,
+    "originalTotal": 1600,
+    "paymentMethod": "efectivo",
+    "surchargePercent": 0,
+    "paymentAmounts": {
+      "efectivo": 1600,
+      "transferencia": 0
+    },
+    "local": "local1",
+    "orderName": "nico",
+    "sellerName": "dasdas"
+  },
+  {
+    "date": "2025-04-05T15:24:15.738Z",
+    "items": [
+      {
+        "id": 50,
+        "name": "Producto nico",
+        "price": 1600,
+        "quantity": 1,
+        "details": [
+          {
+            "productId": 1,
+            "quantity": 6
+          },
+          {
+            "productId": 4,
+            "quantity": 6
+          },
+          {
+            "productId": 14,
+            "quantity": 6
+          },
+          {
+            "productId": 19,
+            "quantity": 6
+          }
+        ]
+      }
+    ],
+    "total": 1600,
+    "originalTotal": 1600,
+    "paymentMethod": "efectivo",
+    "surchargePercent": 0,
+    "paymentAmounts": {
+      "efectivo": 1600,
+      "transferencia": 0
+    },
+    "local": "local1",
+    "orderName": "nico",
+    "sellerName": "dasdas"
+  },
+  {
+    "date": "2025-04-05T15:27:59.386Z",
+    "items": [
+      {
+        "id": 50,
+        "name": "Producto nico",
+        "price": 1600,
+        "quantity": 1,
+        "details": [
+          {
+            "productId": 1,
+            "quantity": 6
+          },
+          {
+            "productId": 4,
+            "quantity": 6
+          },
+          {
+            "productId": 14,
+            "quantity": 6
+          },
+          {
+            "productId": 19,
+            "quantity": 6
+          }
+        ]
+      }
+    ],
+    "total": 1600,
+    "originalTotal": 1600,
+    "paymentMethod": "efectivo",
+    "surchargePercent": 0,
+    "paymentAmounts": {
+      "efectivo": 1600,
+      "transferencia": 0
+    },
+    "local": "local1",
+    "orderName": "nico",
+    "sellerName": "dasdas"
+  },
+  {
+    "date": "2025-04-05T15:30:04.698Z",
+    "items": [
+      {
+        "id": 50,
+        "name": "Producto nico",
+        "price": 1600,
+        "quantity": 1,
+        "details": [
+          {
+            "productId": 1,
+            "name": "Carne",
+            "quantity": 6
+          },
+          {
+            "productId": 4,
+            "name": "Picante",
+            "quantity": 6
+          },
+          {
+            "productId": 14,
+            "name": "Panceta y ciruela",
+            "quantity": 6
+          },
+          {
+            "productId": 19,
+            "name": "Choclo",
+            "quantity": 6
+          }
+        ]
+      }
+    ],
+    "total": 1600,
+    "originalTotal": 1600,
+    "paymentMethod": "efectivo",
+    "surchargePercent": 0,
+    "paymentAmounts": {
+      "efectivo": 1600,
+      "transferencia": 0
+    },
+    "local": "local1",
+    "orderName": "nico",
+    "sellerName": "dasdas"
+  },
+  {
+    "date": "2025-04-05T15:50:42.819Z",
+    "items": [
+      {
+        "id": 49,
+        "name": "Productot",
+        "price": 100,
+        "quantity": 1,
+        "details": [
+          {
+            "productId": 1,
+            "quantity": 12
+          }
+        ]
+      }
+    ],
+    "total": 100,
+    "originalTotal": 100,
+    "paymentMethod": "efectivo",
+    "surchargePercent": 0,
+    "paymentAmounts": {
+      "efectivo": 100,
+      "transferencia": 0
+    },
+    "local": "local1",
+    "orderName": "nico",
+    "sellerName": "dasdas"
+  },
+  {
+    "date": "2025-04-05T15:52:06.995Z",
+    "items": [
+      {
+        "id": 51,
+        "name": "Producto q",
+        "price": 1200,
+        "quantity": 1,
+        "details": [
+          {
+            "productId": 17,
+            "quantity": 6
+          },
+          {
+            "productId": 8,
+            "quantity": 6
+          }
+        ]
+      }
+    ],
+    "total": 1200,
+    "originalTotal": 1200,
+    "paymentMethod": "efectivo",
+    "surchargePercent": 0,
+    "paymentAmounts": {
+      "efectivo": 1200,
+      "transferencia": 0
+    },
+    "local": "local1",
+    "orderName": "nico",
+    "sellerName": "dasdas"
+  },
+  {
+    "date": "2025-04-05T15:58:48.276Z",
+    "items": [
+      {
+        "id": 51,
+        "name": "Producto q",
+        "price": 1200,
+        "quantity": 1,
+        "details": [
+          {
+            "productId": 17,
+            "quantity": 6
+          },
+          {
+            "productId": 8,
+            "quantity": 6
+          }
+        ]
+      }
+    ],
+    "total": 1200,
+    "originalTotal": 1200,
+    "paymentMethod": "efectivo",
+    "surchargePercent": 0,
+    "paymentAmounts": {
+      "efectivo": 1200,
+      "transferencia": 0
+    },
+    "local": "local1",
+    "orderName": "nico",
+    "sellerName": "dasdas"
+  },
+  {
+    "date": "2025-04-05T15:59:47.611Z",
+    "items": [
+      {
+        "id": 52,
+        "name": "Producto fas",
+        "price": 1400,
+        "quantity": 1,
+        "details": [
+          {
+            "productId": 21,
+            "quantity": 6
+          },
+          {
+            "productId": 20,
+            "quantity": 6
+          }
+        ]
+      }
+    ],
+    "total": 1400,
+    "originalTotal": 1400,
+    "paymentMethod": "efectivo",
+    "surchargePercent": 0,
+    "paymentAmounts": {
+      "efectivo": 1400,
+      "transferencia": 0
+    },
+    "local": "local1",
+    "orderName": "nico",
+    "sellerName": "dasdas"
+  },
+  {
+    "date": "2025-04-05T16:03:32.068Z",
+    "items": [
+      {
+        "id": 54,
+        "name": "dadadad222",
+        "price": 1400,
+        "quantity": 1,
+        "details": [
+          {
+            "productId": 20,
+            "name": "Vacio/Provolone",
+            "quantity": 6
+          },
+          {
+            "productId": 9,
+            "name": "Jamon y Muzza",
+            "quantity": 6
+          }
+        ]
+      }
+    ],
+    "total": 1400,
+    "originalTotal": 1400,
+    "paymentMethod": "efectivo",
+    "surchargePercent": 0,
+    "paymentAmounts": {
+      "efectivo": 1400,
+      "transferencia": 0
+    },
+    "local": "local1",
+    "orderName": "nico",
+    "sellerName": "dasdas"
+  },
+  {
+    "date": "2025-04-05T16:04:41.819Z",
+    "items": [
+      {
+        "id": 54,
+        "name": "dadadad222",
+        "price": 1400,
+        "quantity": 1,
+        "details": [
+          {
+            "productId": 20,
+            "quantity": 12
+          },
+          {
+            "productId": 9,
+            "quantity": null
+          }
+        ]
+      }
+    ],
+    "total": 1400,
+    "originalTotal": 1400,
+    "paymentMethod": "efectivo",
+    "surchargePercent": 0,
+    "paymentAmounts": {
+      "efectivo": 1400,
+      "transferencia": 0
+    },
+    "local": "local1",
+    "orderName": "ttt",
+    "sellerName": "dasdas"
+  },
+  {
+    "date": "2025-04-05T16:06:21.620Z",
+    "items": [
+      {
+        "id": 54,
+        "name": "dadadad222",
+        "price": 1400,
+        "quantity": 1,
+        "details": [
+          {
+            "productId": 20,
+            "name": "Vacio/Provolone",
+            "quantity": 6
+          },
+          {
+            "productId": 9,
+            "name": "Jamon y Muzza",
+            "quantity": 6
+          }
+        ]
+      }
+    ],
+    "total": 1400,
+    "originalTotal": 1400,
+    "paymentMethod": "efectivo",
+    "surchargePercent": 0,
+    "paymentAmounts": {
+      "efectivo": 1400,
+      "transferencia": 0
+    },
+    "local": "local1",
+    "orderName": "nico",
+    "sellerName": "dasdas"
+  },
+  {
+    "date": "2025-04-05T16:07:06.900Z",
+    "items": [
+      {
+        "id": 54,
+        "name": "dadadad222",
+        "price": 1400,
+        "quantity": 1,
+        "details": [
+          {
+            "productId": 20,
+            "quantity": null
+          },
+          {
+            "productId": 9,
+            "quantity": 6
+          }
+        ]
+      }
+    ],
+    "total": 1400,
+    "originalTotal": 1400,
+    "paymentMethod": "efectivo",
+    "surchargePercent": 0,
+    "paymentAmounts": {
+      "efectivo": 1400,
+      "transferencia": 0
+    },
+    "local": "local1",
+    "orderName": "nico",
+    "sellerName": "dasdas"
+  },
+  {
+    "date": "2025-04-05T16:08:18.052Z",
+    "items": [
+      {
+        "id": 54,
+        "name": "dadadad222",
+        "price": 1400,
+        "quantity": 1,
+        "details": [
+          {
+            "productId": 20,
+            "quantity": 4
+          },
+          {
+            "productId": 9,
+            "quantity": 4
+          }
+        ]
+      }
+    ],
+    "total": 1400,
+    "originalTotal": 1400,
+    "paymentMethod": "efectivo",
+    "surchargePercent": 0,
+    "paymentAmounts": {
+      "efectivo": 1400,
+      "transferencia": 0
+    },
+    "local": "local1",
+    "orderName": "nico",
+    "sellerName": "dasdas"
+  },
+  {
+    "date": "2025-04-05T16:08:57.756Z",
+    "items": [
+      {
+        "id": 54,
+        "name": "dadadad222",
+        "price": 1400,
+        "quantity": 1,
+        "details": [
+          {
+            "productId": 20,
+            "name": "Vacio/Provolone",
+            "quantity": 6
+          },
+          {
+            "productId": 9,
+            "name": "Jamon y Muzza",
+            "quantity": 6
+          }
+        ]
+      }
+    ],
+    "total": 1400,
+    "originalTotal": 1400,
+    "paymentMethod": "efectivo",
+    "surchargePercent": 0,
+    "paymentAmounts": {
+      "efectivo": 1400,
+      "transferencia": 0
+    },
+    "local": "local1",
+    "orderName": "nico",
+    "sellerName": "dasdas"
+  },
+  {
+    "date": "2025-04-05T16:09:41.988Z",
+    "items": [
+      {
+        "id": 50,
+        "name": "Producto nico",
+        "price": 1600,
+        "quantity": 1,
+        "details": [
+          {
+            "productId": 1,
+            "quantity": 6
+          },
+          {
+            "productId": 4,
+            "quantity": 0
+          },
+          {
+            "productId": 14,
+            "quantity": 0
+          },
+          {
+            "productId": 19,
+            "quantity": 0
+          }
+        ]
+      }
+    ],
+    "total": 1600,
+    "originalTotal": 1600,
+    "paymentMethod": "efectivo",
+    "surchargePercent": 0,
+    "paymentAmounts": {
+      "efectivo": 1600,
+      "transferencia": 0
+    },
+    "local": "local1",
+    "orderName": "nico",
+    "sellerName": "dasdas"
+  },
+  {
+    "date": "2025-04-05T16:13:09.188Z",
+    "items": [
+      {
+        "id": 54,
+        "name": "dadadad222",
+        "price": 1400,
+        "quantity": 1,
+        "details": [
+          {
+            "productId": 20,
+            "name": "Vacio/Provolone",
+            "quantity": 6
+          },
+          {
+            "productId": 9,
+            "name": "Jamon y Muzza",
+            "quantity": 6
+          }
+        ]
+      }
+    ],
+    "total": 1400,
+    "originalTotal": 1400,
+    "paymentMethod": "efectivo",
+    "surchargePercent": 0,
+    "paymentAmounts": {
+      "efectivo": 1400,
+      "transferencia": 0
+    },
+    "local": "local1",
+    "orderName": "nico",
+    "sellerName": "dasdas"
+  },
+  {
+    "date": "2025-04-05T16:14:01.452Z",
+    "items": [
+      {
+        "id": 54,
+        "name": "dadadad222",
+        "price": 1400,
+        "quantity": 1,
+        "details": [
+          {
+            "productId": 20,
+            "name": "Vacio/Provolone",
+            "quantity": 6
+          },
+          {
+            "productId": 9,
+            "name": "Jamon y Muzza",
+            "quantity": 6
+          }
+        ]
+      }
+    ],
+    "total": 1400,
+    "originalTotal": 1400,
+    "paymentMethod": "efectivo",
+    "surchargePercent": 0,
+    "paymentAmounts": {
+      "efectivo": 1400,
+      "transferencia": 0
+    },
+    "local": "local1",
+    "orderName": "nico",
+    "sellerName": "dasdas"
+  },
+  {
+    "date": "2025-04-05T16:16:03.804Z",
+    "items": [
+      {
+        "id": 54,
+        "name": "dadadad222",
+        "price": 1400,
+        "quantity": 1,
+        "details": [
+          {
+            "productId": 20,
+            "name": "Vacio/Provolone",
+            "quantity": 6
+          },
+          {
+            "productId": 9,
+            "name": "Jamon y Muzza",
+            "quantity": 6
+          }
+        ]
+      }
+    ],
+    "total": 1400,
+    "originalTotal": 1400,
+    "paymentMethod": "efectivo",
+    "surchargePercent": 0,
+    "paymentAmounts": {
+      "efectivo": 1400,
+      "transferencia": 0
+    },
+    "local": "local1",
+    "orderName": "nico",
+    "sellerName": "dasdas"
+  },
+  {
+    "date": "2025-04-05T16:17:09.316Z",
+    "items": [
+      {
+        "id": 54,
+        "name": "dadadad222",
+        "price": 1400,
+        "quantity": 1,
+        "details": [
+          {
+            "productId": 20,
+            "quantity": 0
+          },
+          {
+            "productId": 9,
+            "quantity": 6
+          }
+        ]
+      }
+    ],
+    "total": 1400,
+    "originalTotal": 1400,
+    "paymentMethod": "efectivo",
+    "surchargePercent": 0,
+    "paymentAmounts": {
+      "efectivo": 1400,
+      "transferencia": 0
+    },
+    "local": "local1",
+    "orderName": "nico",
+    "sellerName": "dasdas"
+  },
+  {
+    "date": "2025-04-05T16:24:31.037Z",
+    "items": [
+      {
+        "id": 54,
+        "name": "dadadad222",
+        "price": 1400,
+        "quantity": 1,
+        "details": [
+          {
+            "productId": 20,
+            "name": "Vacio/Provolone",
+            "quantity": 6
+          },
+          {
+            "productId": 9,
+            "name": "Jamon y Muzza",
+            "quantity": 6
+          }
+        ]
+      }
+    ],
+    "total": 1400,
+    "originalTotal": 1400,
+    "paymentMethod": "efectivo",
+    "surchargePercent": 0,
+    "paymentAmounts": {
+      "efectivo": 1400,
+      "transferencia": 0
+    },
+    "local": "local1",
+    "orderName": "nico",
+    "sellerName": "dasdas"
+  },
+  {
+    "date": "2025-04-05T16:24:55.916Z",
+    "items": [
+      {
+        "id": 54,
+        "name": "dadadad222",
+        "price": 1400,
+        "quantity": 1,
+        "details": [
+          {
+            "productId": 20,
+            "quantity": 0
+          },
+          {
+            "productId": 9,
+            "quantity": 6
+          }
+        ]
+      }
+    ],
+    "total": 1400,
+    "originalTotal": 1400,
+    "paymentMethod": "efectivo",
+    "surchargePercent": 0,
+    "paymentAmounts": {
+      "efectivo": 1400,
+      "transferencia": 0
+    },
+    "local": "local1",
+    "orderName": "nico",
+    "sellerName": "dasdas"
+  },
+  {
+    "date": "2025-04-05T16:25:51.021Z",
+    "items": [
+      {
+        "id": 54,
+        "name": "dadadad222",
+        "price": 1400,
+        "quantity": 1,
+        "details": [
+          {
+            "productId": 20,
+            "quantity": 8
+          },
+          {
+            "productId": 9,
+            "quantity": 8
+          }
+        ]
+      }
+    ],
+    "total": 1400,
+    "originalTotal": 1400,
+    "paymentMethod": "efectivo",
+    "surchargePercent": 0,
+    "paymentAmounts": {
+      "efectivo": 1400,
+      "transferencia": 0
+    },
+    "local": "local1",
+    "orderName": "nico",
+    "sellerName": "dasdas"
+  },
+  {
+    "date": "2025-04-05T16:26:20.452Z",
+    "items": [
+      {
+        "id": 54,
+        "name": "dadadad222",
+        "price": 1400,
+        "quantity": 1,
+        "details": [
+          {
+            "productId": 20,
+            "name": "Vacio/Provolone",
+            "quantity": 6
+          },
+          {
+            "productId": 9,
+            "name": "Jamon y Muzza",
+            "quantity": 6
+          }
+        ]
+      }
+    ],
+    "total": 1400,
+    "originalTotal": 1400,
+    "paymentMethod": "efectivo",
+    "surchargePercent": 0,
+    "paymentAmounts": {
+      "efectivo": 1400,
+      "transferencia": 0
+    },
+    "local": "local1",
+    "orderName": "nico",
+    "sellerName": "dasdas"
+  },
+  {
+    "date": "2025-04-05T16:29:30.749Z",
+    "items": [
+      {
+        "id": 54,
+        "name": "dadadad222",
+        "price": 1400,
+        "quantity": 6,
+        "details": [
+          {
+            "productId": 20,
+            "quantity": 0,
+            "name": "Vacio/Provolone:"
+          },
+          {
+            "productId": 9,
+            "quantity": 6,
+            "name": "Jamon y Muzza:"
+          }
+        ]
+      }
+    ],
+    "total": 8400,
+    "originalTotal": 8400,
+    "paymentMethod": "efectivo",
+    "surchargePercent": 0,
+    "paymentAmounts": {
+      "efectivo": 8400,
+      "transferencia": 0
+    },
+    "local": "local1",
+    "orderName": "nico",
+    "sellerName": "dasdas"
+  },
+  {
+    "date": "2025-04-05T16:31:47.149Z",
+    "items": [
+      {
+        "id": 54,
+        "name": "dadadad222",
+        "price": 1400,
+        "quantity": 13,
+        "details": [
+          {
+            "productId": 20,
+            "quantity": 3,
+            "name": "Vacio/Provolone:"
+          },
+          {
+            "productId": 9,
+            "quantity": 10,
+            "name": "Jamon y Muzza:"
+          }
+        ]
+      }
+    ],
+    "total": 18200,
+    "originalTotal": 18200,
+    "paymentMethod": "efectivo",
+    "surchargePercent": 0,
+    "paymentAmounts": {
+      "efectivo": 18200,
+      "transferencia": 0
+    },
+    "local": "local1",
+    "orderName": "18200",
+    "sellerName": "dasdas"
+  },
+  {
+    "date": "2025-04-05T16:35:21.837Z",
+    "items": [
+      {
+        "id": 54,
+        "name": "dadadad222",
+        "price": 1400,
+        "quantity": 1,
+        "details": [
+          {
+            "productId": 20,
+            "quantity": 0
+          },
+          {
+            "productId": 9,
+            "quantity": 6
+          }
+        ]
+      }
+    ],
+    "total": 1400,
+    "originalTotal": 1400,
+    "paymentMethod": "efectivo",
+    "surchargePercent": 0,
+    "paymentAmounts": {
+      "efectivo": 1400,
+      "transferencia": 0
+    },
+    "local": "local1",
+    "orderName": "nico",
+    "sellerName": "dasdas"
+  },
+  {
+    "date": "2025-04-05T16:36:35.149Z",
+    "items": [
+      {
+        "id": 54,
+        "name": "dadadad222",
+        "price": 1400,
+        "quantity": 1,
+        "details": [
+          {
+            "productId": 20,
+            "quantity": 0
+          },
+          {
+            "productId": 9,
+            "quantity": 6
+          }
+        ]
+      }
+    ],
+    "total": 1400,
+    "originalTotal": 1400,
+    "paymentMethod": "efectivo",
+    "surchargePercent": 0,
+    "paymentAmounts": {
+      "efectivo": 1400,
+      "transferencia": 0
+    },
+    "local": "local1",
+    "orderName": "nico",
+    "sellerName": "dasdas"
+  },
+  {
+    "date": "2025-04-05T16:40:11.965Z",
+    "items": [
+      {
+        "id": 54,
+        "name": "dadadad222",
+        "price": 1400,
+        "quantity": 7,
+        "details": [
+          {
+            "productId": 20,
+            "quantity": 1
+          },
+          {
+            "productId": 9,
+            "quantity": 6
+          }
+        ]
+      }
+    ],
+    "total": 9800,
+    "originalTotal": 9800,
+    "paymentMethod": "efectivo",
+    "surchargePercent": 0,
+    "paymentAmounts": {
+      "efectivo": 9800,
+      "transferencia": 0
+    },
+    "local": "local1",
+    "orderName": "dasdas",
+    "sellerName": "dasdas"
+  },
+  {
+    "date": "2025-04-07T10:37:07.163Z",
+    "items": [
+      {
+        "id": 54,
+        "name": "dadadad222",
+        "price": 1400,
+        "quantity": 1,
+        "details": [
+          {
+            "productId": 20,
+            "name": "Vacio/Provolone",
+            "quantity": 6
+          },
+          {
+            "productId": 9,
+            "name": "Jamon y Muzza",
+            "quantity": 6
+          }
+        ]
+      }
+    ],
+    "total": 1400,
+    "originalTotal": 1400,
+    "paymentMethod": "efectivo",
+    "surchargePercent": 0,
+    "paymentAmounts": {
+      "efectivo": 1400,
+      "transferencia": 0
+    },
+    "local": "local1",
+    "orderName": "nico",
+    "sellerName": "dasdas"
+  },
+  {
+    "date": "2025-04-07T10:38:20.802Z",
+    "items": [
+      {
+        "id": 54,
+        "name": "dadadad222",
+        "price": 1400,
+        "quantity": 1,
+        "details": [
+          {
+            "productId": 20,
+            "quantity": 6
+          },
+          {
+            "productId": 9,
+            "quantity": 0
+          }
+        ]
+      }
+    ],
+    "total": 1400,
+    "originalTotal": 1400,
+    "paymentMethod": "efectivo",
+    "surchargePercent": 0,
+    "paymentAmounts": {
+      "efectivo": 1400,
+      "transferencia": 0
+    },
+    "local": "local1",
+    "orderName": "nico",
+    "sellerName": "dasdas"
+  },
+  {
+    "date": "2025-04-07T10:39:14.443Z",
+    "items": [
+      {
+        "id": 54,
+        "name": "dadadad222",
+        "price": 1400,
+        "quantity": 1,
+        "details": [
+          {
+            "productId": 20,
+            "quantity": 0
+          },
+          {
+            "productId": 9,
+            "quantity": 6
+          }
+        ]
+      }
+    ],
+    "total": 1400,
+    "originalTotal": 1400,
+    "paymentMethod": "efectivo",
+    "surchargePercent": 0,
+    "paymentAmounts": {
+      "efectivo": 1400,
+      "transferencia": 0
+    },
+    "local": "local1",
+    "orderName": "nico",
+    "sellerName": "dasdas"
+  },
+  {
+    "date": "2025-04-07T10:46:00.099Z",
+    "items": [
+      {
+        "id": 54,
+        "name": "dadadad222",
+        "price": 1400,
+        "quantity": 1,
+        "details": []
+      }
+    ],
+    "total": 1400,
+    "originalTotal": 1400,
+    "paymentMethod": "efectivo",
+    "surchargePercent": 0,
+    "paymentAmounts": {
+      "efectivo": 1400,
+      "transferencia": 0
+    },
+    "local": "local1",
+    "orderName": "nico",
+    "sellerName": "dasdas"
+  },
+  {
+    "date": "2025-04-07T10:49:37.907Z",
+    "items": [
+      {
+        "id": 54,
+        "name": "dadadad222",
+        "price": 1400,
+        "quantity": 1,
+        "details": [
+          {
+            "productId": 20,
+            "quantity": 1
+          },
+          {
+            "productId": 9,
+            "quantity": 6
+          }
+        ]
+      }
+    ],
+    "total": 1400,
+    "originalTotal": 1400,
+    "paymentMethod": "efectivo",
+    "surchargePercent": 0,
+    "paymentAmounts": {
+      "efectivo": 1400,
+      "transferencia": 0
+    },
+    "local": "local1",
+    "orderName": "nico",
+    "sellerName": "dasdas"
+  },
+  {
+    "date": "2025-04-07T10:50:36.123Z",
+    "items": [
+      {
+        "id": 54,
+        "name": "dadadad222",
+        "price": 1400,
+        "quantity": 1,
+        "details": [
+          {
+            "productId": 20,
+            "quantity": 3
+          },
+          {
+            "productId": 9,
+            "quantity": 6
+          }
+        ]
+      }
+    ],
+    "total": 1400,
+    "originalTotal": 1400,
+    "paymentMethod": "efectivo",
+    "surchargePercent": 0,
+    "paymentAmounts": {
+      "efectivo": 1400,
+      "transferencia": 0
+    },
+    "local": "local1",
+    "orderName": "nico",
+    "sellerName": "dasdas"
+  },
+  {
+    "date": "2025-04-07T10:54:06.251Z",
+    "items": [
+      {
+        "id": 54,
+        "name": "dadadad222",
+        "price": 1400,
+        "quantity": 1,
+        "details": [
+          {
+            "productId": 20,
+            "quantity": 3
+          },
+          {
+            "productId": 9,
+            "quantity": 6
+          }
+        ]
+      }
+    ],
+    "total": 1400,
+    "originalTotal": 1400,
+    "paymentMethod": "efectivo",
+    "surchargePercent": 0,
+    "paymentAmounts": {
+      "efectivo": 1400,
+      "transferencia": 0
+    },
+    "local": "local1",
+    "orderName": "nico",
+    "sellerName": "dasdas"
+  },
+  {
+    "date": "2025-04-07T10:55:07.627Z",
+    "items": [
+      {
+        "id": 54,
+        "name": "dadadad222",
+        "price": 1400,
+        "quantity": 1,
+        "details": [
+          {
+            "productId": 20,
+            "name": "Vacio/Provolone",
+            "quantity": 6
+          },
+          {
+            "productId": 9,
+            "name": "Jamon y Muzza",
+            "quantity": 6
+          }
+        ]
+      }
+    ],
+    "total": 1400,
+    "originalTotal": 1400,
+    "paymentMethod": "efectivo",
+    "surchargePercent": 0,
+    "paymentAmounts": {
+      "efectivo": 1400,
+      "transferencia": 0
+    },
+    "local": "local1",
+    "orderName": "nico",
+    "sellerName": "dasdas"
+  },
+  {
+    "date": "2025-04-07T10:58:20.379Z",
+    "items": [
+      {
+        "id": 54,
+        "name": "dadadad222",
+        "price": 1400,
+        "quantity": 1,
+        "details": [
+          {
+            "productId": 20,
+            "quantity": 3
+          },
+          {
+            "productId": 9,
+            "quantity": 6
+          }
+        ]
+      }
+    ],
+    "total": 1400,
+    "originalTotal": 1400,
+    "paymentMethod": "efectivo",
+    "surchargePercent": 0,
+    "paymentAmounts": {
+      "efectivo": 1400,
+      "transferencia": 0
+    },
+    "local": "local1",
+    "orderName": "nico",
+    "sellerName": "dasdas"
+  },
+  {
+    "date": "2025-04-07T11:09:17.067Z",
+    "items": [
+      {
+        "id": 53,
+        "name": "Producto fasddad",
+        "price": 1400,
+        "quantity": 1,
+        "details": null
+      }
+    ],
+    "total": 1400,
+    "originalTotal": 1400,
+    "paymentMethod": "efectivo",
+    "surchargePercent": 0,
+    "paymentAmounts": {
+      "efectivo": 1400,
+      "transferencia": 0
+    },
+    "local": "local1",
+    "orderName": "nico",
+    "sellerName": "dasdas"
+  },
+  {
+    "date": "2025-04-07T11:14:31.486Z",
+    "items": [
+      {
+        "id": 52,
+        "name": "Producto fas",
+        "price": 1400,
+        "quantity": 1,
+        "details": [
+          {
+            "productId": 21,
+            "quantity": 6
+          },
+          {
+            "productId": 20,
+            "quantity": 6
+          }
+        ]
+      }
+    ],
+    "total": 1400,
+    "originalTotal": 1400,
+    "paymentMethod": "efectivo",
+    "surchargePercent": 0,
+    "paymentAmounts": {
+      "efectivo": 1400,
+      "transferencia": 0
+    },
+    "local": "local1",
+    "orderName": "nico",
+    "sellerName": "dasdas"
+  },
+  {
+    "date": "2025-04-07T11:50:02.370Z",
+    "items": [
+      {
+        "id": 54,
+        "name": "dadadad222",
+        "price": 1400,
+        "quantity": 1,
+        "details": [
+          {
+            "productId": 20,
+            "name": "Vacio/Provolone",
+            "quantity": 0
+          },
+          {
+            "productId": 9,
+            "name": "Jamon y Muzza",
+            "quantity": 6
+          }
+        ]
+      }
+    ],
+    "total": 1400,
+    "originalTotal": 1400,
+    "paymentMethod": "efectivo",
+    "surchargePercent": 0,
+    "paymentAmounts": {
+      "efectivo": 1400,
+      "transferencia": 0
+    },
+    "local": "local1",
+    "orderName": "nico",
+    "sellerName": "dasdas"
+  },
+  {
+    "date": "2025-04-07T11:50:48.994Z",
+    "items": [
+      {
+        "id": 54,
+        "name": "dadadad222",
+        "price": 1400,
+        "quantity": 1,
+        "details": [
+          {
+            "productId": 20,
+            "name": "Vacio/Provolone",
+            "quantity": 2
+          },
+          {
+            "productId": 9,
+            "name": "Jamon y Muzza",
+            "quantity": 6
+          }
+        ]
+      }
+    ],
+    "total": 1400,
+    "originalTotal": 1400,
+    "paymentMethod": "efectivo",
+    "surchargePercent": 0,
+    "paymentAmounts": {
+      "efectivo": 1400,
+      "transferencia": 0
+    },
+    "local": "local1",
+    "orderName": "nico",
+    "sellerName": "dasdas"
+  },
+  {
+    "date": "2025-04-07T12:01:25.299Z",
+    "items": [
+      {
+        "id": 54,
+        "name": "dadadad222",
+        "price": 1400,
+        "quantity": 2,
+        "details": [
+          {
+            "productId": 20,
+            "name": "Vacio/Provolone",
+            "quantity": 4
+          },
+          {
+            "productId": 9,
+            "name": "Jamon y Muzza",
+            "quantity": 6
+          }
+        ]
+      }
+    ],
+    "total": 2800,
+    "originalTotal": 2800,
+    "paymentMethod": "efectivo",
+    "surchargePercent": 0,
+    "paymentAmounts": {
+      "efectivo": 2800,
+      "transferencia": 0
+    },
+    "local": "local1",
+    "orderName": "nico",
+    "sellerName": "dasdas"
+  },
+  {
+    "date": "2025-04-07T12:08:47.011Z",
+    "items": [
+      {
+        "id": 54,
+        "name": "dadadad222",
+        "price": 1400,
+        "quantity": 1,
+        "details": [
+          {
+            "productId": 20,
+            "name": "Vacio/Provolone",
+            "quantity": 4
+          },
+          {
+            "productId": 9,
+            "name": "Jamon y Muzza",
+            "quantity": 6
+          }
+        ]
+      }
+    ],
+    "total": 1400,
+    "originalTotal": 1400,
+    "paymentMethod": "efectivo",
+    "surchargePercent": 0,
+    "paymentAmounts": {
+      "efectivo": 1400,
+      "transferencia": 0
+    },
+    "local": "local1",
+    "orderName": "nico",
+    "sellerName": "dasdas"
+  },
+  {
+    "date": "2025-04-07T12:11:47.179Z",
+    "items": [
+      {
+        "id": 54,
+        "name": "dadadad222",
+        "price": 1400,
+        "quantity": 1,
+        "details": [
+          {
+            "productId": 20,
+            "name": "Vacio/Provolone",
+            "quantity": 3
+          },
+          {
+            "productId": 9,
+            "name": "Jamon y Muzza",
+            "quantity": 6
+          }
+        ]
+      }
+    ],
+    "total": 1400,
+    "originalTotal": 1400,
+    "paymentMethod": "efectivo",
+    "surchargePercent": 0,
+    "paymentAmounts": {
+      "efectivo": 1400,
+      "transferencia": 0
+    },
+    "local": "local1",
+    "orderName": "nico",
+    "sellerName": "dasdas"
+  },
+  {
+    "date": "2025-04-07T12:12:14.779Z",
+    "items": [
+      {
+        "id": 54,
+        "name": "dadadad222",
+        "price": 1400,
+        "quantity": 2,
+        "details": [
+          {
+            "productId": 20,
+            "name": "Vacio/Provolone",
+            "quantity": 4
+          },
+          {
+            "productId": 9,
+            "name": "Jamon y Muzza",
+            "quantity": 6
+          }
+        ]
+      }
+    ],
+    "total": 2800,
+    "originalTotal": 2800,
+    "paymentMethod": "efectivo",
+    "surchargePercent": 0,
+    "paymentAmounts": {
+      "efectivo": 2800,
+      "transferencia": 0
+    },
+    "local": "local1",
+    "orderName": "nico",
+    "sellerName": "dasdas"
   }
 ]
