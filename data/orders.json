@@ -2809,5 +2809,145 @@
     "local": "local1",
     "orderName": "nico",
     "sellerName": "dasdas"
+  },
+  {
+    "date": "2025-04-07T19:09:30.610Z",
+    "items": [
+      {
+        "id": "compound-1744052964130-hs370ge55",
+        "originalId": 55,
+        "name": "combinadas 3",
+        "price": 300,
+        "quantity": null,
+        "details": [
+          {
+            "productId": 1,
+            "name": "Carne",
+            "quantity": 3
+          },
+          {
+            "productId": 4,
+            "name": "Picante",
+            "quantity": 2
+          },
+          {
+            "productId": 5,
+            "name": "Pollo",
+            "quantity": 1
+          }
+        ]
+      }
+    ],
+    "total": 300,
+    "originalTotal": 300,
+    "paymentMethod": "efectivo",
+    "surchargePercent": 0,
+    "paymentAmounts": {
+      "efectivo": 300,
+      "transferencia": 0
+    },
+    "local": "local1",
+    "orderName": "nico",
+    "sellerName": "dasdas"
+  },
+  {
+    "date": "2025-04-07T19:11:57.354Z",
+    "items": [
+      {
+        "id": 53,
+        "name": "Producto fasddad",
+        "price": 1400,
+        "quantity": null
+      },
+      {
+        "id": "compound-1744053108074-9uqtksu1l",
+        "originalId": 54,
+        "name": "dadadad222",
+        "price": 1400,
+        "quantity": null,
+        "details": [
+          {
+            "productId": 20,
+            "name": "Vacio/Provolone",
+            "quantity": 6
+          },
+          {
+            "productId": 9,
+            "name": "Jamon y Muzza",
+            "quantity": 6
+          }
+        ]
+      }
+    ],
+    "total": 2800,
+    "originalTotal": 2800,
+    "paymentMethod": "efectivo",
+    "surchargePercent": 0,
+    "paymentAmounts": {
+      "efectivo": 2800,
+      "transferencia": 0
+    },
+    "local": "local1",
+    "orderName": "nico",
+    "sellerName": "dasdas"
+  },
+  {
+    "date": "2025-04-07T19:14:47.962Z",
+    "items": [
+      {
+        "id": "compound-1744053278410-i1yzavfi0",
+        "originalId": 55,
+        "name": "combinadas 3",
+        "price": 300,
+        "quantity": null,
+        "details": [
+          {
+            "productId": 1,
+            "name": "Carne",
+            "quantity": 1
+          },
+          {
+            "productId": 4,
+            "name": "Picante",
+            "quantity": 1
+          },
+          {
+            "productId": 5,
+            "name": "Pollo",
+            "quantity": 1
+          }
+        ]
+      },
+      {
+        "id": "compound-1744053280762-i84sl0sre",
+        "originalId": 54,
+        "name": "dadadad222",
+        "price": 1400,
+        "quantity": null,
+        "details": [
+          {
+            "productId": 20,
+            "name": "Vacio/Provolone",
+            "quantity": 6
+          },
+          {
+            "productId": 9,
+            "name": "Jamon y Muzza",
+            "quantity": 6
+          }
+        ]
+      }
+    ],
+    "total": 1700,
+    "originalTotal": 1700,
+    "paymentMethod": "efectivo",
+    "surchargePercent": 0,
+    "paymentAmounts": {
+      "efectivo": 1700,
+      "transferencia": 0
+    },
+    "local": "local1",
+    "orderName": "nico",
+    "sellerName": "dasdas"
   }
 ]

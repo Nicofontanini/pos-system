@@ -5,7 +5,7 @@
         "name": "Carne",
         "category": "Tradicionales",
         "price": 100,
-        "stock": 168,
+        "stock": 164,
         "description": "Carne seleccionada picada, Cebolla y Huevo duro.",
         "id": 1,
         "isCompound": false,
@@ -15,7 +15,7 @@
         "name": "Picante",
         "category": "Tradicionales",
         "price": 100,
-        "stock": 107,
+        "stock": 104,
         "description": "Carne cortada a cuchillo, Macerada con mix de pimientas, Aji picante.",
         "id": 4
       },
@@ -23,7 +23,7 @@
         "name": "Pollo",
         "category": "Tradicionales",
         "price": 100,
-        "stock": 51,
+        "stock": 49,
         "description": "Pechuga fileteadas, Salteadas con curry, Cortadas a cuchillo, Con cebolla y huevo duro.",
         "id": 5
       },
@@ -135,7 +135,7 @@
         "name": "Vacio/Provolone",
         "category": "Especiales",
         "price": 200,
-        "stock": 17,
+        "stock": 5,
         "description": "Vacio cortado a cuchillo, provolone, cebolla y verdeo.",
         "id": 19
       },
@@ -484,6 +484,42 @@
           }
         ],
         "id": 54
+      },
+      {
+        "name": "combinadas 3",
+        "category": "combinadas",
+        "price": 300,
+        "stock": 10,
+        "description": "variadas",
+        "isCompound": true,
+        "components": [
+          {
+            "productId": 1,
+            "name": "Carne",
+            "quantity": 1
+          },
+          {
+            "productId": 4,
+            "name": "Picante",
+            "quantity": 1
+          },
+          {
+            "productId": 5,
+            "name": "Pollo",
+            "quantity": 1
+          }
+        ],
+        "id": 55
+      },
+      {
+        "name": "combinadas 5",
+        "category": "combinadas",
+        "price": 200,
+        "stock": 10,
+        "description": "variadas",
+        "isCompound": false,
+        "components": [],
+        "id": 56
       }
     ]
   },
@@ -848,6 +884,16 @@
         "stock": 1,
         "description": "adasd",
         "id": 47
+      },
+      {
+        "name": "combinadas 5",
+        "category": "combinadas",
+        "price": 200,
+        "stock": 10,
+        "description": "variadas",
+        "isCompound": false,
+        "components": [],
+        "id": 56
       }
     ]
   }

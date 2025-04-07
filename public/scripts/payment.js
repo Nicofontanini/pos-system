@@ -91,7 +91,7 @@ function updateRemainingAmount() {
 function updateCardAmount() {
   const amount = parseFloat(document.getElementById('singleAmount').value) || 0;
   const surcharge = parseFloat(document.getElementById('cardSurcharge').value) || 0;
-  const totalWithSurcharge = amount * (1 + surcharge / 100);
+  const totalWithSurcharge = amount + (amount * surcharge / 100);
   paymentAmounts[currentPaymentMethod] = totalWithSurcharge;
   updateRemainingAmount();
 }
@@ -200,95 +200,160 @@ function printOrder(orderData) {
   let paymentDetails = '';
 
   if (orderData.paymentMethod === 'mixto') {
-      paymentDetails = `
-    <p>Pago en efectivo: $${orderData.paymentAmounts.efectivo.toFixed(2)}</p>
-    <p>Pago por transferencia: $${orderData.paymentAmounts.transferencia.toFixed(2)}</p>
-  `;
-  } else {
-      paymentDetails = `
-    <p>Pago por ${orderData.paymentMethod}: $${orderData.total.toFixed(2)}</p>
-    ${orderData.paymentMethod === 'tarjeta' ? 
-      `<p>Subtotal: $${orderData.originalTotal.toFixed(2)}</p>
-       <p>Recargo (${orderData.surchargePercent}%): $${(orderData.total - orderData.originalTotal).toFixed(2)}</p>` 
-      : ''}
-  `;
-    }
-
-    // Generar el detalle de las docenas si existen
-    let docenaDetails = '';
-  orderData.items.forEach(item => {
-      if (item.details) {
-        docenaDetails += `
-      <div class="docena-detail">
-        <h4>${item.name}</h4>
-        <ul>
-          ${item.details.map(detail => `
-            <li style="list-style-type: none;">${detail.name} ${detail.quantity}</li>
-          `).join('')}
-        </ul>
-      </div>
+    paymentDetails = `
+      <p>Pago en efectivo: $${orderData.paymentAmounts.efectivo.toFixed(2)}</p>
+      <p>Pago por transferencia: $${orderData.paymentAmounts.transferencia.toFixed(2)}</p>
     `;
-      }
-    });
+  } else {
+    paymentDetails = `
+      <p>Pago por ${orderData.paymentMethod}: $${orderData.total.toFixed(2)}</p>
+      ${orderData.paymentMethod === 'tarjeta' ? 
+        `<p>Subtotal: $${orderData.originalTotal.toFixed(2)}</p>
+         <p>Recargo (${orderData.surchargePercent}%): $${(orderData.total - orderData.originalTotal).toFixed(2)}</p>` 
+        : ''}
+    `;
+  }
 
-    const printContent = `
-  <!DOCTYPE html>
-  <html>
-  <head>
-       <link rel="stylesheet" href="/styles/base.css">
+  // Generar el detalle de las docenas si existen
+  let docenaDetails = '';
+  orderData.items.forEach(item => {
+    if (item.details) {
+      docenaDetails += `
+        <div class="docena-detail">
+          <h4>${item.name}</h4>
+          <ul>
+            ${item.details.map(detail => `
+              <li style="list-style-type: none;">${detail.name} ${detail.quantity}</li>
+            `).join('')}
+          </ul>
+        </div>
+      `;
+    }
+  });
+
+  const printContent = `
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <link rel="stylesheet" href="/styles/base.css">
+      <link rel="stylesheet" href="/styles/styles.css">
       <style>
-          table {
-              width: 50%
-              };
+        .print-table {
+          width: 100%;
+          border-collapse: collapse;
+          margin: 1rem 0;
+          font-size: 0.9rem;
+        }
+
+        .print-table th {
+          background-color: var(--color-light);
+          color: var(--color-text);
+          font-weight: 600;
+          text-align: left;
+          padding: 0.5rem;
+          border: 1px solid var(--color-border);
+        }
+
+        .print-table td {
+          padding: 0.5rem;
+          border: 1px solid var(--color-border);
+          vertical-align: top;
+        }
+
+        .print-table .product-name {
+          font-weight: 500;
+          color: var(--color-text);
+        }
+
+        .print-table .quantity {
+          text-align: right;
+          color: var(--color-text-light);
+        }
+
+        .print-table .price {
+          text-align: right;
+          color: var(--color-text);
+          font-weight: 500;
+        }
+
+        .print-table .subtotal {
+          text-align: right;
+          color: var(--color-success);
+          font-weight: 600;
+        }
+
+        .print-table .total-row {
+          background-color: var(--color-light);
+          font-weight: 600;
+        }
+
+        .print-table .total-row td {
+          border-top: 2px solid var(--color-border);
+        }
+
+        .print-table .total-amount {
+          color: var(--color-success);
+          font-size: 1.1rem;
+        }
       </style>
-  </head>
-  <body>
-    <h2>EMPANDAS KM11</h2>
+    </head>
+    <body>
+      <h2>EMPANDAS KM11</h2>
       <h3>Comanda</h3>
       <p>Fecha: ${date}</p>
       <p>Nombre del cliente: ${clientName}</p>
       <p>Vendedor: ${vendorName}</p>
-      <table>
-          <thead>
-              <tr>
-                  <th>Producto</th>
-                  <th>Cantidad</th>
-              </tr>
-          </thead>
-          <tbody>
-              ${orderData.items.map(item => `
-                  <tr>
-                      <td>${item.name}</td>
-                      <td>${item.quantity}</td>
-                  </tr>
-              `).join('')}
-          </tbody>
+      <table class="print-table">
+        <thead>
+          <tr>
+            <th>Producto</th>
+            <th>Cantidad</th>
+            <th>Precio Unit.</th>
+            <th>Subtotal</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${orderData.items.map(item => `
+            <tr>
+              <td class="product-name">${item.name}</td>
+              <td class="quantity">${item.quantity || 1}</td>
+              <td class="price">$${item.price.toFixed(2)}</td>
+              <td class="subtotal">$${(item.price * (item.quantity || 1)).toFixed(2)}</td>
+            </tr>
+          `).join('')}
+        </tbody>
+        <tfoot>
+          <tr class="total-row">
+            <td colspan="3">Total</td>
+            <td class="total-amount">$${orderData.total.toFixed(2)}</td>
+          </tr>
+        </tfoot>
       </table>
       ${docenaDetails}
       <div class="total">
-          Total: $${orderData.total.toFixed(2)}
+        Total: $${orderData.total.toFixed(2)}
       </div>
       
       <div class="payment-info">
-          <h3>Información de Pago</h3>
-          <p>Método de pago: ${orderData.paymentMethod}</p>
-          ${paymentDetails}
+        <h3>Información de Pago</h3>
+        <p>Método de pago: ${orderData.paymentMethod}</p>
+        ${paymentDetails}
       </div>
-       <h2>Gracias</h2>
-  </body>
-  </html>
-`;
+      <h2>Gracias</h2>
+    </body>
+    </html>
+  `;
 
-    // Abrir ventana de impresión
-    const printWindow = window.open('', '_blank');
-    printWindow.document.write(printContent);
-    printWindow.document.close();
+  // Abrir ventana de impresión
+  const printWindow = window.open('', '_blank');
+  printWindow.document.write(printContent);
+  printWindow.document.close();
 
-    // Esperar a que el contenido se cargue antes de imprimir
-    printWindow.onload = function () {
-      printWindow.print();
-      // printWindow.close(); // Opcional: cerrar la ventana después de imprimir
-    };
+  // Esperar a que el contenido se cargue antes de imprimir
+  printWindow.onload = function () {
+    printWindow.print();
+    // printWindow.close(); // Opcional: cerrar la ventana después de imprimir
+  };
 }
 
 // Evento para el botón de impresión cuando se carga la página

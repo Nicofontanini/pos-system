@@ -574,21 +574,37 @@ app.get('/api/products', (req, res) => {
 });
 
 // Ruta para agregar un nuevo producto
-app.post('/api/product', (req, res) => {
-  try {
-    const local = req.query.local || 'local1';
+app.post('/api/product', (req, res) => {   
+  try {     
     const newProduct = req.body;
+
+    // Generar un nuevo ID (usando el mayor ID de ambos locales para evitar conflictos)
+    const maxIdLocal1 = inventory.local1.products.length > 0 
+      ? Math.max(...inventory.local1.products.map(p => p.id)) 
+      : 0;
+    const maxIdLocal2 = inventory.local2.products.length > 0 
+      ? Math.max(...inventory.local2.products.map(p => p.id)) 
+      : 0;
+    const newId = Math.max(maxIdLocal1, maxIdLocal2) + 1;
     
-    // Generar un nuevo ID
-    const lastProduct = inventory[local].products[inventory[local].products.length - 1];
-    const newId = lastProduct ? lastProduct.id + 1 : 1;
     newProduct.id = newId;
     
-    // Agregar el producto
-    inventory[local].products.push(newProduct);
+    // Crear una copia para cada local (para evitar referencias compartidas)
+    const productForLocal1 = {...newProduct};
+    const productForLocal2 = {...newProduct};
+    
+    // Agregar el producto a ambos locales
+    inventory.local1.products.push(productForLocal1);
+    inventory.local2.products.push(productForLocal2);
     
     // Guardar los cambios en el archivo
     fs.writeFileSync(productsPath, JSON.stringify(inventory, null, 2));
+    
+    // Notificar a los clientes a través de socket.io (si estás usando sockets)
+    if (io) {
+      io.emit('product-added', { location: 'local1', product: productForLocal1 });
+      io.emit('product-added', { location: 'local2', product: productForLocal2 });
+    }
     
     res.json({ success: true, product: newProduct });
   } catch (error) {
