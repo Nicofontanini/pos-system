@@ -26,7 +26,10 @@ const cashRegisterFilePath = path.join(DATA_DIR, 'cashRegisterHistory.json');
 
 // Server state variables
 let inventory = null;
-let carts = { local1: [], local2: [] };
+let carts = {
+  local1: [],
+  local2: []
+};
 let cashRegister = { totalPayments: 0, totalAmount: 0 };
 let lastCashRegisterClose = { local1: null, local2: null };
 
@@ -725,6 +728,70 @@ const io = socketIo(server);
 io.on('connection', (socket) => {
   console.log('Nuevo cliente conectado');
 
+  // Listen for cart additions
+  socket.on('add-to-cart', (data) => {
+    const { local, product } = data;
+    
+    // Find the cart for this local
+    const cart = carts[local] || [];
+    
+    // Add the product to the cart with quantity 1
+    cart.push({
+      ...product,
+      quantity: 1 // Always add with quantity 1
+    });
+    
+    // Emit the updated cart to all clients in this local
+    io.to(local).emit('cart-updated', { local, cart });
+  });
+
+  // Listen for cart removals
+  socket.on('remove-from-cart', (data) => {
+    const { local, productId } = data;
+    const cart = carts[local] || [];
+    
+    // Find the product in the cart
+    const productIndex = cart.findIndex(item => item?.id === productId);
+    
+    if (productIndex !== -1) {
+      // Remove the product from the cart
+      cart.splice(productIndex, 1);
+      
+      // Emit the updated cart to all clients in this local
+      io.to(local).emit('cart-updated', { local, cart });
+    }
+  });
+
+  // Listen for quantity increments
+  socket.on('increment-product', (data) => {
+    const { local, productId } = data;
+    const cart = carts[local] || [];
+    
+    // Find the product in the cart
+    const product = cart.find(item => item?.id === productId);
+    
+    if (product) {
+      product.quantity = (product.quantity || 0) + 1;
+      // Emit the updated cart to all clients in this local
+      io.to(local).emit('cart-updated', { local, cart });
+    }
+  });
+
+  // Listen for quantity decrements
+  socket.on('decrement-product', (data) => {
+    const { local, productId } = data;
+    const cart = carts[local] || [];
+    
+    // Find the product in the cart
+    const product = cart.find(item => item?.id === productId);
+    
+    if (product && (product.quantity || 0) > 1) {
+      product.quantity = (product.quantity || 0) - 1;
+      // Emit the updated cart to all clients in this local
+      io.to(local).emit('cart-updated', { local, cart });
+    }
+  });
+
   // Listen for stock updates
   socket.on('stock-update', ({ local, items }) => {
     // Emit update to all clients
@@ -797,43 +864,43 @@ io.on('connection', (socket) => {
   });
 
   // Cart management
-  socket.on('add-to-cart', ({ local, product }) => {
+  socket.on('add-to-cart', ({ local, product, quantity }) => {
     // Check if cart already exists for that location
     if (!carts[local]) carts[local] = []; // Initialize if it doesn't exist
 
-    const existingProduct = carts[local].find((item) => item.id === product.id);
+    const existingProduct = carts[local].find((item) => item.id === product.id && item.configurationId === product.configurationId);
     if (existingProduct) {
-      existingProduct.quantity += 1; // Increment quantity if it already exists
+      existingProduct.quantity += quantity; // Increment quantity if it already exists
     } else {
-      product.quantity = 1; // Add quantity if it's new
+      product.quantity = quantity; // Add quantity if it's new
       carts[local].push(product);
     }
 
     io.emit('cart-updated', { local, cart: carts[local] });
   });
 
-  socket.on('increment-product', ({ local, productId }) => {
-    const product = carts[local].find((item) => item.id === productId);
+  socket.on('increment-product', ({ local, productId, configurationId }) => {
+    const product = carts[local].find((item) => item.id === productId && item.configurationId === configurationId);
     if (product) {
       product.quantity += 1; // Increment quantity
       io.emit('cart-updated', { local, cart: carts[local] });
     }
   });
 
-  socket.on('decrement-product', ({ local, productId }) => {
-    const product = carts[local].find((item) => item.id === productId);
+  socket.on('decrement-product', ({ local, productId, configurationId }) => {
+    const product = carts[local].find((item) => item.id === productId && item.configurationId === configurationId);
     if (product) {
       if (product.quantity > 1) {
         product.quantity -= 1; // Decrement quantity if greater than 1
       } else {
-        carts[local] = carts[local].filter((item) => item.id !== productId); // Remove if quantity is 1
+        carts[local] = carts[local].filter((item) => item.id !== productId || item.configurationId !== configurationId); // Remove if quantity is 1
       }
       io.emit('cart-updated', { local, cart: carts[local] });
     }
   });
 
-  socket.on('remove-from-cart', ({ local, productId }) => {
-    carts[local] = carts[local].filter((item) => item.id !== productId); // Remove product
+  socket.on('remove-from-cart', ({ local, productId, configurationId }) => {
+    carts[local] = carts[local].filter((item) => item.id !== productId || item.configurationId !== configurationId); // Remove product
     io.emit('cart-updated', { local, cart: carts[local] });
   });
 

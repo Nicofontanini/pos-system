@@ -2774,5 +2774,40 @@
     "local": "local1",
     "orderName": "nico",
     "sellerName": "dasdas"
+  },
+  {
+    "date": "2025-04-07T13:59:30.028Z",
+    "items": [
+      {
+        "id": "compound-1744034355716-sxf1qxx9z",
+        "originalId": 54,
+        "name": "dadadad222",
+        "price": 1400,
+        "quantity": null,
+        "details": [
+          {
+            "productId": 20,
+            "name": "Vacio/Provolone",
+            "quantity": 6
+          },
+          {
+            "productId": 9,
+            "name": "Jamon y Muzza",
+            "quantity": 6
+          }
+        ]
+      }
+    ],
+    "total": 1400,
+    "originalTotal": 1400,
+    "paymentMethod": "efectivo",
+    "surchargePercent": 0,
+    "paymentAmounts": {
+      "efectivo": 1400,
+      "transferencia": 0
+    },
+    "local": "local1",
+    "orderName": "nico",
+    "sellerName": "dasdas"
   }
 ]

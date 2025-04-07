@@ -146,19 +146,25 @@ function saveCompoundChanges(itemId, modal, products, productName, productPrice)
         const quantityDisplay = btn.nextElementSibling;
         const quantity = parseInt(quantityDisplay.textContent);
         
-        newDetails.push({
-            productId: productId,
-            name: productName,
-            quantity: quantity
-        });
+        if (quantity > 0) {  
+            newDetails.push({
+                productId: productId,
+                name: productName,
+                quantity: quantity
+            });
+        }
     });
     
-    // Agregar al carrito
+    // Create a unique identifier for this product configuration
+    const productConfigId = `compound-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+    
+    // Add to cart
     const local = window.location.pathname.includes('local1') ? 'local1' : 'local2';
     socket.emit('add-to-cart', {
         local: local,
         product: {
-            id: itemId,
+            id: productConfigId,  
+            originalId: itemId,   
             name: productName,
             price: productPrice,
             quantity: 1,
@@ -171,96 +177,87 @@ function saveCompoundChanges(itemId, modal, products, productName, productPrice)
 
 // Función para actualizar la interfaz del carrito
 function updateCartUI() {
-    const cartItemsElement = document.getElementById('cart-items');
-    const cartTotalElement = document.getElementById('cart-total');
-    const checkoutButton = document.getElementById('checkoutButton');
+  const cartItemsElement = document.getElementById('cart-items');
+  const cartTotalElement = document.getElementById('cart-total');
+  const checkoutButton = document.getElementById('checkoutButton');
 
-    cartItemsElement.innerHTML = ''; // Limpiar el carrito antes de actualizar
-    let total = 0;
+  cartItemsElement.innerHTML = ''; 
+  let total = 0;
 
-    // Recorrer los productos en el carrito
-    cart.forEach((item) => {
-      const itemElement = document.createElement('div');
-      itemElement.className = 'cart-item';
-      
-      // Construir el HTML del producto
-      let productDetails = ``;
-      if (item.details && item.details.length > 0) {
-        // Si es un producto compuesto, mostrar sus componentes
-        productDetails = `<div class="compound-details">
-          <h4>Componentes:</h4>
-          <ul>`;
+  // Recorrer los productos en el carrito
+  if (cart && Array.isArray(cart)) {
+      cart.forEach((item) => {
+          if (!item || typeof item !== 'object') return;
           
-          // Obtener nombres de productos componentes
-          fetch('/api/products')
-            .then(response => response.json())
-            .then(data => {
-              const products = data.products;
+          const itemElement = document.createElement('div');
+          itemElement.className = 'cart-item';
+          itemElement.dataset.productId = item.id; // Guardar el ID como data attribute
+          
+          // Construir el HTML del producto
+          let productDetails = ``;
+          if (item.details && Array.isArray(item.details) && item.details.length > 0) {
+              productDetails = `<div class="compound-details">
+                <h4>Componentes:</h4>
+                <ul>`;
+              
               item.details.forEach(component => {
-                const componentProduct = products.find(p => p.id === component.productId);
-                const productName = componentProduct ? componentProduct.name : `Producto ${component.productId}`;
-                productDetails += `<li>${component.quantity} x ${productName}</li>`;
+                productDetails += `<li>${component.quantity} x ${component.name || 'Producto sin nombre'}</li>`;
               });
-              
               productDetails += `</ul></div>`;
-              
-              // Actualizar el HTML del item
-              itemElement.innerHTML = `
-                <div class="product-info">
-                  <p>${item.name} - $${item.price} x ${item.quantity}</p>
-                  ${productDetails}
-                </div>
-                <div class="quantity-controls">
-                  <button onclick="decrementProduct(${item.id})">-</button>
-                  <span>${item.quantity}</span>
-                  <button onclick="incrementProduct(${item.id})">+</button>
-                </div>
-                <button onclick="removeFromCart(${item.id})">Eliminar</button>
-              `;
-              
-              // const editBtn = document.createElement('button');
-              // editBtn.className = 'edit-btn';
-              // editBtn.textContent = 'Editar Cantidades';
-              // editBtn.onclick = () => showEditCompoundModal(item);
-              // itemElement.appendChild(editBtn);
-              
-              cartItemsElement.appendChild(itemElement);
-              total += item.price * item.quantity;
-              cartTotalElement.textContent = total.toFixed(2);
-            })
-            .catch(error => console.error('Error al obtener productos:', error));
+          }
           
-          return;
-      }
-
-      // Para productos no compuestos
-      itemElement.innerHTML = `
-        <div class="product-info">
-          <p>${item.name} - $${item.price} x ${item.quantity}</p>
-        </div>
-        <div class="quantity-controls">
-          <button onclick="decrementProduct(${item.id})">-</button>
-          <span>${item.quantity}</span>
-          <button onclick="incrementProduct(${item.id})">+</button>
-        </div>
-        <button onclick="removeFromCart(${item.id})">Eliminar</button>
-      `;
-      
-      cartItemsElement.appendChild(itemElement);
-      total += item.price * item.quantity;
-    });
-
-    cartTotalElement.textContent = total.toFixed(2);
-    checkoutButton.disabled = cart.length === 0;
+          // Ensure price is a number
+          const price = typeof item.price === 'number' ? item.price : 0;
+          const quantity = typeof item.quantity === 'number' ? item.quantity : 1;
+          
+          itemElement.innerHTML = `
+            <div class="product-info">
+              <h3>${item.name || 'Producto sin nombre'}</h3>
+              <p>Precio: $${price.toFixed(2)}</p>
+              ${productDetails}
+            </div>
+            <div class="quantity-controls">
+              <button class="decrement-btn">-</button>
+              <span>${quantity}</span>
+              <button class="increment-btn">+</button>
+            </div>
+            <button class="remove-btn">Eliminar</button>
+          `;
+          
+          cartItemsElement.appendChild(itemElement);
+          
+          // Agregar event listeners a los botones
+          const decrementBtn = itemElement.querySelector('.decrement-btn');
+          const incrementBtn = itemElement.querySelector('.increment-btn');
+          const removeBtn = itemElement.querySelector('.remove-btn');
+          
+          decrementBtn.addEventListener('click', function() {
+              decrementProduct(item.id);
+          });
+          
+          incrementBtn.addEventListener('click', function() {
+              incrementProduct(item.id);
+          });
+          
+          removeBtn.addEventListener('click', function() {
+              removeFromCart(item.id);
+          });
+          
+          total += price * quantity;
+      });
   }
+  
+  cartTotalElement.textContent = total.toFixed(2);
+  checkoutButton.disabled = cart.length === 0;
+}
 
-  // Función para eliminar un producto del carrito
-  function removeFromCart(productId) {
+// Función para eliminar un producto del carrito
+function removeFromCart(productId) {
     const local = window.location.pathname.includes('local1') ? 'local1' : 'local2';
     socket.emit('remove-from-cart', { local, productId });
-  }
+}
 
-  // Función para procesar la venta
+// Función para procesar la venta
 function processSale() {
     const cartItems = JSON.parse(localStorage.getItem('cart')) || [];
     const local = localStorage.getItem('currentLocal') || 'local1';
@@ -491,7 +488,7 @@ function processSale() {
               price: currentDocena.price,
               quantity: 1,
               details: grupos.flatMap(g => g.empanadas),
-              gruposDetalle: grupos // Mantener los grupos para mejor visualización
+              gruposDetalle: grupos 
             }
           });
           closeDocenaModal();
@@ -633,19 +630,25 @@ function processSale() {
             const quantityDisplay = btn.nextElementSibling;
             const quantity = parseInt(quantityDisplay.textContent);
             
-            newDetails.push({
-                productId: productId,
-                name: productName,
-                quantity: quantity
-            });
+            if (quantity > 0) {  
+                newDetails.push({
+                    productId: productId,
+                    name: productName,
+                    quantity: quantity
+                });
+            }
         });
         
-        // Agregar al carrito
+        // Create a unique identifier for this product configuration
+        const productConfigId = `compound-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+        
+        // Add to cart
         const local = window.location.pathname.includes('local1') ? 'local1' : 'local2';
         socket.emit('add-to-cart', {
             local: local,
             product: {
-                id: itemId,
+                id: productConfigId,  
+                originalId: itemId,   
                 name: productName,
                 price: productPrice,
                 quantity: 1,
@@ -706,7 +709,7 @@ function processSale() {
     socket.on('cart-updated', function ({ local, cart: updatedCart }) {
       // Solo actualizar si el carrito pertenece al local actual
       if (local === (window.location.pathname.includes('local1') ? 'local1' : 'local2')) {
-        cart = updatedCart; // Actualizar el carrito local
-        updateCartUI(); // Actualizar la interfaz
+        cart = updatedCart || []; // Initialize with empty array if null
+        updateCartUI(); // Update interface
       }
     });
