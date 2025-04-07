@@ -188,6 +188,22 @@ function processPayment() {
 
 // Función mejorada para imprimir el pedido
 function printOrder(orderData) {
+  // Usar la misma función de generación de contenido que el historial
+  const printContent = generateOrderPrintContent(orderData);
+
+  // Abrir ventana de impresión
+  const printWindow = window.open('', '_blank');
+  printWindow.document.write(printContent);
+  printWindow.document.close();
+
+  // Esperar a que el contenido se cargue antes de imprimir
+  printWindow.onload = function () {
+    printWindow.print();
+    // printWindow.close(); // Opcional: cerrar la ventana después de imprimir
+  };
+}
+
+function generateOrderPrintContent(orderData) {
   const date = new Date(orderData.date).toLocaleString();
 
   // Verificar explícitamente los valores
@@ -204,13 +220,15 @@ function printOrder(orderData) {
       <p>Pago en efectivo: $${orderData.paymentAmounts.efectivo.toFixed(2)}</p>
       <p>Pago por transferencia: $${orderData.paymentAmounts.transferencia.toFixed(2)}</p>
     `;
+  } else if (orderData.paymentMethod === 'tarjeta') {
+    paymentDetails = `
+      <p>Total: $${orderData.total.toFixed(2)}</p>
+      <p>Subtotal: $${orderData.originalTotal.toFixed(2)}</p>
+      <p>Recargo (${orderData.surchargePercent}%): $${(orderData.total - orderData.originalTotal).toFixed(2)}</p>
+    `;
   } else {
     paymentDetails = `
-      <p>Pago por ${orderData.paymentMethod}: $${orderData.total.toFixed(2)}</p>
-      ${orderData.paymentMethod === 'tarjeta' ? 
-        `<p>Subtotal: $${orderData.originalTotal.toFixed(2)}</p>
-         <p>Recargo (${orderData.surchargePercent}%): $${(orderData.total - orderData.originalTotal).toFixed(2)}</p>` 
-        : ''}
+      <p>Total: $${orderData.total.toFixed(2)}</p>
     `;
   }
 
@@ -223,7 +241,7 @@ function printOrder(orderData) {
           <h4>${item.name}</h4>
           <ul>
             ${item.details.map(detail => `
-              <li style="list-style-type: none;">${detail.name} ${detail.quantity}</li>
+              <li style="list-style-type: none;">${detail.name} x ${detail.quantity}</li>
             `).join('')}
           </ul>
         </div>
@@ -295,14 +313,88 @@ function printOrder(orderData) {
           color: var(--color-success);
           font-size: 1.1rem;
         }
+
+        .order-info {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+          gap: 1rem;
+          margin-bottom: 1rem;
+        }
+
+        .order-info div {
+          background-color: var(--color-light);
+          padding: 1rem;
+          border-radius: var(--border-radius-sm);
+        }
+
+        .order-info h4 {
+          margin: 0 0 0.5rem 0;
+          color: var(--color-primary);
+        }
+
+        .docena-detail {
+          margin: 1rem 0;
+          padding: 1rem;
+          background-color: var(--color-light);
+          border-radius: var(--border-radius-sm);
+        }
+
+        .docena-detail h4 {
+          margin: 0 0 0.5rem 0;
+          color: var(--color-primary);
+        }
+
+        .docena-detail ul {
+          list-style-type: none;
+          padding: 0;
+          margin: 0;
+        }
+
+        .docena-detail li {
+          margin: 0.25rem 0;
+          padding: 0.25rem 0;
+        }
+
+        .payment-info {
+          margin: 1rem 0;
+          padding: 1rem;
+          background-color: var(--color-light);
+          border-radius: var(--border-radius-sm);
+        }
+
+        .payment-info h3 {
+          margin: 0 0 0.5rem 0;
+          color: var(--color-primary);
+        }
+
+        .payment-info p {
+          margin: 0.25rem 0;
+        }
       </style>
     </head>
     <body>
       <h2>EMPANDAS KM11</h2>
-      <h3>Comanda</h3>
+      <h3>Comanda #${orderData.id}</h3>
       <p>Fecha: ${date}</p>
-      <p>Nombre del cliente: ${clientName}</p>
-      <p>Vendedor: ${vendorName}</p>
+      
+      <div class="order-info">
+        <div class="customer-info">
+          <h4>Información del Cliente</h4>
+          <p>Nombre: ${clientName}</p>
+        </div>
+
+        <div class="seller-info">
+          <h4>Información del Vendedor</h4>
+          <p>Vendedor: ${vendorName}</p>
+        </div>
+
+        <div class="payment-info">
+          <h4>Información de Pago</h4>
+          <p>Método de pago: ${orderData.paymentMethod}</p>
+          ${paymentDetails}
+        </div>
+      </div>
+
       <table class="print-table">
         <thead>
           <tr>
@@ -329,31 +421,21 @@ function printOrder(orderData) {
           </tr>
         </tfoot>
       </table>
+
       ${docenaDetails}
-      <div class="total">
-        Total: $${orderData.total.toFixed(2)}
-      </div>
-      
+
       <div class="payment-info">
         <h3>Información de Pago</h3>
         <p>Método de pago: ${orderData.paymentMethod}</p>
         ${paymentDetails}
       </div>
+
       <h2>Gracias</h2>
     </body>
     </html>
   `;
 
-  // Abrir ventana de impresión
-  const printWindow = window.open('', '_blank');
-  printWindow.document.write(printContent);
-  printWindow.document.close();
-
-  // Esperar a que el contenido se cargue antes de imprimir
-  printWindow.onload = function () {
-    printWindow.print();
-    // printWindow.close(); // Opcional: cerrar la ventana después de imprimir
-  };
+  return printContent;
 }
 
 // Evento para el botón de impresión cuando se carga la página
@@ -384,46 +466,3 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
   });
-
-
-function generateOrderPrintContent() {
-  const date = new Date().toLocaleDateString();
-  const items = cart.map(item =>
-    `<tr>
-<td>${item.name}</td>
-<td>${item.quantity}</td>
-<td>$${item.price}</td>
-<td>$${(item.price * item.quantity).toFixed(2)}</td>
-</tr>`
-  ).join('');
-
-  return `
-<!DOCTYPE html>
-<html>
-<head>
-  <link rel="stylesheet" href="/styles/base.css">
-      <style>
-          table {
-              width: 50%
-              };
-      </style>
-</head>
-<body>
-<h2>Pedido - ${date}</h2>
-<table>
-  <tr>
-    <th>Producto</th>
-    <th>Cantidad</th>
-    <th>Precio Unit.</th>
-    <th>Subtotal</th>
-  </tr>
-  ${items}
-</table>
-<p class="total">Total: $${document.getElementById('modalTotal').textContent}</p>
-<p>Método de pago: ${currentPaymentMethod}</p>
-<p>Efectivo: $${paymentAmounts.efectivo}</p>
-<p>Transferencia: $${paymentAmounts.transferencia}</p>
-</body>
-</html>
-`;
-}

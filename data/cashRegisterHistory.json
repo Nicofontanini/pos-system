@@ -1206,5 +1206,616 @@
         "sellerName": "nico"
       }
     ]
+  },
+  {
+    "date": "2025-04-07T21:11:45.154Z",
+    "totalPayments": 3,
+    "totalAmount": 300,
+    "local": "local1",
+    "closeTime": "2025-04-07T21:11:45.156Z",
+    "startTime": "2025-04-04T14:27:34.820Z",
+    "productSummary": [
+      {
+        "name": "Carne",
+        "price": 100,
+        "quantitySold": 2,
+        "totalSold": 200,
+        "initialStock": 165,
+        "remainingStock": 164
+      },
+      {
+        "name": "Pollo",
+        "price": 100,
+        "quantitySold": 0,
+        "totalSold": 0,
+        "initialStock": 49,
+        "remainingStock": 49
+      },
+      {
+        "name": "Docena Tradicionales",
+        "price": 28000,
+        "quantitySold": 1,
+        "totalSold": 28000,
+        "initialStock": 101,
+        "remainingStock": 100
+      },
+      {
+        "name": "El Point - Mediterranea",
+        "price": 15000,
+        "quantitySold": 0,
+        "totalSold": 0,
+        "initialStock": 100,
+        "remainingStock": 100
+      },
+      {
+        "name": "Adicional Huevo",
+        "price": 500,
+        "quantitySold": 0,
+        "totalSold": 0,
+        "initialStock": 100,
+        "remainingStock": 100
+      },
+      {
+        "name": "Producto i",
+        "price": 700,
+        "quantitySold": 3,
+        "totalSold": 2100,
+        "initialStock": 98,
+        "remainingStock": 97
+      },
+      {
+        "name": "Productot",
+        "price": 100,
+        "quantitySold": 9,
+        "totalSold": 900,
+        "initialStock": 95,
+        "remainingStock": 94
+      },
+      {
+        "name": "Producto nico",
+        "price": 1600,
+        "quantitySold": 11,
+        "totalSold": 17600,
+        "initialStock": 101,
+        "remainingStock": 100
+      },
+      {
+        "name": "Producto q",
+        "price": 1200,
+        "quantitySold": 2,
+        "totalSold": 2400,
+        "initialStock": 101,
+        "remainingStock": 100
+      },
+      {
+        "name": "Producto fas",
+        "price": 1400,
+        "quantitySold": 2,
+        "totalSold": 2800,
+        "initialStock": 101,
+        "remainingStock": 100
+      },
+      {
+        "name": "Producto fasddad",
+        "price": 1400,
+        "quantitySold": 1,
+        "totalSold": 1400,
+        "initialStock": 101,
+        "remainingStock": 100
+      },
+      {
+        "name": "dadadad222",
+        "price": 1400,
+        "quantitySold": 59,
+        "totalSold": 82600,
+        "initialStock": 97,
+        "remainingStock": 96
+      },
+      {
+        "name": "dadadad222",
+        "price": 1400,
+        "quantitySold": 0,
+        "totalSold": 0,
+        "initialStock": 0,
+        "remainingStock": 0
+      },
+      {
+        "name": "combinadas 3",
+        "price": 300,
+        "quantitySold": 0,
+        "totalSold": 0,
+        "initialStock": 0,
+        "remainingStock": 0
+      },
+      {
+        "name": "dadadad222",
+        "price": 1400,
+        "quantitySold": 0,
+        "totalSold": 0,
+        "initialStock": 0,
+        "remainingStock": 0
+      },
+      {
+        "name": "combinadas 3",
+        "price": 300,
+        "quantitySold": 0,
+        "totalSold": 0,
+        "initialStock": 0,
+        "remainingStock": 0
+      },
+      {
+        "name": "dadadad222",
+        "price": 1400,
+        "quantitySold": 0,
+        "totalSold": 0,
+        "initialStock": 0,
+        "remainingStock": 0
+      }
+    ],
+    "paymentSummary": {
+      "efectivo": 159800,
+      "transferencia": 700,
+      "mixto": 0,
+      "total": 300
+    },
+    "ordersCount": 76,
+    "orders": [
+      {
+        "total": 700,
+        "paymentMethod": "transferencia",
+        "orderName": "nico",
+        "sellerName": "dasdas"
+      },
+      {
+        "total": 700,
+        "paymentMethod": "efectivo",
+        "orderName": "nico",
+        "sellerName": "dasdas"
+      },
+      {
+        "total": 700,
+        "paymentMethod": "efectivo",
+        "orderName": "nico",
+        "sellerName": "dasdas"
+      },
+      {
+        "total": 100,
+        "paymentMethod": "efectivo",
+        "orderName": "nico",
+        "sellerName": "dasdas"
+      },
+      {
+        "total": 100,
+        "paymentMethod": "efectivo",
+        "orderName": "nico",
+        "sellerName": "dasdas"
+      },
+      {
+        "total": 100,
+        "paymentMethod": "efectivo",
+        "orderName": "nico",
+        "sellerName": "dasdas"
+      },
+      {
+        "total": 100,
+        "paymentMethod": "efectivo",
+        "orderName": "sdaasd",
+        "sellerName": "dasdas"
+      },
+      {
+        "total": 100,
+        "paymentMethod": "efectivo",
+        "orderName": "nico",
+        "sellerName": "dasdas"
+      },
+      {
+        "total": 100,
+        "paymentMethod": "efectivo",
+        "orderName": "nico",
+        "sellerName": "dasdas"
+      },
+      {
+        "total": 100,
+        "paymentMethod": "efectivo",
+        "orderName": "nico",
+        "sellerName": "dasdas"
+      },
+      {
+        "total": 200,
+        "paymentMethod": "efectivo",
+        "orderName": "nico",
+        "sellerName": "dasdas"
+      },
+      {
+        "total": 1600,
+        "paymentMethod": "efectivo",
+        "orderName": "dasdas",
+        "sellerName": "dasdas"
+      },
+      {
+        "total": 1600,
+        "paymentMethod": "efectivo",
+        "orderName": "nico",
+        "sellerName": "dasdas"
+      },
+      {
+        "total": 100,
+        "paymentMethod": "efectivo",
+        "orderName": "nico",
+        "sellerName": "dasdas"
+      },
+      {
+        "total": 28000,
+        "paymentMethod": "efectivo",
+        "orderName": "nico",
+        "sellerName": "dasdas"
+      },
+      {
+        "total": 1600,
+        "paymentMethod": "efectivo",
+        "orderName": "nico",
+        "sellerName": "dasdas"
+      },
+      {
+        "total": 1600,
+        "paymentMethod": "efectivo",
+        "orderName": "dasdas",
+        "sellerName": "dasdas"
+      },
+      {
+        "total": 1600,
+        "paymentMethod": "efectivo",
+        "orderName": "dasdas",
+        "sellerName": "dasdas"
+      },
+      {
+        "total": 1600,
+        "paymentMethod": "efectivo",
+        "orderName": "nico",
+        "sellerName": "dasdas"
+      },
+      {
+        "total": 1600,
+        "paymentMethod": "efectivo",
+        "orderName": "nico",
+        "sellerName": "dasdas"
+      },
+      {
+        "total": 1600,
+        "paymentMethod": "efectivo",
+        "orderName": "nico",
+        "sellerName": "dasdas"
+      },
+      {
+        "total": 1600,
+        "paymentMethod": "efectivo",
+        "orderName": "nico",
+        "sellerName": "dasdas"
+      },
+      {
+        "total": 1600,
+        "paymentMethod": "efectivo",
+        "orderName": "nico",
+        "sellerName": "dasdas"
+      },
+      {
+        "total": 100,
+        "paymentMethod": "efectivo",
+        "orderName": "nico",
+        "sellerName": "dasdas"
+      },
+      {
+        "total": 1200,
+        "paymentMethod": "efectivo",
+        "orderName": "nico",
+        "sellerName": "dasdas"
+      },
+      {
+        "total": 1200,
+        "paymentMethod": "efectivo",
+        "orderName": "nico",
+        "sellerName": "dasdas"
+      },
+      {
+        "total": 1400,
+        "paymentMethod": "efectivo",
+        "orderName": "nico",
+        "sellerName": "dasdas"
+      },
+      {
+        "total": 1400,
+        "paymentMethod": "efectivo",
+        "orderName": "nico",
+        "sellerName": "dasdas"
+      },
+      {
+        "total": 1400,
+        "paymentMethod": "efectivo",
+        "orderName": "ttt",
+        "sellerName": "dasdas"
+      },
+      {
+        "total": 1400,
+        "paymentMethod": "efectivo",
+        "orderName": "nico",
+        "sellerName": "dasdas"
+      },
+      {
+        "total": 1400,
+        "paymentMethod": "efectivo",
+        "orderName": "nico",
+        "sellerName": "dasdas"
+      },
+      {
+        "total": 1400,
+        "paymentMethod": "efectivo",
+        "orderName": "nico",
+        "sellerName": "dasdas"
+      },
+      {
+        "total": 1400,
+        "paymentMethod": "efectivo",
+        "orderName": "nico",
+        "sellerName": "dasdas"
+      },
+      {
+        "total": 1600,
+        "paymentMethod": "efectivo",
+        "orderName": "nico",
+        "sellerName": "dasdas"
+      },
+      {
+        "total": 1400,
+        "paymentMethod": "efectivo",
+        "orderName": "nico",
+        "sellerName": "dasdas"
+      },
+      {
+        "total": 1400,
+        "paymentMethod": "efectivo",
+        "orderName": "nico",
+        "sellerName": "dasdas"
+      },
+      {
+        "total": 1400,
+        "paymentMethod": "efectivo",
+        "orderName": "nico",
+        "sellerName": "dasdas"
+      },
+      {
+        "total": 1400,
+        "paymentMethod": "efectivo",
+        "orderName": "nico",
+        "sellerName": "dasdas"
+      },
+      {
+        "total": 1400,
+        "paymentMethod": "efectivo",
+        "orderName": "nico",
+        "sellerName": "dasdas"
+      },
+      {
+        "total": 1400,
+        "paymentMethod": "efectivo",
+        "orderName": "nico",
+        "sellerName": "dasdas"
+      },
+      {
+        "total": 1400,
+        "paymentMethod": "efectivo",
+        "orderName": "nico",
+        "sellerName": "dasdas"
+      },
+      {
+        "total": 1400,
+        "paymentMethod": "efectivo",
+        "orderName": "nico",
+        "sellerName": "dasdas"
+      },
+      {
+        "total": 8400,
+        "paymentMethod": "efectivo",
+        "orderName": "nico",
+        "sellerName": "dasdas"
+      },
+      {
+        "total": 18200,
+        "paymentMethod": "efectivo",
+        "orderName": "18200",
+        "sellerName": "dasdas"
+      },
+      {
+        "total": 1400,
+        "paymentMethod": "efectivo",
+        "orderName": "nico",
+        "sellerName": "dasdas"
+      },
+      {
+        "total": 1400,
+        "paymentMethod": "efectivo",
+        "orderName": "nico",
+        "sellerName": "dasdas"
+      },
+      {
+        "total": 9800,
+        "paymentMethod": "efectivo",
+        "orderName": "dasdas",
+        "sellerName": "dasdas"
+      },
+      {
+        "total": 1400,
+        "paymentMethod": "efectivo",
+        "orderName": "nico",
+        "sellerName": "dasdas"
+      },
+      {
+        "total": 1400,
+        "paymentMethod": "efectivo",
+        "orderName": "nico",
+        "sellerName": "dasdas"
+      },
+      {
+        "total": 1400,
+        "paymentMethod": "efectivo",
+        "orderName": "nico",
+        "sellerName": "dasdas"
+      },
+      {
+        "total": 1400,
+        "paymentMethod": "efectivo",
+        "orderName": "nico",
+        "sellerName": "dasdas"
+      },
+      {
+        "total": 1400,
+        "paymentMethod": "efectivo",
+        "orderName": "nico",
+        "sellerName": "dasdas"
+      },
+      {
+        "total": 1400,
+        "paymentMethod": "efectivo",
+        "orderName": "nico",
+        "sellerName": "dasdas"
+      },
+      {
+        "total": 1400,
+        "paymentMethod": "efectivo",
+        "orderName": "nico",
+        "sellerName": "dasdas"
+      },
+      {
+        "total": 1400,
+        "paymentMethod": "efectivo",
+        "orderName": "nico",
+        "sellerName": "dasdas"
+      },
+      {
+        "total": 1400,
+        "paymentMethod": "efectivo",
+        "orderName": "nico",
+        "sellerName": "dasdas"
+      },
+      {
+        "total": 1400,
+        "paymentMethod": "efectivo",
+        "orderName": "nico",
+        "sellerName": "dasdas"
+      },
+      {
+        "total": 1400,
+        "paymentMethod": "efectivo",
+        "orderName": "nico",
+        "sellerName": "dasdas"
+      },
+      {
+        "total": 1400,
+        "paymentMethod": "efectivo",
+        "orderName": "nico",
+        "sellerName": "dasdas"
+      },
+      {
+        "total": 1400,
+        "paymentMethod": "efectivo",
+        "orderName": "nico",
+        "sellerName": "dasdas"
+      },
+      {
+        "total": 2800,
+        "paymentMethod": "efectivo",
+        "orderName": "nico",
+        "sellerName": "dasdas"
+      },
+      {
+        "total": 1400,
+        "paymentMethod": "efectivo",
+        "orderName": "nico",
+        "sellerName": "dasdas"
+      },
+      {
+        "total": 1400,
+        "paymentMethod": "efectivo",
+        "orderName": "nico",
+        "sellerName": "dasdas"
+      },
+      {
+        "total": 2800,
+        "paymentMethod": "efectivo",
+        "orderName": "nico",
+        "sellerName": "dasdas"
+      },
+      {
+        "total": 1400,
+        "paymentMethod": "efectivo",
+        "orderName": "nico",
+        "sellerName": "dasdas"
+      },
+      {
+        "total": 300,
+        "paymentMethod": "efectivo",
+        "orderName": "nico",
+        "sellerName": "dasdas"
+      },
+      {
+        "total": 2800,
+        "paymentMethod": "efectivo",
+        "orderName": "nico",
+        "sellerName": "dasdas"
+      },
+      {
+        "total": 1700,
+        "paymentMethod": "efectivo",
+        "orderName": "nico",
+        "sellerName": "dasdas"
+      },
+      {
+        "total": 15500,
+        "paymentMethod": "efectivo",
+        "orderName": "nico",
+        "sellerName": "dasdas"
+      },
+      {
+        "total": 100,
+        "paymentMethod": "efectivo",
+        "orderName": "nico",
+        "sellerName": "dasdas"
+      },
+      {
+        "total": 100,
+        "paymentMethod": "efectivo",
+        "orderName": "nico",
+        "sellerName": "nico"
+      },
+      {
+        "total": 100,
+        "paymentMethod": "efectivo",
+        "orderName": "dasdas",
+        "sellerName": "nico"
+      },
+      {
+        "total": 200,
+        "paymentMethod": "efectivo",
+        "orderName": "nico",
+        "sellerName": "dasdas"
+      },
+      {
+        "total": 100,
+        "paymentMethod": "efectivo",
+        "orderName": "sda",
+        "sellerName": "dasdas"
+      },
+      {
+        "total": 100,
+        "paymentMethod": "efectivo",
+        "orderName": "nico",
+        "sellerName": "dasdas"
+      },
+      {
+        "total": 100,
+        "paymentMethod": "efectivo",
+        "orderName": "nico",
+        "sellerName": "dasdas"
+      }
+    ]
   }
 ]

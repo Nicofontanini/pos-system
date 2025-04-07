@@ -4,7 +4,10 @@
       "name": "dasdas",
       "updatedAt": "2025-04-03T13:37:38.027Z"
     },
-    "vendedor2": null,
+    "vendedor2": {
+      "name": "nico",
+      "updatedAt": "2025-04-07T19:17:03.063Z"
+    },
     "vendedor3": {
       "name": "tuto",
       "updatedAt": "2025-04-04T12:58:19.821Z"
