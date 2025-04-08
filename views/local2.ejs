@@ -25,7 +25,7 @@
         <div class="dropdown-content">
           <!-- Botones dentro del dropdown -->
           <button onclick="showEmployeeLogModal()">Registrar Ingreso/Egreso</button>
-          <button onclick="showHistory()" class="history-button">Historial de Pedidos</button>
+          <button onclick="showHistory()" class="history-button">Historial de Comandas</button>
           <button onclick="confirmCloseCashRegister()" class="btn-mostrarFormulario">Cierre de Caja</button>
         </div>
       </div>
@@ -135,7 +135,7 @@
 
           <!-- Campo para el nombre del pedido -->
           <div class="payment-input">
-            <label>Nombre del pedido:</label>
+            <label>Nombre del Cliente:</label>
             <input type="text" id="orderName" placeholder="Ingrese el nombre">
           </div>
 
@@ -167,7 +167,7 @@
       <div id="historyModal" class="modal">
         <div class="modal-content">
           <span class="close" onclick="closeHistoryModal()">&times;</span>
-          <h2>Historial de Pedidos</h2>
+          <h2>Historial de Comandas</h2>
           <label>Fecha Unica:</label>
           <input type="date" id="filterDate" onchange="filterHistory()">
           <div class="date-range-filter">

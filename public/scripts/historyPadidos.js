@@ -53,7 +53,7 @@ socket.on('order-history', function (history) {
     orderElement.innerHTML = `
       <p>Fecha: ${new Date(order.date).toLocaleString()}</p>
       <p>Local: ${order.local}</p>
-      <p>Nombre del pedido: ${order.orderName}</p>
+      <p>Nombre del Cliente: ${order.orderName}</p>
       <p>Vendedor: ${order.sellerName}</p>
       <p>Total: $${order.total}</p>
       <p>Método de pago: ${order.paymentMethod}</p>
@@ -73,7 +73,7 @@ function printHistory() {
      <link rel="stylesheet" href="/styles/base.css">
     </head>
     <body>
-      <h2>Historial de Pedidos</h2>
+      <h2>Historial de Comandas</h2>
       ${historyContent}
     </body>
     </html>

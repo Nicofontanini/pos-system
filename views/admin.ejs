@@ -148,7 +148,7 @@
         <div id="historyModal" class="modal">
             <div class="modal-content">
                 <span class="close" onclick="closeHistoryModal()">&times;</span>
-                <h2>Historial de Pedidos</h2>
+                <h2>Historial de Comandas</h2>
                 <label>Fecha Unica:</label>
                 <input type="date" id="filterDate" onchange="filterHistory()">
                 <div class="date-range-filter">
@@ -172,10 +172,23 @@
         <div class="modal-content">
             <span class="close" onclick="closeCashRegisterHistoryModal()">&times;</span>
             <h2>Historial de Cierres de Caja</h2>
+            
+            <!-- Campos de filtrado por fecha -->
+            <div class="filter-section">
+                <div>
+                    <label for="cashStartDate">Fecha Inicial:</label>
+                    <input type="date" id="cashStartDate">
+                </div>
+                <div>
+                    <label for="cashEndDate">Fecha Final:</label>
+                    <input type="date" id="cashEndDate">
+                </div>
+                <button onclick="filterCashRegisterHistory()">Filtrar</button>
+            </div>
+
             <div id="cash-register-history" class="history-container"></div>
             <button onclick="printCashRegisterHistory()" class="print-button">Imprimir Historial</button>
             <button onclick="downloadCashRegisterExcel()" class="print-button">Descargar Excel</button>
-            <!-- Botón nuevo -->
         </div>
     </div>
 

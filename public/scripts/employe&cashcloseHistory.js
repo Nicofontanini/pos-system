@@ -148,7 +148,7 @@ socket.on('order-history', function (history) {
         orderElement.className = 'order-card';
         orderElement.innerHTML = `
 <p>Fecha: ${new Date(order.date).toLocaleString()}</p>
-<p>Nombre del pedido: ${order.orderName}</p> <!-- Nombre del pedido -->
+<p>Nombre del Cliente: ${order.orderName}</p> <!-- Nombre del pedido -->
 <p>Vendedor: ${order.sellerName}</p> <!-- Mostrar el nombre del vendedor -->
 <p>Total: $${order.total}</p>
 <p>Método de pago: ${order.paymentMethod}</p>
@@ -171,7 +171,7 @@ function printHistory() {
 </style>
 </head>
 <body>
-<h2>Historial de Pedidos</h2>
+<h2>Historial de comandas</h2>
 ${historyContent}
 </body>
 </html>
@@ -755,7 +755,7 @@ function downloadExcel() {
         return {
             Fecha: dateOnly,
             Hora: timeOnly,
-            'Nombre del Pedido': order.querySelector('p:nth-child(2)').textContent.replace('Nombre del pedido: ', ''),
+            'Nombre del Cliente': order.querySelector('p:nth-child(2)').textContent.replace('Nombre del Cliente: ', ''),
             Vendedor: order.querySelector('p:nth-child(3)').textContent.replace('Vendedor: ', ''),
             Total: order.querySelector('p:nth-child(4)').textContent.replace('Total: $', ''),
             'Método de Pago': order.querySelector('p:nth-child(5)').textContent.replace('Método de pago: ', '')
@@ -941,5 +941,346 @@ socket.on('employee-log-updated', function (newLog) {
     // Si el modal de historial está abierto, actualizar
     if (document.getElementById('employeeLogHistoryModal').style.display === 'block') {
         loadEmployeeLogs();
+    }
+});
+
+// Función para descargar un cierre específico en Excel
+function downloadSingleCashRegister(id) {
+    socket.emit('get-single-cash-register', { id: id });
+}
+
+// Escuchar el evento para descargar un cierre específico
+socket.on('single-cash-register', (entry) => {
+    if (entry) {
+        // Crear workbook
+        const workbook = XLSX.utils.book_new();
+        const data = [];
+
+        // Información básica
+        data.push(['INFORME DE CIERRE DE CAJA', '']);
+        data.push(['Local:', entry.local]);
+        data.push(['Fecha cierre:', new Date(entry.closeTime).toLocaleString()]);
+        data.push(['Período:', `${new Date(entry.startTime).toLocaleString()} - ${new Date(entry.closeTime).toLocaleString()}`]);
+        data.push(['Total:', `$${entry.paymentSummary.total.toFixed(2)}`]);
+        data.push(['']);
+
+        // Métodos de pago
+        data.push(['MÉTODOS DE PAGO', '', '']);
+        data.push(['Tipo', 'Monto', 'Porcentaje']);
+        ['efectivo', 'transferencia', 'mixto'].forEach(method => {
+            if (entry.paymentSummary[method] > 0) {
+                data.push([
+                    method.charAt(0).toUpperCase() + method.slice(1),
+                    `$${entry.paymentSummary[method].toFixed(2)}`,
+                    `${((entry.paymentSummary[method]/entry.paymentSummary.total)*100).toFixed(2)}%`
+                ]);
+            }
+        });
+        data.push(['TOTAL', `$${entry.paymentSummary.total.toFixed(2)}`, '100%']);
+        data.push(['']);
+
+        // Productos vendidos
+        if (entry.productSummary?.length > 0) {
+            data.push(['PRODUCTOS VENDIDOS', '', '', '', '']);
+            data.push(['Nombre', 'Precio Unitario', 'Cantidad', 'Stock Inicial', 'Stock Restante', 'Total']);
+            entry.productSummary.forEach(p => {
+                data.push([
+                    p.name,
+                    `$${p.price.toFixed(2)}`,
+                    p.quantitySold,
+                    p.initialStock,
+                    p.remainingStock,
+                    `$${p.totalSold.toFixed(2)}`
+                ]);
+            });
+            data.push(['']);
+        }
+
+        // Pedidos incluidos
+        if (entry.orders?.length > 0) {
+            data.push(['PEDIDOS INCLUIDOS', '', '', '', '']);
+            data.push(['ID', 'Nombre', 'Vendedor', 'Total', 'Método de Pago']);
+            entry.orders.forEach(order => {
+                data.push([
+                    order.id,
+                    order.orderName,
+                    order.sellerName,
+                    `$${order.total.toFixed(2)}`,
+                    order.paymentMethod
+                ]);
+            });
+        }
+
+        // Crear hoja de cálculo
+        const worksheet = XLSX.utils.aoa_to_sheet(data);
+        XLSX.utils.book_append_sheet(workbook, worksheet, "Cierre");
+
+        // Generar archivo
+        const dateStr = new Date(entry.closeTime).toISOString().split('T')[0];
+        const fileName = `Cierre_${entry.local}_${dateStr}_${entry.id}.xlsx`;
+
+        // Usar Blob para mejor compatibilidad
+        const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
+        const blob = new Blob([excelBuffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+        
+        // Crear y disparar el evento de descarga
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        
+        // Asegurarnos de que el link esté en el DOM
+        link.style.display = 'none';
+        document.body.appendChild(link);
+        
+        link.href = url;
+        link.download = fileName;
+        
+        // Simular clic
+        const event = new MouseEvent('click', {
+            view: window,
+            bubbles: true,
+            cancelable: true
+        });
+        
+        link.dispatchEvent(event);
+        
+        // Limpiar
+        setTimeout(() => {
+            document.body.removeChild(link);
+            URL.revokeObjectURL(url);
+        }, 100);
+
+        console.log('Archivo descargado exitosamente:', fileName);
+    }
+});
+
+// Actualizar la función que muestra el historial
+socket.on('update-cash-register-history', (history) => {
+    const historyContainer = document.getElementById('cash-register-history');
+    historyContainer.innerHTML = '';
+
+    // Ordenar del más reciente al más antiguo
+    history.reverse().forEach((entry, index) => {
+        const entryElement = document.createElement('div');
+        entryElement.className = 'cash-register-entry';
+
+        // Formatear fechas
+        const closeTime = new Date(entry.closeTime);
+        const startTime = new Date(entry.startTime);
+        const formattedCloseTime = closeTime.toLocaleDateString() + ' ' + closeTime.toLocaleTimeString();
+        const formattedStartTime = startTime.toLocaleDateString() + ' ' + startTime.toLocaleTimeString();
+
+        // Crear resumen de productos con stock
+        let productsHTML = `
+<h4>Productos Vendidos (${entry.productSummary.length}):</h4>
+<table class="summary-table">
+  <tr>
+    <th>Producto</th>
+    <th>Precio</th>
+    <th>Vendidos</th>
+    <th>Stock Inicial</th>
+    <th>Stock Restante</th>
+    <th>Total</th>
+  </tr>
+`;
+
+        entry.productSummary.forEach(product => {
+            productsHTML += `
+  <tr>
+    <td>${product.name}</td>
+    <td>$${product.price.toFixed(2)}</td>
+    <td>${product.quantitySold}</td>
+    <td>${product.initialStock}</td>
+    <td class="${product.remainingStock <= 5 ? 'low-stock' : ''}">${product.remainingStock}</td>
+    <td>$${product.totalSold.toFixed(2)}</td>
+  </tr>
+`;
+        });
+
+        productsHTML += '</table>';
+
+        // Crear resumen de pagos detallado
+        let paymentsHTML = `
+<h4>Métodos de Pago:</h4>
+<table class="payment-table">
+  <tr>
+    <th>Método</th>
+    <th>Monto</th>
+    <th>% del Total</th>
+  </tr>
+  <tr>
+    <td>Efectivo</td>
+    <td>$${entry.paymentSummary.efectivo.toFixed(2)}</td>
+    <td>${((entry.paymentSummary.efectivo / entry.paymentSummary.total) * 100).toFixed(1)}%</td>
+  </tr>
+  <tr>
+    <td>Transferencia</td>
+    <td>$${entry.paymentSummary.transferencia.toFixed(2)}</td>
+    <td>${((entry.paymentSummary.transferencia / entry.paymentSummary.total) * 100).toFixed(1)}%</td>
+  </tr>
+  <tr>
+    <td>Mixto</td>
+    <td>$${entry.paymentSummary.mixto.toFixed(2)}</td>
+    <td>${((entry.paymentSummary.mixto / entry.paymentSummary.total) * 100).toFixed(1)}%</td>
+  </tr>
+  <tr class="total-row">
+    <td><strong>TOTAL</strong></td>
+    <td><strong>$${entry.paymentSummary.total.toFixed(2)}</strong></td>
+    <td>100%</td>
+  </tr>
+</table>
+`;
+
+        entryElement.innerHTML = `
+<div class="entry-header">
+  <h3>Cierre #${history.length - index} - ${formattedCloseTime}</h3>
+  <p><strong>Local:</strong> ${entry.local.toUpperCase()}</p>
+  <p><strong>Período:</strong> ${formattedStartTime} a ${formattedCloseTime}</p>
+  <p><strong>Total Ventas:</strong> $${entry.paymentSummary.total.toFixed(2)}</p>
+  <p><strong>Pedidos Procesados:</strong> ${entry.ordersCount}</p>
+  <button onclick="downloadSingleCashRegister('${entry.id}')" class="download-btn">Descargar Excel</button>
+</div>
+<div class="entry-details">
+  <button class="toggle-details" onclick="toggleDetails(this)">Mostrar Detalles</button>
+  <div class="details-content" style="display:none;">
+    ${productsHTML}
+    ${paymentsHTML}
+    <h4>Pedidos incluidos (${entry.orders.length}):</h4>
+  </div>
+</div>
+<hr>
+`;
+
+        historyContainer.appendChild(entryElement);
+    });
+
+    // Si no hay resultados, mostrar mensaje
+    if (history.length === 0) {
+        const noResults = document.createElement('div');
+        noResults.className = 'no-results';
+        noResults.innerHTML = '<p>No se encontraron cierres de caja en el período especificado.</p>';
+        historyContainer.appendChild(noResults);
+    }
+});
+
+// Función para filtrar el historial de cierres
+function filterCashRegisterHistory() {
+    const startDate = document.getElementById('cashStartDate').value;
+    const endDate = document.getElementById('cashEndDate').value;
+    
+    // Actualizar el historial con las fechas de filtro
+    loadCashRegisterHistory(startDate, endDate);
+}
+
+// Actualizar la función loadCashRegisterHistory para aceptar fechas de filtro
+function loadCashRegisterHistory(startDate = '', endDate = '') {
+    socket.emit('get-cash-register-history', { startDate, endDate });
+}
+
+// Manejar la respuesta del servidor con el historial filtrado
+socket.on('update-cash-register-history', (history) => {
+    const historyContainer = document.getElementById('cash-register-history');
+    historyContainer.innerHTML = '';
+
+    // Ordenar del más reciente al más antiguo
+    history.reverse().forEach((entry, index) => {
+        const entryElement = document.createElement('div');
+        entryElement.className = 'cash-register-entry';
+
+        // Formatear fechas
+        const closeTime = new Date(entry.closeTime);
+        const startTime = new Date(entry.startTime);
+        const formattedCloseTime = closeTime.toLocaleDateString() + ' ' + closeTime.toLocaleTimeString();
+        const formattedStartTime = startTime.toLocaleDateString() + ' ' + startTime.toLocaleTimeString();
+
+        // Crear resumen de productos con stock
+        let productsHTML = `
+<h4>Productos Vendidos (${entry.productSummary.length}):</h4>
+<table class="summary-table">
+  <tr>
+    <th>Producto</th>
+    <th>Precio</th>
+    <th>Vendidos</th>
+    <th>Stock Inicial</th>
+    <th>Stock Restante</th>
+    <th>Total</th>
+  </tr>
+`;
+
+        entry.productSummary.forEach(product => {
+            productsHTML += `
+  <tr>
+    <td>${product.name}</td>
+    <td>$${product.price.toFixed(2)}</td>
+    <td>${product.quantitySold}</td>
+    <td>${product.initialStock}</td>
+    <td class="${product.remainingStock <= 5 ? 'low-stock' : ''}">${product.remainingStock}</td>
+    <td>$${product.totalSold.toFixed(2)}</td>
+  </tr>
+`;
+        });
+
+        productsHTML += '</table>';
+
+        // Crear resumen de pagos detallado
+        let paymentsHTML = `
+<h4>Métodos de Pago:</h4>
+<table class="payment-table">
+  <tr>
+    <th>Método</th>
+    <th>Monto</th>
+    <th>% del Total</th>
+  </tr>
+  <tr>
+    <td>Efectivo</td>
+    <td>$${entry.paymentSummary.efectivo.toFixed(2)}</td>
+    <td>${((entry.paymentSummary.efectivo / entry.paymentSummary.total) * 100).toFixed(1)}%</td>
+  </tr>
+  <tr>
+    <td>Transferencia</td>
+    <td>$${entry.paymentSummary.transferencia.toFixed(2)}</td>
+    <td>${((entry.paymentSummary.transferencia / entry.paymentSummary.total) * 100).toFixed(1)}%</td>
+  </tr>
+  <tr>
+    <td>Mixto</td>
+    <td>$${entry.paymentSummary.mixto.toFixed(2)}</td>
+    <td>${((entry.paymentSummary.mixto / entry.paymentSummary.total) * 100).toFixed(1)}%</td>
+  </tr>
+  <tr class="total-row">
+    <td><strong>TOTAL</strong></td>
+    <td><strong>$${entry.paymentSummary.total.toFixed(2)}</strong></td>
+    <td>100%</td>
+  </tr>
+</table>
+`;
+
+        entryElement.innerHTML = `
+<div class="entry-header">
+  <h3>Cierre #${history.length - index} - ${formattedCloseTime}</h3>
+  <p><strong>Local:</strong> ${entry.local.toUpperCase()}</p>
+  <p><strong>Período:</strong> ${formattedStartTime} a ${formattedCloseTime}</p>
+  <p><strong>Total Ventas:</strong> $${entry.paymentSummary.total.toFixed(2)}</p>
+  <p><strong>Pedidos Procesados:</strong> ${entry.ordersCount}</p>
+  <button onclick="downloadSingleCashRegister('${entry.id}')" class="download-btn">Descargar Excel</button>
+</div>
+<div class="entry-details">
+  <button class="toggle-details" onclick="toggleDetails(this)">Mostrar Detalles</button>
+  <div class="details-content" style="display:none;">
+    ${productsHTML}
+    ${paymentsHTML}
+    <h4>Pedidos incluidos (${entry.orders.length}):</h4>
+  </div>
+</div>
+<hr>
+`;
+
+        historyContainer.appendChild(entryElement);
+    });
+
+    // Si no hay resultados, mostrar mensaje
+    if (history.length === 0) {
+        const noResults = document.createElement('div');
+        noResults.className = 'no-results';
+        noResults.innerHTML = '<p>No se encontraron cierres de caja en el período especificado.</p>';
+        historyContainer.appendChild(noResults);
     }
 });

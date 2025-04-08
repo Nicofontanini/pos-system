@@ -1817,5 +1817,51 @@
         "sellerName": "dasdas"
       }
     ]
+  },
+  {
+    "id": "m98lvspadvdmbr3jac",
+    "date": "2025-04-08T14:38:56.011Z",
+    "totalPayments": 1,
+    "totalAmount": 100,
+    "local": "local1",
+    "closeTime": "2025-04-08T14:38:56.014Z",
+    "startTime": "2025-04-07T21:11:45.156Z",
+    "productSummary": [
+      {
+        "name": "Carne",
+        "price": 100,
+        "quantitySold": 0,
+        "totalSold": 0,
+        "initialStock": 164,
+        "remainingStock": 164
+      }
+    ],
+    "paymentSummary": {
+      "efectivo": 300,
+      "transferencia": 0,
+      "mixto": 0,
+      "total": 100
+    },
+    "ordersCount": 3,
+    "orders": [
+      {
+        "total": 100,
+        "paymentMethod": "efectivo",
+        "orderName": "nico",
+        "sellerName": "dasdas"
+      },
+      {
+        "total": 100,
+        "paymentMethod": "efectivo",
+        "orderName": "nico",
+        "sellerName": "dasdas"
+      },
+      {
+        "total": 100,
+        "paymentMethod": "efectivo",
+        "orderName": "lucas",
+        "sellerName": "dasdas"
+      }
+    ]
   }
 ]

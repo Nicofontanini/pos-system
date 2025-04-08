@@ -762,8 +762,7 @@
 }
 
 .edit-compound-modal button {
-  padding: 8px 15px;
-  border: none;
+  border: 1px solid black;
   border-radius: 4px;
   cursor: pointer;
 }
@@ -771,9 +770,32 @@
 .edit-compound-modal .save-btn {
   background-color: #4CAF50;
   color: white;
+  padding: 5px;
 }
 
 .edit-compound-modal .cancel-btn {
   background-color: #f44336;
   color: white;
+  padding: 5px;
+}
+
+.detail-actions button {
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.detail-actions button:hover {
+  background-color: #45a049;
+}
+
+.print-details {
+  background-color: #f9f9f9;
+  padding: 15px;
+  border-radius: 5px;
+  margin-top: 10px;
 }
