@@ -220,5 +220,11 @@
     "action": "ingreso",
     "timestamp": "2025-04-07T19:17:03.062Z",
     "local": "local1"
+  },
+  {
+    "employeeName": "nico",
+    "action": "ingreso",
+    "timestamp": "2025-04-08T10:53:29.934Z",
+    "local": "local1"
   }
 ]

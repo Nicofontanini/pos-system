@@ -374,7 +374,7 @@ function generateOrderPrintContent(orderData) {
     </head>
     <body>
       <h2>EMPANDAS KM11</h2>
-      <h3>Comanda #${orderData.id}</h3>
+      <h3>Comanda</h3>
       <p>Fecha: ${date}</p>
       
       <div class="order-info">
