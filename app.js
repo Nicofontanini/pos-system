@@ -6,6 +6,12 @@ const socketIo = require('socket.io');
 const session = require('express-session');
 const bcrypt = require('bcrypt');
 const { Resend } = require('resend');
+const dotenv = require('dotenv');
+const sequelize = require('./config/config');
+const orderController = require('./controllers/orderController');
+const productController = require('./controllers/productController');
+const cashRegisterHistoryController = require('./controllers/cashRegisterHistoryController');
+const migrate = require('./migrate');
 
 // Initialize Express app
 const app = express();
@@ -52,6 +58,35 @@ app.use(session({
   saveUninitialized: true,
   cookie: { secure: false }
 }));
+
+// Sincroniza la base de datos
+sequelize.sync({ force: false }).then(() => {
+  console.log('Base de datos sincronizada');
+}).catch(err => {
+  console.error('Error al sincronizar la base de datos:', err);
+});
+
+// Rutas de órdenes
+app.post('/api/orders', orderController.createOrder);
+app.get('/api/orders', orderController.getOrders);
+
+// Rutas de productos
+app.get('/api/products', productController.getProducts);
+app.post('/api/products', productController.createProduct);
+app.put('/api/product/:id', productController.updateProduct);
+
+// Ruta para cerrar caja
+app.post('/close-cash-register', orderController.closeCashRegister);
+
+// Ruta para filtrar historial de cierres
+app.post('/filter-cash-register-history', orderController.filterCashRegisterHistory);
+
+// Cash Register History routes
+app.get('/api/cash-register-history', cashRegisterHistoryController.getCashRegisterHistory);
+app.post('/api/cash-register-history/filter', cashRegisterHistoryController.getCashRegisterHistoryByDate);
+app.post('/api/cash-register-history', cashRegisterHistoryController.addCashRegisterEntry);
+app.put('/api/cash-register-history/:id', cashRegisterHistoryController.updateCashRegisterEntry);
+app.delete('/api/cash-register-history/:id', cashRegisterHistoryController.deleteCashRegisterEntry);
 
 // File IO helpers
 function readFile(filePath, defaultValue = []) {
@@ -402,55 +437,61 @@ app.get('/get-sellers-history', (req, res) => {
 // Employee logs
 app.post('/log-employee', (req, res) => {
   const { employeeName, action } = req.body;
-  const local = req.headers['x-local'] || 'unknown';
-  const logs = readEmployeeLogs();
+  const local = req.headers['x-local'];
 
-  const newLog = {
-    employeeName,
-    action,
-    timestamp: new Date().toISOString(),
-    local
-  };
+  try {
+    const logs = readEmployeeLogs();
 
-  logs.push(newLog);
-  writeEmployeeLogs(logs);
+    const newLog = {
+      employeeName,
+      action,
+      timestamp: new Date().toISOString(),
+      local
+    };
 
-  // Leer el estado actual de los vendedores
-  const sellers = readSellers();
-  const localSellers = sellers[local];
+    logs.push(newLog);
+    writeEmployeeLogs(logs);
 
-  if (action === 'ingreso') {
-    // Buscar un espacio vacío para el vendedor
-    for (let i = 1; i <= 4; i++) {
-      const sellerKey = `vendedor${i}`;
-      if (!localSellers[sellerKey] || 
-          (typeof localSellers[sellerKey] === 'object' && !localSellers[sellerKey].name)) {
-        localSellers[sellerKey] = {
-          name: employeeName,
-          updatedAt: new Date().toISOString()
-        };
-        writeSellers(sellers);
-        io.emit('sellers-updated', sellers);
-        break;
+    // Leer el estado actual de los vendedores
+    const sellers = readSellers();
+    const localSellers = sellers[local];
+
+    if (action === 'ingreso') {
+      // Buscar un espacio vacío para el vendedor
+      for (let i = 1; i <= 4; i++) {
+        const sellerKey = `vendedor${i}`;
+        if (!localSellers[sellerKey] || 
+            (typeof localSellers[sellerKey] === 'object' && !localSellers[sellerKey].name)) {
+          localSellers[sellerKey] = {
+            name: employeeName,
+            updatedAt: new Date().toISOString()
+          };
+          writeSellers(sellers);
+          io.emit('sellers-updated', sellers);
+          break;
+        }
+      }
+    } else if (action === 'egreso') {
+      // Buscar y remover al vendedor
+      for (let i = 1; i <= 4; i++) {
+        const sellerKey = `vendedor${i}`;
+        const currentSeller = localSellers[sellerKey];
+        if ((typeof currentSeller === 'string' && currentSeller === employeeName) ||
+            (typeof currentSeller === 'object' && currentSeller?.name === employeeName)) {
+          localSellers[sellerKey] = null;
+          writeSellers(sellers);
+          io.emit('sellers-updated', sellers);
+          break;
+        }
       }
     }
-  } else if (action === 'egreso') {
-    // Buscar y remover al vendedor
-    for (let i = 1; i <= 4; i++) {
-      const sellerKey = `vendedor${i}`;
-      const currentSeller = localSellers[sellerKey];
-      if ((typeof currentSeller === 'string' && currentSeller === employeeName) ||
-          (typeof currentSeller === 'object' && currentSeller?.name === employeeName)) {
-        localSellers[sellerKey] = null;
-        writeSellers(sellers);
-        io.emit('sellers-updated', sellers);
-        break;
-      }
-    }
+
+    io.emit('employee-log-updated', newLog);
+    res.json({ success: true });
+  } catch (error) {
+    console.error('Error al agregar registro de empleado:', error);
+    res.status(500).json({ success: false });
   }
-
-  io.emit('employee-log-updated', newLog);
-  res.json({ success: true });
 });
 
 // Agregar esta nueva ruta para obtener los vendedores actuales
@@ -796,21 +837,27 @@ const io = socketIo(server);
 io.on('connection', (socket) => {
   console.log('Nuevo cliente conectado');
 
-  // Listen for cart additions
-  socket.on('add-to-cart', (data) => {
-    const { local, product } = data;
-    
-    // Find the cart for this local
-    const cart = carts[local] || [];
-    
-    // Add the product to the cart with quantity 1
-    cart.push({
-      ...product,
-      quantity: 1 // Always add with quantity 1
-    });
-    
-    // Emit the updated cart to all clients in this local
-    io.to(local).emit('cart-updated', { local, cart });
+  // Manejar adición al carrito
+  socket.on('add-to-cart', async ({ local, product, quantity }) => {
+    try {
+      // Verificar si ya existe el producto en el carrito
+      if (!carts[local]) carts[local] = [];
+
+      const existingProduct = carts[local].find(
+        (item) => item.id === product.id && item.configurationId === product.configurationId
+      );
+
+      if (existingProduct) {
+        existingProduct.quantity += quantity;
+      } else {
+        carts[local].push({ ...product, quantity });
+      }
+
+      // Emitir actualización al cliente
+      io.to(local).emit('cart-updated', { local, cart: carts[local] });
+    } catch (error) {
+      console.error('Error al agregar al carrito:', error);
+    }
   });
 
   // Listen for cart removals
@@ -1058,24 +1105,36 @@ io.on('connection', (socket) => {
     io.emit('cart-updated', { local, cart: [] });
   });
 
-  // Add dozen
-  socket.on('add-docena', ({ local, docena }) => {
-    // Read current inventory
-    const inventory = readInventory();
+ // Manejar adición de docena
+ socket.on('add-docena', async ({ local, docena }) => {
+  try {
+    // Leer inventario actual
+    const inventory = await Product.findAll({ where: { local } });
 
-    // Generate new ID for dozen
-    const maxId = Math.max(...inventory[local].products.map(p => p.id), 0);
-    docena.id = maxId + 1;
+    // Generar nuevo ID para la docena
+    const newId = Math.max(...inventory.map(p => p.id)) + 1;
 
-    // Add new dozen to inventory
-    inventory[local].products.push(docena);
+    // Crear nuevo producto
+    const newProduct = {
+      id: newId,
+      name: docena.name,
+      category: docena.category,
+      price: docena.price,
+      stock: docena.quantity,
+      description: docena.description,
+      isCompound: true,
+      local
+    };
 
-    // Save updated inventory
-    writeInventory(inventory);
+    // Guardar en la base de datos
+    await Product.create(newProduct);
 
-    // Emit event to update UI
-    io.emit('product-added', { location: local, product: docena });
-  });
+    // Notificar a todos los clientes
+    io.to(local).emit('product-added', { local, product: newProduct });
+  } catch (error) {
+    console.error('Error al agregar docena:', error);
+  }
+});
 
   // Order history management
   socket.on('get-order-history-range', ({ local, startDate, endDate }) => {
@@ -1116,105 +1175,250 @@ io.on('connection', (socket) => {
     socket.emit('order-history', orders);
   });
 
-  // Cash register management
-  socket.on('close-cash-register', async (closeData) => {
+  // // Cash register management
+  // socket.on('close-cash-register', async (closeData) => {
+  //   try {
+  //     const { local } = closeData;
+
+  //     // Obtener órdenes desde el último cierre
+  //     const orders = await Order.findAll({
+  //       where: {
+  //         local,
+  //         date: { [Op.gt]: lastCashRegisterClose[local] || new Date(0) }
+  //       }
+  //     });
+
+  //     // Calcular resumen de productos vendidos
+  //     const productSummary = {};
+  //     const inventory = await Product.findAll({ where: { local } });
+
+  //     orders.forEach(order => {
+  //       order.items.forEach(item => {
+  //         if (!productSummary[item.id]) {
+  //           const product = inventory.find(p => p.id === item.id);
+  //           productSummary[item.id] = {
+  //             name: item.name,
+  //             price: item.price,
+  //             quantitySold: 0,
+  //             totalSold: 0,
+  //             initialStock: product ? product.stock + item.quantity : 0,
+  //             remainingStock: product ? product.stock : 0
+  //           };
+  //         }
+  //         productSummary[item.id].quantitySold += item.quantity;
+  //         productSummary[item.id].totalSold += item.price * item.quantity;
+  //       });
+  //     });
+
+  //     // Calcular resumen de métodos de pago
+  //     const paymentSummary = {
+  //       efectivo: 0,
+  //       transferencia: 0,
+  //       mixto: 0,
+  //       total: 0
+  //     };
+
+  //     orders.forEach(order => {
+  //       paymentSummary.total += order.total;
+  //       if (order.paymentMethod === 'mixto') {
+  //         paymentSummary.mixto += order.total;
+  //         paymentSummary.efectivo += order.paymentAmounts?.efectivo || 0;
+  //         paymentSummary.transferencia += order.paymentAmounts?.transferencia || 0;
+  //       } else {
+  //         paymentSummary[order.paymentMethod] += order.total;
+  //       }
+  //     });
+
+  //      // Guardar cierre en la base de datos
+  //      await CashRegisterHistory.create({
+  //       local,
+  //       totalAmount: paymentSummary.total,
+  //       paymentMethod: 'mixto' // Si hay mixto, lo registramos como mixto
+  //     });
+
+  //     // Actualizar última fecha de cierre
+  //     lastCashRegisterClose[local] = new Date().toISOString();
+
+  //     // Emitir resumen a todos los clientes
+  //     io.to(local).emit('cash-register-closed', {
+  //       productSummary,
+  //       paymentSummary
+  //     });
+  //   } catch (error) {
+  //     console.error('Error al cerrar caja:', error);
+  //   }
+  // });
+
+  //     // 4. Create close object with precise information
+  //     const detailedClose = {
+  //       id: generateUniqueID(),
+  //       ...closeData,
+  //       closeTime: new Date().toISOString(),
+  //       startTime: lastCloseTime || newOrders[0]?.date || new Date().toISOString(),
+  //       productSummary: Object.values(productSummary),
+  //       paymentSummary,
+  //       ordersCount: newOrders.length,
+  //       orders: newOrders.map(order => ({
+  //         id: order.id,
+  //         total: order.total,
+  //         paymentMethod: order.paymentMethod,
+  //         orderName: order.orderName,
+  //         sellerName: order.sellerName
+  //       }))
+  //     };
+
+  //     // 5. Update last close time
+  //     lastCashRegisterClose[local] = detailedClose.closeTime;
+
+  //     // 6. Save to history
+  //     const history = readCashRegisterHistory();
+  //     history.push(detailedClose);
+  //     writeCashRegisterHistory(history);
+
+  //     // 7. Emit updated history
+  //     io.emit('update-cash-register-history', history);
+
+  //     // 8. Reset counters for next close
+  //     cashRegister.totalPayments = 0;
+  //     cashRegister.totalAmount = 0;
+
+  //     // Emit updated counter status
+  //     io.emit('cash-register-updated', cashRegister);
+
+  //     // 9. Emit updated history
+  //     io.emit('update-cash-register-history', history);
+
+  //   } catch (error) {
+  //     console.error('Error en cierre de caja:', error);
+  //   }
+  // });
+
+  // socket.on('get-cash-register-history', (data) => {
+  //   const { startDate, endDate } = data;
+  //   const history = readCashRegisterHistory();
+  //   const filteredHistory = filterCashRegisterHistoryByDate(history, startDate, endDate);
+  //   socket.emit('update-cash-register-history', filteredHistory);
+  // });
+
+  // Manejar solicitud de cierre específico
+  socket.on('get-single-cash-register', (data) => {
     try {
-      const { local } = closeData;
-
-      // 1. Get orders since last close
-      const orders = readOrders(local);
-      const lastCloseTime = lastCashRegisterClose[local] || new Date(0);
-
-      const newOrders = orders.filter(order =>
-        new Date(order.date) > new Date(lastCloseTime) &&
-        order.local === local
-      );
-
-      // 2. Calculate summary of sold products and remaining stock
-      const productSummary = {};
-      const inventory = readInventory();
-
-      newOrders.forEach(order => {
-        order.items.forEach(item => {
-          if (!productSummary[item.id]) {
-            const product = inventory[local].products.find(p => p.id === item.id);
-            productSummary[item.id] = {
-              name: item.name,
-              price: item.price,
-              quantitySold: 0,
-              totalSold: 0,
-              initialStock: product ? product.stock + item.quantity : 0, // Stock before sale
-              remainingStock: product ? product.stock : 0 // Current stock
-            };
-          }
-          productSummary[item.id].quantitySold += item.quantity;
-          productSummary[item.id].totalSold += item.price * item.quantity;
-        });
-      });
-
-      // 3. Calculate summary of payment methods only for this close
-      const paymentSummary = {
-        efectivo: 0,
-        transferencia: 0,
-        mixto: 0,
-        total: closeData.totalAmount
-      };
-
-      newOrders.forEach(order => {
-        if (order.paymentMethod === 'mixto') {
-          paymentSummary.mixto += order.total;
-          paymentSummary.efectivo += order.paymentAmounts?.efectivo || 0;
-          paymentSummary.transferencia += order.paymentAmounts?.transferencia || 0;
-        } else if (order.paymentMethod === 'efectivo') {
-          paymentSummary.efectivo += order.total;
-        } else if (order.paymentMethod === 'transferencia') {
-          paymentSummary.transferencia += order.total;
-        }
-      });
-
-      // 4. Create close object with precise information
-      const detailedClose = {
-        id: generateUniqueID(),
-        ...closeData,
-        closeTime: new Date().toISOString(),
-        startTime: lastCloseTime || newOrders[0]?.date || new Date().toISOString(),
-        productSummary: Object.values(productSummary),
-        paymentSummary,
-        ordersCount: newOrders.length,
-        orders: newOrders.map(order => ({
-          id: order.id,
-          total: order.total,
-          paymentMethod: order.paymentMethod,
-          orderName: order.orderName,
-          sellerName: order.sellerName
-        }))
-      };
-
-      // 5. Update last close time
-      lastCashRegisterClose[local] = detailedClose.closeTime;
-
-      // 6. Save to history
+      const { id } = data;
       const history = readCashRegisterHistory();
-      history.push(detailedClose);
-      writeCashRegisterHistory(history);
-
-      // 7. Emit updated history
-      io.emit('update-cash-register-history', history);
-
-      // 8. Reset counters for next close
-      cashRegister.totalPayments = 0;
-      cashRegister.totalAmount = 0;
-
-      // Emit updated counter status
-      io.emit('cash-register-updated', cashRegister);
-
-      // 9. Emit updated history
-      io.emit('update-cash-register-history', history);
-
+      
+      // Buscar el cierre por ID
+      const entry = history.find(e => e.id === id);
+      
+      if (entry) {
+        socket.emit('single-cash-register', entry);
+      } else {
+        socket.emit('single-cash-register', null);
+      }
     } catch (error) {
-      console.error('Error en cierre de caja:', error);
+      console.error('Error al obtener cierre específico:', error);
+      socket.emit('single-cash-register', null);
     }
   });
+
+
+socket.on('close-cash-register', async (closeData) => {
+  try {
+    const { local } = closeData;
+
+    // 1. Get orders since last close
+    const orders = readOrders(local);
+    const lastCloseTime = lastCashRegisterClose[local] || new Date(0);
+
+    const newOrders = orders.filter(order =>
+      new Date(order.date) > new Date(lastCloseTime) &&
+      order.local === local
+    );
+
+    // 2. Calculate summary of sold products and remaining stock
+    const productSummary = {};
+    const inventory = readInventory();
+
+    newOrders.forEach(order => {
+      order.items.forEach(item => {
+        if (!productSummary[item.id]) {
+          const product = inventory[local].products.find(p => p.id === item.id);
+          productSummary[item.id] = {
+            name: item.name,
+            price: item.price,
+            quantitySold: 0,
+            totalSold: 0,
+            initialStock: product ? product.stock + item.quantity : 0, // Stock before sale
+            remainingStock: product ? product.stock : 0 // Current stock
+          };
+        }
+        productSummary[item.id].quantitySold += item.quantity;
+        productSummary[item.id].totalSold += item.price * item.quantity;
+      });
+    });
+
+    // 3. Calculate summary of payment methods only for this close
+    const paymentSummary = {
+      efectivo: 0,
+      transferencia: 0,
+      mixto: 0,
+      total: req.body.totalAmount
+    };
+
+    newOrders.forEach(order => {
+      if (order.paymentMethod === 'mixto') {
+        paymentSummary.mixto += order.total;
+        paymentSummary.efectivo += order.paymentAmounts?.efectivo || 0;
+        paymentSummary.transferencia += order.paymentAmounts?.transferencia || 0;
+      } else if (order.paymentMethod === 'efectivo') {
+        paymentSummary.efectivo += order.total;
+      } else if (order.paymentMethod === 'transferencia') {
+        paymentSummary.transferencia += order.total;
+      }
+    });
+
+    // 4. Create close object with precise information
+    const detailedClose = {
+      id: generateUniqueID(),
+      ...closeData,
+      closeTime: new Date().toISOString(),
+      startTime: lastCloseTime || newOrders[0]?.date || new Date().toISOString(),
+      productSummary: Object.values(productSummary),
+      paymentSummary,
+      ordersCount: newOrders.length,
+      orders: newOrders.map(order => ({
+        id: order.id,
+        total: order.total,
+        paymentMethod: order.paymentMethod,
+        orderName: order.orderName,
+        sellerName: order.sellerName
+      }))
+    };
+
+    // 5. Update last close time
+    lastCashRegisterClose[local] = detailedClose.closeTime;
+
+    // 6. Save to history
+    const history = readCashRegisterHistory();
+    history.push(detailedClose);
+    writeCashRegisterHistory(history);
+
+    // 7. Emit updated history
+    io.emit('update-cash-register-history', history);
+
+    // 8. Reset counters for next close
+    cashRegister.totalPayments = 0;
+    cashRegister.totalAmount = 0;
+
+    // Emit updated counter status
+    io.emit('cash-register-updated', cashRegister);
+
+    // 9. Emit updated history
+    io.emit('update-cash-register-history', history);
+
+  } catch (error) {
+    console.error('Error en cierre de caja:', error);
+  }
+});
 
   socket.on('get-cash-register-history', (data) => {
     const { startDate, endDate } = data;
@@ -1243,8 +1447,9 @@ io.on('connection', (socket) => {
     }
   });
 
+  
   // Handle disconnection
   socket.on('disconnect', () => {
     console.log('Cliente desconectado');
-  });
+  })
 });
