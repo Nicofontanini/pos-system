@@ -8,9 +8,13 @@ const bcrypt = require('bcrypt');
 const { Resend } = require('resend');
 const dotenv = require('dotenv');
 const sequelize = require('./config/config');
-const orderController = require('./controllers/orderController');
 const productController = require('./controllers/productController');
 const cashRegisterHistoryController = require('./controllers/cashRegisterHistoryController');
+const sellersController = require('./controllers/sellersController');
+const employeeLogsController = require('./controllers/employeeLogsController');
+const orderLocal1Controller = require('./controllers/orderLocal1Controller');
+const orderLocal2Controller = require('./controllers/orderLocal2Controller');
+const sellersHistoryController = require('./controllers/sellersHistoryController');
 const migrate = require('./migrate');
 
 // Initialize Express app
@@ -66,20 +70,23 @@ sequelize.sync({ force: false }).then(() => {
   console.error('Error al sincronizar la base de datos:', err);
 });
 
-// Rutas de órdenes
-app.post('/api/orders', orderController.createOrder);
-app.get('/api/orders', orderController.getOrders);
-
 // Rutas de productos
 app.get('/api/products', productController.getProducts);
 app.post('/api/products', productController.createProduct);
 app.put('/api/product/:id', productController.updateProduct);
 
-// Ruta para cerrar caja
-app.post('/close-cash-register', orderController.closeCashRegister);
+// Rutas de órdenes por local
+app.get('/api/orders/local1', orderLocal1Controller.getOrders);
+app.post('/api/orders/local1', orderLocal1Controller.createOrder);
+app.put('/api/orders/local1/:id', orderLocal1Controller.updateOrder);
+app.delete('/api/orders/local1/:id', orderLocal1Controller.deleteOrder);
+app.post('/api/orders/local1/filter', orderLocal1Controller.filterOrdersByDate);
 
-// Ruta para filtrar historial de cierres
-app.post('/filter-cash-register-history', orderController.filterCashRegisterHistory);
+app.get('/api/orders/local2', orderLocal2Controller.getOrders);
+app.post('/api/orders/local2', orderLocal2Controller.createOrder);
+app.put('/api/orders/local2/:id', orderLocal2Controller.updateOrder);
+app.delete('/api/orders/local2/:id', orderLocal2Controller.deleteOrder);
+app.post('/api/orders/local2/filter', orderLocal2Controller.filterOrdersByDate);
 
 // Cash Register History routes
 app.get('/api/cash-register-history', cashRegisterHistoryController.getCashRegisterHistory);
@@ -87,6 +94,33 @@ app.post('/api/cash-register-history/filter', cashRegisterHistoryController.getC
 app.post('/api/cash-register-history', cashRegisterHistoryController.addCashRegisterEntry);
 app.put('/api/cash-register-history/:id', cashRegisterHistoryController.updateCashRegisterEntry);
 app.delete('/api/cash-register-history/:id', cashRegisterHistoryController.deleteCashRegisterEntry);
+
+// Sellers routes
+app.get('/api/sellers', sellersController.getAllSellers);
+app.get('/api/sellers/:id', sellersController.getSellerById);
+app.post('/api/sellers', sellersController.createSeller);
+app.put('/api/sellers/:id', sellersController.updateSeller);
+app.delete('/api/sellers/:id', sellersController.deleteSeller);
+
+// Sellers History routes
+app.get('/api/sellers-history', sellersHistoryController.getSellersHistory);
+app.get('/api/sellers-history/:sellerId', sellersHistoryController.getSellerHistory);
+app.post('/api/sellers-history/filter', sellersHistoryController.filterSellersHistory);
+app.post('/api/sellers-history', sellersHistoryController.addSellerHistoryEntry);
+app.put('/api/sellers-history/:entryId', sellersHistoryController.updateSellerHistoryEntry);
+app.delete('/api/sellers-history/:entryId', sellersHistoryController.deleteSellerHistoryEntry);
+
+// Sellers History routes
+app.get('/api/sellers/:id/history', sellersController.getSellerHistory);
+app.post('/api/sellers/login', sellersController.recordLogin);
+app.post('/api/sellers/logout', sellersController.recordLogout);
+
+// Employee Logs routes
+app.get('/api/employee-logs', employeeLogsController.getEmployeeLogs);
+app.post('/api/employee-logs/filter', employeeLogsController.getEmployeeLogsByDate);
+app.get('/api/employee-logs/employee/:employeeId', employeeLogsController.getEmployeeLogsByEmployee);
+app.post('/api/employee-logs', employeeLogsController.logEmployeeAction);
+app.delete('/api/employee-logs/clean-old', employeeLogsController.deleteEmployeeLogs);
 
 // File IO helpers
 function readFile(filePath, defaultValue = []) {

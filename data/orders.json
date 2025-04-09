@@ -3204,5 +3204,27 @@
     "local": "local1",
     "orderName": "lucas",
     "sellerName": "dasdas"
+  },
+  {
+    "date": "2025-04-09T13:08:04.125Z",
+    "items": [
+      {
+        "id": 1,
+        "name": "Carne",
+        "price": 100,
+        "quantity": null
+      }
+    ],
+    "total": 100,
+    "originalTotal": 100,
+    "paymentMethod": "efectivo",
+    "surchargePercent": 0,
+    "paymentAmounts": {
+      "efectivo": 100,
+      "transferencia": 0
+    },
+    "local": "local1",
+    "orderName": "sda",
+    "sellerName": "tuto"
   }
 ]

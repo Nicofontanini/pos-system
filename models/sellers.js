@@ -4,9 +4,9 @@ const sequelize = require('../config/config');
 
 const Sellers = sequelize.define('Sellers', {
   id: {
-    type: DataTypes.INTEGER,
+    type: DataTypes.STRING,
     primaryKey: true,
-    autoIncrement: true
+    allowNull: false
   },
   name: {
     type: DataTypes.STRING,
@@ -23,10 +23,18 @@ const Sellers = sequelize.define('Sellers', {
   status: {
     type: DataTypes.STRING,
     allowNull: false,
-    defaultValue: 'inactive'
+    defaultValue: 'offline'
+  },
+  lastLogin: {
+    type: DataTypes.DATE,
+    allowNull: true
+  },
+  lastLogout: {
+    type: DataTypes.DATE,
+    allowNull: true
   }
 }, {
-  timestamps: true
+  timestamps: false
 });
 
 module.exports = Sellers;

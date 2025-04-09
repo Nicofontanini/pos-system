@@ -2,9 +2,13 @@
 const fs = require('fs');
 const path = require('path');
 const sequelize = require('./config/config');
-const Order = require('./models/order');
+const OrderLocal1 = require('./models/orderLocal1');
+const OrderLocal2 = require('./models/orderLocal2');
 const Product = require('./models/product');
 const CashRegisterHistory = require('./models/cashRegisterHistory');
+const EmployeeLogs = require('./models/employeeLogs');
+const Sellers = require('./models/sellers');
+const SellersHistory = require('./models/sellersHistory');
 
 async function migrateData() {
   try {
@@ -16,9 +20,13 @@ async function migrateData() {
     await sequelize.sync({ force: true });
     
     // Leer datos de los archivos JSON
-    const orders = JSON.parse(fs.readFileSync(path.join(__dirname, 'data', 'orders.json')));
+    const orders1 = JSON.parse(fs.readFileSync(path.join(__dirname, 'data', 'orders.json')));
+    const orders2 = JSON.parse(fs.readFileSync(path.join(__dirname, 'data', 'orders2.json')));
     const products = JSON.parse(fs.readFileSync(path.join(__dirname, 'data', 'products.json')));
     const cashRegisterHistory = JSON.parse(fs.readFileSync(path.join(__dirname, 'data', 'cashRegisterHistory.json')));
+    const sellers = JSON.parse(fs.readFileSync(path.join(__dirname, 'data', 'sellers.json')));
+    const sellersHistory = JSON.parse(fs.readFileSync(path.join(__dirname, 'data', 'sellers_history.json')));
+    const employeeLogs = JSON.parse(fs.readFileSync(path.join(__dirname, 'data', 'employee_logs.json')));
 
     // Insertar productos
     let productId = 1;
@@ -29,32 +37,78 @@ async function migrateData() {
           name: product.name,
           category: product.category,
           price: product.price,
-          stock: product.stock,
-          description: product.description,
-          isCompound: product.isCompound || false,
-          local
+          local: local
         });
       }
     }
 
-    // Insertar órdenes
-    for (const order of orders) {
-      await Order.create(order);
+    // Insertar órdenes de local1
+    for (const order of orders1) {
+      await OrderLocal1.create(order);
+    }
+
+    // Insertar órdenes de local2
+    for (const order of orders2) {
+      await OrderLocal2.create(order);
     }
 
     // Insertar historial de caja
     for (const entry of cashRegisterHistory) {
-      // Aseguramos que paymentMethod tenga un valor
-      await CashRegisterHistory.create({
-        local: entry.local,
-        totalAmount: entry.totalAmount,
-        paymentMethod: entry.paymentMethod || 'Efectivo' // Valor por defecto si no existe
+      await CashRegisterHistory.create(entry);
+    }
+
+    // Insertar vendedores
+    for (const local in sellers) {
+      const localSellers = sellers[local];
+      let position = 1;
+      
+      for (const sellerId in localSellers) {
+        const seller = localSellers[sellerId];
+        if (seller) { // Solo procesar si el vendedor no es null
+          // Crear un ID único combinando local e ID del vendedor
+          const uniqueId = `${local}_${sellerId}`;
+          await Sellers.create({
+            id: uniqueId,
+            name: seller.name,
+            local: local,
+            position: position++,
+            status: 'offline',
+            lastLogin: seller.updatedAt,
+            lastLogout: null
+          });
+        } else {
+          position++;
+        }
+      }
+    }
+
+    // Insertar historial de vendedores
+    for (const entry of sellersHistory) {
+      // Crear un ID único usando el local del registro o local1 por defecto
+      const uniqueId = `${entry.local || 'local1'}_${entry.seller}`;
+      await SellersHistory.create({
+        sellerId: uniqueId,
+        loginTime: entry.updatedAt,
+        logoutTime: null,
+        local: entry.local || 'local1'
       });
     }
 
-    console.log('Migración completada');
+    // Insertar logs de empleados
+    for (const entry of employeeLogs) {
+      await EmployeeLogs.create({
+        employeeId: entry.employeeName,
+        action: entry.action,
+        timestamp: entry.timestamp,
+        local: entry.local,
+        details: null
+      });
+    }
+
+    console.log('Migración completada exitosamente');
   } catch (error) {
-    console.error('Error al migrar datos:', error);
+    console.error('Error en la migración:', error);
+    process.exit(1);
   }
 }
 

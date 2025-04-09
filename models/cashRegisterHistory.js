@@ -3,13 +3,19 @@ const { DataTypes } = require('sequelize');
 const sequelize = require('../config/config');
 
 const CashRegisterHistory = sequelize.define('CashRegisterHistory', {
+  id: {
+    type: DataTypes.STRING,
+    primaryKey: true,
+    allowNull: false,
+    defaultValue: DataTypes.UUIDV4
+  },
   date: {
     type: DataTypes.DATE,
-    allowNull: true  // Cambiado a true para permitir valores nulos
+    allowNull: false
   },
   totalPayments: {
     type: DataTypes.INTEGER,
-    allowNull: true  // Cambiado a true
+    allowNull: false
   },
   totalAmount: {
     type: DataTypes.DECIMAL(10,2),
@@ -21,20 +27,22 @@ const CashRegisterHistory = sequelize.define('CashRegisterHistory', {
   },
   closeTime: {
     type: DataTypes.DATE,
-    allowNull: true  // Cambiado a true
+    allowNull: true
   },
   startTime: {
     type: DataTypes.DATE,
-    allowNull: true  // Cambiado a true
+    allowNull: true
   },
   productSummary: {
-    type: DataTypes.JSON,
+    type: DataTypes.JSONB,
     allowNull: true
   },
   paymentMethod: {
     type: DataTypes.STRING,
     allowNull: true
   }
+}, {
+  tableName: 'CashRegisterHistories'
 });
 
 module.exports = CashRegisterHistory;

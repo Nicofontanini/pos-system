@@ -4,7 +4,7 @@ const sequelize = require('../config/config');
 
 const SellersHistory = sequelize.define('SellersHistory', {
   sellerId: {
-    type: DataTypes.INTEGER,
+    type: DataTypes.STRING,
     allowNull: false,
     references: {
       model: 'Sellers',
