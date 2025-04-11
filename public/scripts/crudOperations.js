@@ -51,6 +51,28 @@ function saveProduct() {
         if (data.success) {
             resetForm();
             loadProducts();
+            
+            // Sincronizar con local1
+            console.log('Enviando producto a local1:', product);
+            fetch('/add-product/local1', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(product)
+            })
+            .then(res => res.json())
+            .then(data => console.log('Respuesta de local1:', data))
+            .catch(err => console.error('Error sincronizando con local1:', err));
+            
+            // Sincronizar con local2
+            console.log('Enviando producto a local2:', product);
+            fetch('/add-product/local2', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(product)
+            })
+            .then(res => res.json())
+            .then(data => console.log('Respuesta de local2:', data))
+            .catch(err => console.error('Error sincronizando con local2:', err));
         } else {
             alert('Error al guardar el producto: ' + data.error);
         }
