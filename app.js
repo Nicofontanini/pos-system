@@ -763,3 +763,10 @@ app.post('/clean-old-data', (req, res) => {
     res.status(500).json({ success: false, message: 'Error al limpiar los datos antiguos' });
   }
 });
+
+if (process.argv.includes('--migrate')) {
+  const { migrateData } = require('./migrate');
+  migrateData().then(() => {
+    console.log('Migración completada opcionalmente');
+  });
+}

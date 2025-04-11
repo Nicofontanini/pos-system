@@ -156,11 +156,16 @@ function cancelEdit() {
 }
 
 function resetForm() {
-    document.getElementById('formTitle').textContent = 'Agregar Nuevo Producto';
-    document.getElementById('editProductId').value = '';
-    document.getElementById('productForm').reset();
-    document.getElementById('cancelButton').style.display = 'none';
-    document.getElementById('formError').style.display = 'none';
+  document.getElementById('formTitle').textContent = 'Agregar Nuevo Producto';
+  document.getElementById('editProductId').value = '';
+  document.getElementById('name').value = '';
+  document.getElementById('category').value = '';
+  document.getElementById('price').value = '';
+  document.getElementById('stock').value = '';
+  document.getElementById('description').value = '';
+  document.getElementById('isCompound').checked = false;
+  document.getElementById('compoundProductsList').innerHTML = '';
+  document.getElementById('cancelButton').style.display = 'none';
 }
 
 function loadProducts() {

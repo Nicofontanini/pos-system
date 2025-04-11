@@ -112,7 +112,7 @@ async function migrateData() {
           
           try {
             // Intentar crear el vendedor
-            await db.Sellers.create({
+            await db.Seller.create({
               id: uniqueId,
               name: seller.name,
               local: local,
@@ -121,7 +121,7 @@ async function migrateData() {
           } catch (error) {
             // Si hay un error de duplicado, actualizar el vendedor existente
             if (error.name === 'SequelizeUniqueConstraintError') {
-              await db.Sellers.update({
+              await db.Seller.update({
                 name: seller.name,
                 updatedAt: new Date(seller.updatedAt)
               }, {
@@ -156,4 +156,6 @@ async function migrateData() {
   }
 }
 
-migrateData();
+module.exports = {
+  migrateData
+};
