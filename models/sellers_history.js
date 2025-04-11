@@ -1,30 +1,27 @@
 module.exports = (sequelize, DataTypes) => {
   const SellersHistory = sequelize.define('SellersHistory', {
-    sellerId: {
+    seller: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: true
+    },
+    oldName: {
+      type: DataTypes.STRING,
+      allowNull: true
+    },
+    newName: {
+      type: DataTypes.STRING,
+      allowNull: true
+    },
+    updatedAt: {
+      type: DataTypes.DATE,
+      allowNull: true
     },
     local: {
       type: DataTypes.STRING,
-      allowNull: false
-    },
-    action: {
-      type: DataTypes.STRING,
-      allowNull: false
-    },
-    timestamp: {
-      type: DataTypes.DATE,
-      allowNull: false,
-      defaultValue: DataTypes.NOW
-    },
-    details: {
-      type: DataTypes.TEXT,
       allowNull: true
-    },
-    performedBy: {
-      type: DataTypes.STRING,
-      allowNull: false
     }
+  }, {
+    timestamps: false
   });
 
   return SellersHistory;

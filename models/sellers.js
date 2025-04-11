@@ -1,22 +1,26 @@
 module.exports = (sequelize, DataTypes) => {
-  const Sellers = sequelize.define('Sellers', {
+  const Seller = sequelize.define('Seller', {
     id: {
       type: DataTypes.STRING,
       primaryKey: true
     },
     name: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: true
     },
     local: {
       type: DataTypes.STRING,
       allowNull: false
     },
+    createdAt: {
+      type: DataTypes.DATE,
+      allowNull: true
+    },
     updatedAt: {
       type: DataTypes.DATE,
-      allowNull: false
+      allowNull: true
     }
   });
 
-  return Sellers;
+  return Seller;
 };

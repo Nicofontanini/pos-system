@@ -1,5 +1,11 @@
 module.exports = (sequelize, DataTypes) => {
   const Product = sequelize.define('Product', {
+    id: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      primaryKey: true,
+      autoIncrement: true
+    },
     name: {
       type: DataTypes.STRING,
       allowNull: false
@@ -14,8 +20,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     stock: {
       type: DataTypes.INTEGER,
-      allowNull: true,
-      defaultValue: 0
+      allowNull: false
     },
     description: {
       type: DataTypes.TEXT,
@@ -25,6 +30,10 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.BOOLEAN,
       allowNull: false,
       defaultValue: false
+    },
+    components: {
+      type: DataTypes.ARRAY(DataTypes.STRING),
+      allowNull: true
     },
     local: {
       type: DataTypes.STRING,

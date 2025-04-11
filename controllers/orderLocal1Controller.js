@@ -1,5 +1,5 @@
 // controllers/orderLocal1Controller.js
-const OrderLocal1 = require('../models/orderLocal1');
+const OrderLocal1 = require('../models/orders');
 const db = require('../models');
 
 exports.createOrder = async (req, res) => {

@@ -1,5 +1,5 @@
 // controllers/employeeLogsController.js
-const EmployeeLogs = require('../models/employeeLogs');
+const EmployeeLogs = require('../models/employee_logs');
 const { Op } = require('sequelize');
 const db = require('../models');
 

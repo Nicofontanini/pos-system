@@ -2,9 +2,20 @@
 module.exports = (sequelize, DataTypes) => {
   const CashRegisterHistory = sequelize.define('CashRegisterHistory', {
     id: {
+      type: DataTypes.STRING,
+      primaryKey: true
+    },
+    date: {
+      type: DataTypes.DATE,
+      allowNull: true
+    },
+    totalPayments: {
       type: DataTypes.INTEGER,
-      primaryKey: true,
-      autoIncrement: true
+      allowNull: false
+    },
+    totalAmount: {
+      type: DataTypes.DECIMAL(10,2),
+      allowNull: false
     },
     local: {
       type: DataTypes.STRING,
@@ -18,40 +29,20 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.DATE,
       allowNull: false
     },
-    totalSales: {
-      type: DataTypes.DECIMAL(10,2),
-      allowNull: false
+    productSummary: {
+      type: DataTypes.JSONB,
+      allowNull: true
     },
-    cashInDrawer: {
-      type: DataTypes.DECIMAL(10,2),
-      allowNull: false
-    },
-    difference: {
-      type: DataTypes.DECIMAL(10,2),
-      allowNull: false
-    },
-    totalPayments: {
-      type: DataTypes.INTEGER,
-      allowNull: false
-    },
-    totalAmount: {
-      type: DataTypes.DECIMAL(10,2),
-      allowNull: false
+    paymentSummary: {
+      type: DataTypes.JSONB,
+      allowNull: true
     },
     ordersCount: {
       type: DataTypes.INTEGER,
       allowNull: false
     },
-    paymentSummary: {
-      type: DataTypes.JSON,
-      allowNull: true
-    },
-    productSummary: {
-      type: DataTypes.JSON,
-      allowNull: true
-    },
     orders: {
-      type: DataTypes.JSON,
+      type: DataTypes.JSONB,
       allowNull: true
     }
   });

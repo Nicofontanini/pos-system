@@ -1,5 +1,5 @@
 module.exports = (sequelize, DataTypes) => {
-  const OrderLocal2 = sequelize.define('OrderLocal2', {
+  const Orders2 = sequelize.define('Orders2', {
     orderId: {
       type: DataTypes.INTEGER,
       allowNull: false,
@@ -24,15 +24,27 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false
     },
-    items: {
+    paymentAmounts: {
       type: DataTypes.JSON,
       allowNull: false
     },
-    seller: {
+    local: {
       type: DataTypes.STRING,
+      allowNull: false
+    },
+    orderName: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    sellerName: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    items: {
+      type: DataTypes.ARRAY(DataTypes.JSON),
       allowNull: false
     }
   });
 
-  return OrderLocal2;
+  return Orders2;
 };

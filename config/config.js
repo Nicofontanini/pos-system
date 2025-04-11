@@ -1,19 +1,42 @@
 // config/config.js
-const { Sequelize, Op } = require('sequelize');
-
-const sequelize = new Sequelize({
-    dialect: 'postgres',
-    host: 'dpg-cvqohr3e5dus73dlng20-a.oregon-postgres.render.com',
+module.exports = {
+  development: {
     username: 'empanadaskm11_user',
     password: 'ggoTBCwKMsgenfqKvyU9ATEPcBnxYcEa',
     database: 'empanadaskm11',
+    host: 'dpg-cvqohr3e5dus73dlng20-a.oregon-postgres.render.com',
+    dialect: 'postgres',
     dialectOptions: {
       ssl: {
         require: true,
         rejectUnauthorized: false
       }
     }
-  });
-sequelize.Op = Op; // Exportar el operador Op
-
-module.exports = sequelize;
+  },
+  test: {
+    username: 'empanadaskm11_user',
+    password: 'ggoTBCwKMsgenfqKvyU9ATEPcBnxYcEa',
+    database: 'empanadaskm11',
+    host: 'dpg-cvqohr3e5dus73dlng20-a.oregon-postgres.render.com',
+    dialect: 'postgres',
+    dialectOptions: {
+      ssl: {
+        require: true,
+        rejectUnauthorized: false
+      }
+    }
+  },
+  production: {
+    username: 'empanadaskm11_user',
+    password: 'ggoTBCwKMsgenfqKvyU9ATEPcBnxYcEa',
+    database: 'empanadaskm11',
+    host: 'dpg-cvqohr3e5dus73dlng20-a.oregon-postgres.render.com',
+    dialect: 'postgres',
+    dialectOptions: {
+      ssl: {
+        require: true,
+        rejectUnauthorized: false
+      }
+    }
+  }
+};

@@ -1,6 +1,6 @@
 // controllers/sellersController.js
 const Sellers = require('../models/sellers');
-const SellersHistory = require('../models/sellersHistory');
+const SellersHistory = require('../models/sellers_history');
 const db = require('../models');
 
 // Get all sellers

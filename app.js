@@ -624,7 +624,8 @@ app.post('/log-employee', async (req, res) => {
     const employeeLog = await db.EmployeeLog.create({
       employeeName,
       action,
-      local
+      local,
+      timestamp: new Date()
     });
 
     const sellers = await db.Seller.findAll({ where: { local } });

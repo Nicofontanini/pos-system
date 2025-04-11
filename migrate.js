@@ -12,14 +12,40 @@ async function migrateData() {
     // Crear las tablas si no existen
     await db.sequelize.sync({ alter: true });
 
+    // Check if items column exists
+    console.log('Checking if items column exists...');
+    const [exists] = await db.sequelize.query(
+      'SELECT 1 FROM information_schema.columns WHERE table_name = \'Orders\' AND column_name = \'items\''
+    );
+
+    if (!exists[0]) {
+      // Add items column as nullable first
+      console.log('Adding items column to Orders table...');
+      await db.sequelize.query('ALTER TABLE "Orders" ADD COLUMN "items" JSON[];');
+
+      // Update existing rows with default empty array
+      console.log('Updating existing rows with default items value...');
+      await db.sequelize.query('UPDATE "Orders" SET "items" = array[]::json[] WHERE "items" IS NULL;');
+
+      // Make the column NOT NULL
+      console.log('Making items column NOT NULL...');
+      await db.sequelize.query('ALTER TABLE "Orders" ALTER COLUMN "items" SET NOT NULL;');
+    }
+
     // Leer datos de los archivos JSON
     const orders1 = JSON.parse(fs.readFileSync(path.join(__dirname, 'data', 'orders.json')));
     const orders2 = JSON.parse(fs.readFileSync(path.join(__dirname, 'data', 'orders2.json')));
     const products = JSON.parse(fs.readFileSync(path.join(__dirname, 'data', 'products.json')));
-    const cashRegisterHistory = JSON.parse(fs.readFileSync(path.join(__dirname, 'data', 'cashRegisterHistory.json')));
     const sellers = JSON.parse(fs.readFileSync(path.join(__dirname, 'data', 'sellers.json')));
     const sellersHistory = JSON.parse(fs.readFileSync(path.join(__dirname, 'data', 'sellers_history.json')));
     const employeeLogs = JSON.parse(fs.readFileSync(path.join(__dirname, 'data', 'employee_logs.json')));
+
+    // Limpiar la tabla CashRegisterHistory
+    await db.CashRegisterHistory.destroy({
+      where: {},
+      truncate: true,
+      restartIdentity: true
+    });
 
     // Insertar productos
     for (const local in products) {
@@ -33,22 +59,20 @@ async function migrateData() {
             }
           });
 
-          if (existingProduct) {
-            // Si existe, actualizar el stock y otros campos
-            await existingProduct.update({
-              stock: product.stock,
-              price: product.price,
-              category: product.category
-            });
-          } else {
-            // Si no existe, crearlo
-            await db.Product.create({
+          if (!existingProduct) {
+            const newProduct = {
               name: product.name,
               category: product.category,
               price: product.price,
-              local: local,
-              stock: product.stock
-            });
+              stock: product.stock,
+              description: product.description || null,
+              isCompound: product.isCompound || false,
+              components: product.components || null,
+              local: local
+            };
+
+            await db.Product.create(newProduct);
+            console.log(`Producto ${product.name} creado exitosamente`);
           }
         } catch (error) {
           console.error(`Error al procesar producto ${product.name}:`, error);
@@ -62,7 +86,8 @@ async function migrateData() {
       if (!order.seller) {
         order.seller = 'default'; // O el ID de un vendedor existente
       }
-      await db.OrderLocal1.create(order);
+      order.local = 'local1';
+      await db.Orders.create(order);
     }
 
     // Insertar órdenes de local2
@@ -71,26 +96,8 @@ async function migrateData() {
       if (!order.seller) {
         order.seller = 'default'; // O el ID de un vendedor existente
       }
-      await db.OrderLocal2.create(order);
-    }
-
-    // Insertar historial de caja
-    for (const entry of cashRegisterHistory) {
-      // Asegúrate de que todos los campos requeridos tengan valores
-      await db.CashRegisterHistory.create({
-        local: entry.local || 'local1',
-        closeTime: new Date(entry.closeTime),
-        startTime: new Date(entry.startTime),
-        totalSales: entry.totalAmount || 0,
-        cashInDrawer: entry.cashInDrawer || 0,
-        difference: entry.difference || 0,
-        totalPayments: entry.totalPayments || 0,
-        totalAmount: entry.totalAmount || 0,
-        ordersCount: entry.ordersCount || 0,
-        paymentSummary: entry.paymentSummary || null,
-        productSummary: entry.productSummary || null,
-        orders: entry.orders || null
-      });
+      order.local = 'local2';
+      await db.Orders.create(order);
     }
 
     // Insertar vendedores
@@ -133,8 +140,8 @@ async function migrateData() {
     // Insertar logs de empleados
     for (const entry of employeeLogs) {
       // Asegurarse de que todos los campos requeridos tengan valores
-      await db.EmployeeLogs.create({
-        employeeId: entry.employeeName || 'Empleado Sin Nombre',
+      await db.EmployeeLog.create({
+        employeeName: entry.employeeName || 'Empleado Sin Nombre',
         action: entry.action || 'login',
         timestamp: entry.timestamp || new Date(),
         local: entry.local || 'local1',
