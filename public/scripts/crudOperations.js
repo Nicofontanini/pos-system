@@ -34,7 +34,9 @@ function saveProduct() {
     };
 
     const editProductId = document.getElementById('editProductId').value;
-    const url = editProductId ? `/api/product/${editProductId}` : '/api/product';
+    // Get the current location from the URL or session
+    const location = window.location.pathname.split('/')[1]; // This assumes the URL is /local1 or /local2
+    const url = editProductId ? `/api/product/${editProductId}` : `/add-product/${location}`;
     const method = editProductId ? 'PUT' : 'POST';
 
     fetch(url, {
@@ -159,4 +161,53 @@ function resetForm() {
     document.getElementById('productForm').reset();
     document.getElementById('cancelButton').style.display = 'none';
     document.getElementById('formError').style.display = 'none';
+}
+
+function loadProducts() {
+    // Get the current location from the URL
+    const location = window.location.pathname.split('/')[1];
+    
+    fetch(`/api/products?local=${location}`)
+        .then(response => response.json())
+        .then(products => {
+            const productList = document.getElementById('product-list');
+            productList.innerHTML = '';
+            
+            products.forEach(product => {
+                const productElement = document.createElement('li');
+                productElement.className = 'product-item';
+                productElement.id = `product-${product.id}`;
+                
+                productElement.innerHTML = `
+                    <div class="product-detail">
+                        <h3>${product.name}</h3>
+                        <p>${product.description}</p>
+                        <p>Categoría: ${product.category}</p>
+                        <p>Stock: <span id="stock-${product.id}">${product.stock}</span></p>
+                        <p>Precio: $${product.price}</p>
+                    </div>
+                    <div class="actions">
+                        <button onclick="editProduct(${JSON.stringify(product)})" class="edit-button">Editar</button>
+                        <button onclick="confirmDelete(${product.id})" class="delete-button">Eliminar</button>
+                        <div class="transfer-form">
+                            <label>Transferir a Foodtruck:</label>
+                            <input type="number" id="quantity-${product.id}" min="1" max="${product.stock}" value="0">
+                            <button onclick="transferStock(${product.id})">Transferir</button>
+                            <div id="error-${product.id}" class="error-message"></div>
+                        </div>
+                    </div>
+                    <div id="delete-confirm-${product.id}" class="delete-confirm" style="display: none;">
+                        ¿Está seguro de eliminar este producto?
+                        <button onclick="deleteProduct(${product.id})">Sí, eliminar</button>
+                        <button onclick="cancelDelete(${product.id})">Cancelar</button>
+                    </div>
+                `;
+                
+                productList.appendChild(productElement);
+            });
+        })
+        .catch(error => {
+            console.error('Error al cargar productos:', error);
+            alert('Error al cargar los productos');
+        });
 }

@@ -4,17 +4,39 @@ const db = require('../models');
 
 exports.createProduct = async (req, res) => {
   try {
+    // Verificar que el contenido sea JSON
+    if (!req.is('application/json')) {
+      return res.status(400).json({ 
+        success: false, 
+        error: 'Content-Type debe ser application/json' 
+      });
+    }
+    
     const { local, ...productData } = req.body;
+    
+    // Validar datos requeridos
+    if (!productData.name || !productData.price) {
+      return res.status(400).json({ 
+        success: false, 
+        error: 'Nombre y precio son requeridos' 
+      });
+    }
+    
     const product = await Product.create({
       ...productData,
       local
     });
     
-    // Eliminar cualquier escritura en el archivo JSON
+    res.set('Content-Type', 'application/json');
     res.json({ success: true, product });
   } catch (error) {
     console.error('Error al agregar producto:', error);
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).set('Content-Type', 'application/json');
+    res.json({ 
+      success: false, 
+      error: 'Error interno del servidor',
+      details: process.env.NODE_ENV === 'development' ? error.message : undefined
+    });
   }
 };
 

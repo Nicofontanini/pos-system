@@ -1,50 +1,49 @@
 // Función para agregar productos al carrito
 
 function addToCart(productId, productName, productPrice) {
-    const docenaType = Object.keys(docenas).find(docena => productName.includes(docena));
+  const docenaType = Object.keys(docenas).find(docena => productName.includes(docena));
 
-    if (docenaType) {
-      currentDocena = {
-        id: productId,
-        name: productName,
-        price: productPrice,
-        type: docenaType,
-        config: docenas[docenaType]
-      };
-
-      openDocenaModal(currentDocena);
-    } else {
-      // Obtener los detalles del producto
-      fetch(`/api/product/${productId}`)
-        .then(response => response.json())
-        .then(product => {
-          if (product.isCompound) {
-            // Para productos compuestos, mostrar el modal de edición
-            const item = {
+  if (docenaType) {
+    currentDocena = {
+      id: productId,
+      name: productName,
+      price: productPrice,
+      type: docenaType,
+      config: docenas[docenaType]
+    };
+    openDocenaModal(currentDocena);
+  } else {
+    // Obtener los detalles del producto
+    fetch(`/api/product/${productId}`)
+      .then(response => response.json())
+      .then(product => {
+        if (product.isCompound) {
+          // Para productos compuestos, mostrar el modal de edición
+          const item = {
+            id: productId,
+            name: productName,
+            price: productPrice,
+            quantity: 1,
+            details: product.components
+          };
+          
+          showEditCompoundModal(item);
+        } else {
+          // Para productos normales, agregar directamente al carrito
+          const local = window.location.pathname.includes('local1') ? 'local1' : 'local2';
+          socket.emit('add-to-cart', {
+            local: local,
+            product: {
               id: productId,
               name: productName,
-              price: productPrice,
-              quantity: 1,
-              details: product.components
-            };
-            
-            showEditCompoundModal(item);
-          } else {
-            // Para productos normales, agregar directamente al carrito
-            const local = window.location.pathname.includes('local1') ? 'local1' : 'local2';
-            socket.emit('add-to-cart', {
-              local: local,
-              product: {
-                id: productId,
-                name: productName,
-                price: productPrice,
-                quantity: 1
-              }
-            });
-          }
-        })
-        .catch(error => console.error('Error al obtener detalles del producto:', error));
-    }
+              price: productPrice
+            },
+            quantity: 1
+          });
+        }
+      })
+      .catch(error => console.error('Error al obtener detalles del producto:', error));
+  }
 }
 
 // Función para mostrar el modal de edición

@@ -58,7 +58,7 @@ db.sequelize.authenticate()
     
     // Setup controllers
     app.get('/api/products', productController.getProducts);
-    app.post('/api/products', productController.createProduct);
+    app.post('/api/products', isAuthenticated, productController.createProduct);
     app.put('/api/product/:id', productController.updateProduct);
     
     app.get('/api/orders/local1', orderLocal1Controller.getOrders);
@@ -463,6 +463,21 @@ app.get('/api/categories', async (req, res) => {
 });
 
 // Product CRUD operations
+app.get('/api/products', async (req, res) => {
+  try {
+    const local = req.query.local;
+    if (!local) {
+      return res.status(400).json({ error: 'Local is required' });
+    }
+
+    const products = await Product.findAll({ where: { local } });
+    res.json(products.map(p => p.get({ plain: true })));
+  } catch (error) {
+    console.error('Error al obtener productos:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
 app.post('/add-product/:location', async (req, res) => {
   try {
     const { location } = req.params;
