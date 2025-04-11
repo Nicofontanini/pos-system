@@ -1,24 +1,17 @@
 // migrate.js
 const fs = require('fs');
 const path = require('path');
-const sequelize = require('./config/config');
-const OrderLocal1 = require('./models/orderLocal1');
-const OrderLocal2 = require('./models/orderLocal2');
-const Product = require('./models/product');
-const CashRegisterHistory = require('./models/cashRegisterHistory');
-const EmployeeLogs = require('./models/employeeLogs');
-const Sellers = require('./models/sellers');
-const SellersHistory = require('./models/sellersHistory');
+const db = require('./models');
 
 async function migrateData() {
   try {
     // Intentar conectar a la base de datos
-    await sequelize.authenticate();
+    await db.sequelize.authenticate();
     console.log('Conexión exitosa a la base de datos');
-    
+
     // Crear las tablas si no existen
-    await sequelize.sync({ force: true });
-    
+    await db.sequelize.sync({ alter: true });
+
     // Leer datos de los archivos JSON
     const orders1 = JSON.parse(fs.readFileSync(path.join(__dirname, 'data', 'orders.json')));
     const orders2 = JSON.parse(fs.readFileSync(path.join(__dirname, 'data', 'orders2.json')));
@@ -29,79 +22,123 @@ async function migrateData() {
     const employeeLogs = JSON.parse(fs.readFileSync(path.join(__dirname, 'data', 'employee_logs.json')));
 
     // Insertar productos
-    let productId = 1;
     for (const local in products) {
       for (const product of products[local].products) {
-        await Product.create({
-          id: productId++,
-          name: product.name,
-          category: product.category,
-          price: product.price,
-          local: local
-        });
+        try {
+          // Primero intentar encontrar el producto existente
+          const existingProduct = await db.Product.findOne({
+            where: {
+              name: product.name,
+              local: local
+            }
+          });
+
+          if (existingProduct) {
+            // Si existe, actualizar el stock y otros campos
+            await existingProduct.update({
+              stock: product.stock,
+              price: product.price,
+              category: product.category
+            });
+          } else {
+            // Si no existe, crearlo
+            await db.Product.create({
+              name: product.name,
+              category: product.category,
+              price: product.price,
+              local: local,
+              stock: product.stock
+            });
+          }
+        } catch (error) {
+          console.error(`Error al procesar producto ${product.name}:`, error);
+        }
       }
     }
 
     // Insertar órdenes de local1
     for (const order of orders1) {
-      await OrderLocal1.create(order);
+      // Asegúrate de que cada orden tenga un vendedor
+      if (!order.seller) {
+        order.seller = 'default'; // O el ID de un vendedor existente
+      }
+      await db.OrderLocal1.create(order);
     }
 
     // Insertar órdenes de local2
     for (const order of orders2) {
-      await OrderLocal2.create(order);
+      // Asegúrate de que cada orden tenga un vendedor
+      if (!order.seller) {
+        order.seller = 'default'; // O el ID de un vendedor existente
+      }
+      await db.OrderLocal2.create(order);
     }
 
     // Insertar historial de caja
     for (const entry of cashRegisterHistory) {
-      await CashRegisterHistory.create(entry);
+      // Asegúrate de que todos los campos requeridos tengan valores
+      await db.CashRegisterHistory.create({
+        local: entry.local || 'local1',
+        closeTime: new Date(entry.closeTime),
+        startTime: new Date(entry.startTime),
+        totalSales: entry.totalAmount || 0,
+        cashInDrawer: entry.cashInDrawer || 0,
+        difference: entry.difference || 0,
+        totalPayments: entry.totalPayments || 0,
+        totalAmount: entry.totalAmount || 0,
+        ordersCount: entry.ordersCount || 0,
+        paymentSummary: entry.paymentSummary || null,
+        productSummary: entry.productSummary || null,
+        orders: entry.orders || null
+      });
     }
 
     // Insertar vendedores
     for (const local in sellers) {
       const localSellers = sellers[local];
-      let position = 1;
       
       for (const sellerId in localSellers) {
         const seller = localSellers[sellerId];
-        if (seller) { // Solo procesar si el vendedor no es null
+        if (seller && seller.name) { // Solo procesar si el vendedor no es null y tiene nombre
           // Crear un ID único combinando local e ID del vendedor
           const uniqueId = `${local}_${sellerId}`;
-          await Sellers.create({
-            id: uniqueId,
-            name: seller.name,
-            local: local,
-            position: position++,
-            status: 'offline',
-            lastLogin: seller.updatedAt,
-            lastLogout: null
-          });
-        } else {
-          position++;
+          
+          try {
+            // Intentar crear el vendedor
+            await db.Sellers.create({
+              id: uniqueId,
+              name: seller.name,
+              local: local,
+              updatedAt: new Date(seller.updatedAt)
+            });
+          } catch (error) {
+            // Si hay un error de duplicado, actualizar el vendedor existente
+            if (error.name === 'SequelizeUniqueConstraintError') {
+              await db.Sellers.update({
+                name: seller.name,
+                updatedAt: new Date(seller.updatedAt)
+              }, {
+                where: {
+                  id: uniqueId
+                }
+              });
+            } else {
+              console.error(`Error al procesar vendedor ${sellerId} en ${local}:`, error);
+            }
+          }
         }
       }
     }
 
-    // Insertar historial de vendedores
-    for (const entry of sellersHistory) {
-      // Crear un ID único usando el local del registro o local1 por defecto
-      const uniqueId = `${entry.local || 'local1'}_${entry.seller}`;
-      await SellersHistory.create({
-        sellerId: uniqueId,
-        loginTime: entry.updatedAt,
-        logoutTime: null,
-        local: entry.local || 'local1'
-      });
-    }
-
     // Insertar logs de empleados
     for (const entry of employeeLogs) {
-      await EmployeeLogs.create({
-        employeeId: entry.employeeName,
-        action: entry.action,
-        timestamp: entry.timestamp,
-        local: entry.local,
-        details: null
+      // Asegurarse de que todos los campos requeridos tengan valores
+      await db.EmployeeLogs.create({
+        employeeId: entry.employeeName || 'Empleado Sin Nombre',
+        action: entry.action || 'login',
+        timestamp: entry.timestamp || new Date(),
+        local: entry.local || 'local1',
+        details: entry.details || null
       });
     }
 

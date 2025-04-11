@@ -1,6 +1,7 @@
 // controllers/employeeLogsController.js
 const EmployeeLogs = require('../models/employeeLogs');
 const { Op } = require('sequelize');
+const db = require('../models');
 
 exports.getEmployeeLogs = async (req, res) => {
   try {

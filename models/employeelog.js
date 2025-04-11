@@ -1,10 +1,6 @@
 module.exports = (sequelize, DataTypes) => {
-  const SellersHistory = sequelize.define('SellersHistory', {
-    sellerId: {
-      type: DataTypes.STRING,
-      allowNull: false
-    },
-    local: {
+  const EmployeeLogs = sequelize.define('EmployeeLogs', {
+    employeeId: {
       type: DataTypes.STRING,
       allowNull: false
     },
@@ -17,15 +13,15 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       defaultValue: DataTypes.NOW
     },
+    local: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
     details: {
       type: DataTypes.TEXT,
       allowNull: true
-    },
-    performedBy: {
-      type: DataTypes.STRING,
-      allowNull: false
     }
   });
 
-  return SellersHistory;
+  return EmployeeLogs;
 };

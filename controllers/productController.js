@@ -1,5 +1,6 @@
 // controllers/productController.js
 const Product = require('../models/product');
+const db = require('../models');
 
 exports.createProduct = async (req, res) => {
   try {
@@ -8,6 +9,8 @@ exports.createProduct = async (req, res) => {
       ...productData,
       local
     });
+    
+    // Eliminar cualquier escritura en el archivo JSON
     res.json({ success: true, product });
   } catch (error) {
     console.error('Error al agregar producto:', error);

@@ -338,6 +338,16 @@
         "stock": 99,
         "description": "Bebidas 500cc.",
         "id": 44
+      },
+      {
+        "name": "producto prueba",
+        "category": "Tradicionales",
+        "price": 200,
+        "stock": 10,
+        "description": "producto prueba",
+        "isCompound": false,
+        "components": [],
+        "id": 46
       }
     ]
   },
@@ -686,6 +696,16 @@
         "stock": 100,
         "description": "Bebidas 500cc.",
         "id": 45
+      },
+      {
+        "name": "producto prueba",
+        "category": "Tradicionales",
+        "price": 200,
+        "stock": 10,
+        "description": "producto prueba",
+        "isCompound": false,
+        "components": [],
+        "id": 46
       }
     ]
   }

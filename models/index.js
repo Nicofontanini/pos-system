@@ -7,10 +7,32 @@ const config = require(__dirname + '/../config/config.json')[env];
 const db = {};
 
 let sequelize;
-if (config.use_env_variable) {
-  sequelize = new Sequelize(process.env[config.use_env_variable], config);
-} else {
-  sequelize = new Sequelize(config.database, config.username, config.password, config);
+try {
+  if (config.use_env_variable) {
+    sequelize = new Sequelize(process.env[config.use_env_variable], {
+      dialect: 'postgres',
+      dialectOptions: {
+        ssl: {
+          require: true,
+          rejectUnauthorized: false
+        }
+      }
+    });
+  } else {
+    sequelize = new Sequelize(config.database, config.username, config.password, {
+      host: config.host,
+      dialect: 'postgres',
+      port: config.port,
+      dialectOptions: {
+        ssl: {
+          require: true,
+          rejectUnauthorized: false
+        }
+      }
+    });
+  }
+} catch (error) {
+  console.error('Error al configurar Sequelize:', error);
 }
 
 fs
@@ -19,8 +41,25 @@ fs
     return (file.indexOf('.') !== 0) && (file !== basename) && (file.slice(-3) === '.js');
   })
   .forEach(file => {
-    const model = require(path.join(__dirname, file))(sequelize, Sequelize.DataTypes);
-    db[model.name] = model;
+    try {
+      const modelDefiner = require(path.join(__dirname, file));
+      let model;
+      
+      if (typeof modelDefiner === 'function' && !modelDefiner.init) {
+        // Formato tradicional
+        model = modelDefiner(sequelize, Sequelize.DataTypes);
+      } else if (modelDefiner.init) {
+        // Formato de clase
+        model = modelDefiner.init(sequelize, Sequelize.DataTypes);
+      } else {
+        console.error(`Formato de modelo no reconocido en ${file}`);
+        return;
+      }
+      
+      db[model.name] = model;
+    } catch (error) {
+      console.error(`Error cargando modelo ${file}:`, error);
+    }
   });
 
 Object.keys(db).forEach(modelName => {

@@ -1,48 +1,60 @@
 // models/cashRegisterHistory.js
-const { DataTypes } = require('sequelize');
-const sequelize = require('../config/config');
+module.exports = (sequelize, DataTypes) => {
+  const CashRegisterHistory = sequelize.define('CashRegisterHistory', {
+    id: {
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      autoIncrement: true
+    },
+    local: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    closeTime: {
+      type: DataTypes.DATE,
+      allowNull: false
+    },
+    startTime: {
+      type: DataTypes.DATE,
+      allowNull: false
+    },
+    totalSales: {
+      type: DataTypes.DECIMAL(10,2),
+      allowNull: false
+    },
+    cashInDrawer: {
+      type: DataTypes.DECIMAL(10,2),
+      allowNull: false
+    },
+    difference: {
+      type: DataTypes.DECIMAL(10,2),
+      allowNull: false
+    },
+    totalPayments: {
+      type: DataTypes.INTEGER,
+      allowNull: false
+    },
+    totalAmount: {
+      type: DataTypes.DECIMAL(10,2),
+      allowNull: false
+    },
+    ordersCount: {
+      type: DataTypes.INTEGER,
+      allowNull: false
+    },
+    paymentSummary: {
+      type: DataTypes.JSON,
+      allowNull: true
+    },
+    productSummary: {
+      type: DataTypes.JSON,
+      allowNull: true
+    },
+    orders: {
+      type: DataTypes.JSON,
+      allowNull: true
+    }
+  });
 
-const CashRegisterHistory = sequelize.define('CashRegisterHistory', {
-  id: {
-    type: DataTypes.STRING,
-    primaryKey: true,
-    allowNull: false,
-    defaultValue: DataTypes.UUIDV4
-  },
-  date: {
-    type: DataTypes.DATE,
-    allowNull: false
-  },
-  totalPayments: {
-    type: DataTypes.INTEGER,
-    allowNull: false
-  },
-  totalAmount: {
-    type: DataTypes.DECIMAL(10,2),
-    allowNull: false
-  },
-  local: {
-    type: DataTypes.STRING,
-    allowNull: false
-  },
-  closeTime: {
-    type: DataTypes.DATE,
-    allowNull: true
-  },
-  startTime: {
-    type: DataTypes.DATE,
-    allowNull: true
-  },
-  productSummary: {
-    type: DataTypes.JSONB,
-    allowNull: true
-  },
-  paymentMethod: {
-    type: DataTypes.STRING,
-    allowNull: true
-  }
-}, {
-  tableName: 'CashRegisterHistories'
-});
-
-module.exports = CashRegisterHistory;
+  return CashRegisterHistory;
+};

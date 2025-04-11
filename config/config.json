@@ -1,25 +1,26 @@
 {
-    "development": {
-      "username": "empanadaskm11_user",
-      "password": "ggoTBCwKMsgenfqKvyU9ATEPcBnxYcEa",
-      "database": "empanadaskm11",
-      "host": "dpg-cvqohr3e5dus73dlng20-a.empanadaskm11",
-      "dialect": "postgres",
-      "dialectOptions": {
-        "ssl": {
-          "require": true,
-          "rejectUnauthorized": false
-        }
+  "development": {
+    "username": "empanadaskm11_user",
+    "password": "ggoTBCwKMsgenfqKvyU9ATEPcBnxYcEa",
+    "database": "empanadaskm11",
+    "host": "dpg-cvqohr3e5dus73dlng20-a.oregon-postgres.render.com",
+    "dialect": "postgres",
+    "port": 5432,
+    "dialectOptions": {
+      "ssl": {
+        "require": true,
+        "rejectUnauthorized": false
       }
-    },
-    "production": {
-      "use_env_variable": "DATABASE_URL",
-      "dialect": "postgres",
-      "dialectOptions": {
-        "ssl": {
-          "require": true,
-          "rejectUnauthorized": false
-        }
+    }
+  },
+  "production": {
+    "use_env_variable": "DATABASE_URL",
+    "dialect": "postgres",
+    "dialectOptions": {
+      "ssl": {
+        "require": true,
+        "rejectUnauthorized": false
       }
     }
   }
+}

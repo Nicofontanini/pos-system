@@ -1,27 +1,16 @@
 {
   "local1": {
     "vendedor1": {
-      "name": "dasdas",
-      "updatedAt": "2025-04-03T13:37:38.027Z"
+      "name": "martin",
+      "updatedAt": "2025-02-18T16:10:38.078Z"
     },
     "vendedor2": {
-      "name": "nico",
-      "updatedAt": "2025-04-07T19:17:03.063Z"
-    },
-    "vendedor3": {
-      "name": "tuto",
-      "updatedAt": "2025-04-04T12:58:19.821Z"
-    },
-    "vendedor4": {
-      "name": "pedropicapiedra",
-      "updatedAt": "2025-04-04T12:54:15.684Z"
+      "name": "nanci",
+      "updatedAt": "2025-02-18T16:10:10.365Z"
     }
   },
   "local2": {
-    "vendedor1": {
-      "name": "nico",
-      "updatedAt": "2025-03-21T11:57:04.991Z"
-    },
+    "vendedor1": null,
     "vendedor2": null
   }
 }

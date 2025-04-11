@@ -238,5 +238,41 @@
     "action": "ingreso",
     "timestamp": "2025-04-10T12:24:15.370Z",
     "local": "local1"
+  },
+  {
+    "employeeName": "nico",
+    "action": "ingreso",
+    "timestamp": "2025-04-10T12:53:03.035Z",
+    "local": "local1"
+  },
+  {
+    "employeeName": "nico",
+    "action": "ingreso",
+    "timestamp": "2025-04-10T18:35:40.672Z",
+    "local": "local1"
+  },
+  {
+    "employeeName": "pato toranzo",
+    "action": "ingreso",
+    "timestamp": "2025-04-10T19:38:02.061Z",
+    "local": "local1"
+  },
+  {
+    "employeeName": "pedro toranzo",
+    "action": "ingreso",
+    "timestamp": "2025-04-11T11:10:23.087Z",
+    "local": "local1"
+  },
+  {
+    "employeeName": "tomasmuller",
+    "action": "ingreso",
+    "timestamp": "2025-04-11T11:37:31.768Z",
+    "local": "local1"
+  },
+  {
+    "employeeName": "lolosdadas",
+    "action": "ingreso",
+    "timestamp": "2025-04-11T11:44:38.968Z",
+    "local": "local1"
   }
 ]

@@ -1,5 +1,6 @@
 // controllers/sellersHistoryController.js
 const { readSellersHistory, writeSellersHistory } = require('../app');
+const db = require('../models');
 
 exports.getSellersHistory = async (req, res) => {
   try {

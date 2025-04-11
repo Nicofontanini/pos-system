@@ -5,6 +5,18 @@ let paymentAmounts = {
   transferencia: 0
 };
 
+// Variables globales para el carrito
+let cart = [];
+let socket = io();
+
+// Variables globales para el cierre de caja
+let totalPayments = 0;
+let totalAmount = 0;
+
+// Variables globales para el vendedor y el local
+let selectedSeller = '';
+let lastOrderData = null;
+
 function showPaymentModal() {
   const modal = document.getElementById('paymentModal');
   const total = document.getElementById('cart-total').textContent;
