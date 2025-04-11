@@ -57,6 +57,19 @@
       <label for="description">Descripción:</label>
       <input type="text" id="description" required>
     </div>
+
+    <div>
+      <label for="isCompound">¿Producto Compuesto?</label>
+      <input type="checkbox" id="isCompound">
+  </div>
+  
+  <div id="compoundProductsSection" style="display: none;">
+      <h4>Productos Componentes</h4>
+      <div id="compoundProductsList">
+          <!-- Los productos componentes se agregarán aquí dinámicamente -->
+      </div>
+      <button onclick="addCompoundProduct()" id="addCompoundProductButton">Agregar Producto Componente</button>
+  </div>
     <div class="actions">
       <button onclick="saveProduct()" class="btn-guardar">Guardar</button>
       <button onclick="cancelEdit()" id="cancelButton" style="display: none;" class="btn-cancelar">Cancelar</button>
