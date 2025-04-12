@@ -60,6 +60,7 @@ db.sequelize.authenticate()
     app.get('/api/products', productController.getProducts);
     app.post('/api/products', isAuthenticated, productController.createProduct);
     app.put('/api/product/:id', productController.updateProduct);
+    app.get('/api/product/:id', productController.getProductById);
     
     app.get('/api/orders/local1', orderLocal1Controller.getOrders);
     app.post('/api/orders/local1', orderLocal1Controller.createOrder);
@@ -477,6 +478,8 @@ app.get('/api/products', async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 });
+
+app.get('/api/product/:id', productController.getProductById);
 
 app.post('/add-product/:location', async (req, res) => {
   try {

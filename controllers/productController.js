@@ -53,6 +53,19 @@ exports.getProducts = async (req, res) => {
   }
 };
 
+exports.getProductById = async (req, res) => {
+  try {
+    const product = await Product.findByPk(req.params.id);
+    if (!product) {
+      return res.status(404).json({ error: 'Producto no encontrado' });
+    }
+    res.json(product);
+  } catch (error) {
+    console.error('Error:', error);
+    res.status(500).json({ error: 'Error del servidor' });
+  }
+};
+
 exports.updateProduct = async (req, res) => {
   try {
     const productId = req.params.id;

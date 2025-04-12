@@ -1,49 +1,23 @@
 // Función para agregar productos al carrito
+let cart = []; // Array para almacenar los productos del carrito
 
 function addToCart(productId, productName, productPrice) {
-  const docenaType = Object.keys(docenas).find(docena => productName.includes(docena));
-
-  if (docenaType) {
-    currentDocena = {
+  // Verificar si ya existe en el carrito
+  const existingItem = cart.find(item => item.id === productId);
+  
+  if (existingItem) {
+    existingItem.quantity += 1;
+  } else {
+    cart.push({
       id: productId,
       name: productName,
       price: productPrice,
-      type: docenaType,
-      config: docenas[docenaType]
-    };
-    openDocenaModal(currentDocena);
-  } else {
-    // Obtener los detalles del producto
-    fetch(`/api/product/${productId}`)
-      .then(response => response.json())
-      .then(product => {
-        if (product.isCompound) {
-          // Para productos compuestos, mostrar el modal de edición
-          const item = {
-            id: productId,
-            name: productName,
-            price: productPrice,
-            quantity: 1,
-            details: product.components
-          };
-          
-          showEditCompoundModal(item);
-        } else {
-          // Para productos normales, agregar directamente al carrito
-          const local = window.location.pathname.includes('local1') ? 'local1' : 'local2';
-          socket.emit('add-to-cart', {
-            local: local,
-            product: {
-              id: productId,
-              name: productName,
-              price: productPrice
-            },
-            quantity: 1
-          });
-        }
-      })
-      .catch(error => console.error('Error al obtener detalles del producto:', error));
+      quantity: 1
+    });
   }
+  
+  updateCartUI();
+  document.getElementById('checkoutButton').disabled = cart.length === 0;
 }
 
 // Función para mostrar el modal de edición
@@ -180,7 +154,7 @@ function updateCartUI() {
   const cartTotalElement = document.getElementById('cart-total');
   const checkoutButton = document.getElementById('checkoutButton');
 
-  cartItemsElement.innerHTML = ''; 
+  cartItemsElement.innerHTML = '';
   let total = 0;
 
   // Recorrer los productos en el carrito
@@ -252,8 +226,9 @@ function updateCartUI() {
 
 // Función para eliminar un producto del carrito
 function removeFromCart(productId) {
-    const local = window.location.pathname.includes('local1') ? 'local1' : 'local2';
-    socket.emit('remove-from-cart', { local, productId });
+  cart = cart.filter(item => item.id !== productId);
+  updateCartUI();
+  document.getElementById('checkoutButton').disabled = cart.length === 0;
 }
 
 // Función para procesar la venta
@@ -660,14 +635,28 @@ function processSale() {
 
       // Función para incrementar la cantidad de un producto
       function incrementProduct(productId) {
-        const local = window.location.pathname.includes('local1') ? 'local1' : 'local2';
-        socket.emit('increment-product', { local, productId });
+        const item = cart.find(item => item.id === productId);
+        if (item) {
+          item.quantity += 1;
+          updateCartUI();
+          
+          // Actualización via Socket.IO si es necesario
+          const local = window.location.pathname.includes('local1') ? 'local1' : 'local2';
+          socket.emit('increment-product', { local, productId });
+        }
       }
 
       // Función para decrementar la cantidad de un producto
       function decrementProduct(productId) {
-        const local = window.location.pathname.includes('local1') ? 'local1' : 'local2';
-        socket.emit('decrement-product', { local, productId });
+        const item = cart.find(item => item.id === productId);
+        if (item && item.quantity > 1) {
+          item.quantity -= 1;
+          updateCartUI();
+          
+          // Actualización via Socket.IO si es necesario
+          const local = window.location.pathname.includes('local1') ? 'local1' : 'local2';
+          socket.emit('decrement-product', { local, productId });
+        }
       }
 
       // Script para manejar el carrito y el pago
@@ -704,6 +693,14 @@ function processSale() {
         }
       });
 
+      // Escuchar el evento cart-updated
+    socket.on('cart-updated', function ({ local, cart: updatedCart }) {
+      // Solo actualizar si el carrito pertenece al local actual
+      if (local === (window.location.pathname.includes('local1') ? 'local1' : 'local2')) {
+        cart = updatedCart || []; // Initialize with empty array if null
+        updateCartUI(); // Update interface
+      }
+    });
       // Escuchar el evento cart-updated
     socket.on('cart-updated', function ({ local, cart: updatedCart }) {
       // Solo actualizar si el carrito pertenece al local actual
