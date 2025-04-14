@@ -171,96 +171,59 @@ function loadSellerInfo() {
   });
 
   // Agregar esto junto a los otros manejadores de socket
+  // Mantener solo un listener para 'sellers-updated'
   socket.on('sellers-updated', (sellers) => {
-    const local = window.location.pathname.includes('local1') ? 'local1' : 'local2';
-    const localSellers = sellers[local];
-
-    for (let i = 1; i <= 4; i++) {
-      const button = document.getElementById(`seller${i}`);
-      if (button) {
-        const seller = localSellers[`vendedor${i}`];
-        const sellerName = seller ? (typeof seller === 'object' ? seller.name : seller) : 'Vacío';
-        button.textContent = sellerName;
-        button.disabled = sellerName === 'Vacío';
-      }
-    }
-  });
-
-  // Cargar vendedores al inicio
-  fetch('/get-current-sellers')
-    .then(response => response.json())
-    .then(sellers => {
       const local = window.location.pathname.includes('local1') ? 'local1' : 'local2';
       const localSellers = sellers[local];
-
+  
+      // Actualizar los botones de vendedor
       for (let i = 1; i <= 4; i++) {
-        const button = document.getElementById(`seller${i}`);
-        if (button) {
-          const seller = localSellers[`vendedor${i}`];
-          const sellerName = seller ? (typeof seller === 'object' ? seller.name : seller) : 'Vacío';
-          button.textContent = sellerName;
-          button.disabled = sellerName === 'Vacío';
-        }
-      }
-    })
-    .catch(error => console.error('Error loading sellers:', error));
-
-  // Agregar cerca del inicio del script, después de la declaración del socket
-  function loadCurrentSellers() {
-    fetch('/get-current-sellers')
-      .then(response => response.json())
-      .then(sellers => {
-        const local = window.location.pathname.includes('local1') ? 'local1' : 'local2';
-        const localSellers = sellers[local];
-
-        // Actualizar los botones de vendedor
-        for (let i = 1; i <= 4; i++) {
           const button = document.getElementById(`seller${i}`);
           if (button) {
-            const sellerName = getSellerName(localSellers[`vendedor${i}`]);
-            button.textContent = sellerName || 'Vacío';
-            button.disabled = !sellerName;
+              const seller = localSellers[`vendedor${i}`];
+              const sellerName = seller ? (typeof seller === 'object' ? seller.name : seller) : 'Vacío';
+              button.textContent = sellerName;
+              button.disabled = sellerName === 'Vacío';
           }
-        }
+      }
+  
+      // Actualizar también la información en el modal si existe
+      const sellerInfo = document.getElementById('sellerInfo');
+      if (sellerInfo) {
+          loadSellerInfo();
+      }
+  });
+
+  // Modificar logEmployeeAction para emitir el evento de actualización
+  function logEmployeeAction(action) {
+      const employeeName = document.getElementById('logEmployeeName').value;
+      if (!employeeName) {
+          alert('Por favor ingrese el nombre del empleado');
+          return;
+      }
+  
+      const local = window.location.pathname.includes('local1') ? 'local1' : 'local2';
+  
+      fetch('/log-employee', {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json',
+              'X-Local': local
+          },
+          body: JSON.stringify({ employeeName, action })
       })
-      .catch(error => console.error('Error loading sellers:', error));
+          .then(response => response.json())
+          .then(data => {
+              if (data.success) {
+                  alert(`Registro de ${action} exitoso para ${employeeName}`);
+                  document.getElementById('logEmployeeName').value = '';
+                  closeEmployeeLogModal();
+                  // Emitir evento para actualizar vendedores
+                  socket.emit('refresh-sellers');
+              }
+          })
+          .catch(error => {
+              console.error('Error:', error);
+              alert('Error al registrar la acción');
+          });
   }
-
-  // Cargar vendedores al iniciar la página
-  document.addEventListener('DOMContentLoaded', loadCurrentSellers);
-
-  // Actualizar cuando se reciban cambios
-  socket.on('sellers-updated', (sellers) => {
-    const local = window.location.pathname.includes('local1') ? 'local1' : 'local2';
-    const localSellers = sellers[local];
-
-    // Actualizar los botones de vendedor
-    for (let i = 1; i <= 4; i++) {
-      const button = document.getElementById(`seller${i}`);
-      if (button) {
-        const sellerName = localSellers[`vendedor${i}`];
-        button.textContent = sellerName || 'Vacío';
-        button.disabled = !sellerName;
-      }
-    }
-  });
-
-  function getSellerName(seller) {
-    if (!seller) return null;
-    return typeof seller === 'object' ? seller.name : seller;
-  }
-
-  socket.on('sellers-updated', (sellers) => {
-    const local = window.location.pathname.includes('local1') ? 'local1' : 'local2';
-    const localSellers = sellers[local];
-
-    // Actualizar los botones de vendedor
-    for (let i = 1; i <= 4; i++) {
-      const button = document.getElementById(`seller${i}`);
-      if (button) {
-        const sellerName = getSellerName(localSellers[`vendedor${i}`]);
-        button.textContent = sellerName || 'Vacío';
-        button.disabled = !sellerName;
-      }
-    }
-  });

@@ -107,16 +107,27 @@ db.sequelize.authenticate()
     app.delete('/api/employee-logs/clean-old', employeeLogsController.deleteEmployeeLogs);
 
     // Start server
+    // Primero inicializa el servidor HTTP y Socket.IO
     const server = app.listen(port, () => {
       console.log(`Servidor iniciado en el puerto ${port}`);
     });
-
-    // Initialize Socket.io
+    
     const io = socketIo(server);
-
+    
+    // Luego maneja las conexiones de socket
     io.on('connection', (socket) => {
       console.log('Nuevo cliente conectado');
-
+    
+      // Aquí va el evento refresh-sellers
+  socket.on('refresh-sellers', async () => {
+    try {
+      const sellers = await db.Seller.findAll();
+      io.emit('sellers-updated', sellers);
+    } catch (error) {
+      console.error('Error refreshing sellers:', error);
+    }
+  });
+ 
       socket.on('add-to-cart', async ({ local, product, quantity }) => {
         try {
           if (!carts[local]) carts[local] = [];
@@ -661,7 +672,7 @@ app.post('/log-employee', async (req, res) => {
       timestamp: new Date()
     });
 
-    const sellers = await db.Seller.findAll({ where: { local } });
+    const sellers = await db.Seller.findAll();
 
     if (action === 'ingreso') {
       for (const seller of sellers) {

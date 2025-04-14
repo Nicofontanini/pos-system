@@ -817,6 +817,10 @@ function logEmployeeAction(action) {
                 alert(`Registro de ${action} exitoso para ${employeeName}`);
                 document.getElementById('logEmployeeName').value = '';
                 closeEmployeeLogModal();
+                // Add this line to reload sellers after login/logout
+                socket.emit('refresh-sellers');
+                // Also update locally
+                loadCurrentSellers();
             }
         })
         .catch(error => {
