@@ -1,24 +1,49 @@
 // controllers/orderLocal1Controller.js
-const OrderLocal1 = require('../models/orders');
-const db = require('../models');
+const { Orders } = require('../models');
+const { Op } = require('sequelize');
 
 exports.createOrder = async (req, res) => {
   try {
-    const order = req.body;
-    const newOrder = await OrderLocal1.create(order);
+    console.log('Received order data:', req.body); // Debug log
+
+    // Ensure all required fields are present
+    const orderData = {
+      date: new Date(),
+      total: req.body.total,
+      paymentMethod: req.body.paymentMethod,
+      paymentAmounts: req.body.paymentAmounts,
+      local: req.body.local,
+      orderName: req.body.orderName,
+      sellerName: req.body.sellerName,
+      items: req.body.items || [],
+      status: 'completed'
+    };
+
+    console.log('Processed order data:', orderData); // Debug log
+
+    const newOrder = await Orders.create(orderData);
+    console.log('Order created:', newOrder.toJSON()); // Debug log
+
     res.status(201).json(newOrder);
   } catch (error) {
-    console.error('Error al crear orden:', error);
-    res.status(500).json({ error: error.message });
+    console.error('Detailed error:', error); // More detailed error logging
+    res.status(500).json({ 
+      error: error.message,
+      stack: error.stack // Include stack trace in development
+    });
   }
 };
 
 exports.getOrders = async (req, res) => {
   try {
-    const orders = await OrderLocal1.findAll();
+    const orders = await Orders.findAll({
+      order: [['date', 'DESC']] // Order by date, newest first
+    });
+    
+    console.log('Retrieved orders:', orders.length); // Debug log
     res.json(orders);
   } catch (error) {
-    console.error('Error al obtener órdenes:', error);
+    console.error('Error fetching orders:', error);
     res.status(500).json({ error: error.message });
   }
 };

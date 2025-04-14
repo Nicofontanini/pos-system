@@ -1,11 +1,11 @@
 // controllers/orderLocal2Controller.js
-const OrderLocal2 = require('../models/orders2');
-const db = require('../models');
+const { Orders2 } = require('../models');
+const { Op } = require('sequelize');
 
 exports.createOrder = async (req, res) => {
   try {
     const order = req.body;
-    const newOrder = await OrderLocal2.create(order);
+    const newOrder = await Orders2.create(order);
     res.status(201).json(newOrder);
   } catch (error) {
     console.error('Error al crear orden:', error);

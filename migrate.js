@@ -160,4 +160,4 @@ module.exports = {
   migrateData
 };
 
-// migrateData();
+// migrateData(); // Uncomment this line

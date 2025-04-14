@@ -154,7 +154,7 @@ function updateCashRegisterCounters() {
 document.addEventListener('DOMContentLoaded', loadCashRegisterCounters);
 
 // Función para procesar el pago
-function processPayment() {
+async function processPayment() {
   const orderName = document.getElementById('orderName').value;
   let total = parseFloat(document.getElementById('modalTotal').textContent);
   let finalTotal = total;
@@ -178,33 +178,42 @@ function processPayment() {
     sellerName: selectedSeller
   };
 
-  // Guardar los datos del pedido antes de limpiar
-  lastOrderData = orderData;
+  try {
+    // Save order to database
+    const response = await fetch(`/api/orders/${orderData.local}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(orderData)
+    });
 
-  // Actualizar los contadores de cierre de caja
-  totalPayments++; // Incrementar el contador de pagos
-  totalAmount += orderData.total; // Sumar el monto de la venta al total
-  // Actualizar los contadores en el backend
-  updateCashRegisterCounters();
-  // Enviar al servidor
-  socket.emit('process-order', orderData);
+    if (!response.ok) {
+      throw new Error('Failed to save order');
+    }
 
-  // Limpiar el carrito en la interfaz de usuario
-  cart = []; // Limpiar el carrito local
-  updateCartUI(); // Actualizar la interfaz de usuario
+    // Continue with existing functionality after successful save
+    lastOrderData = orderData;
+    totalPayments++;
+    totalAmount += orderData.total;
+    updateCashRegisterCounters();
+    socket.emit('process-order', orderData);
 
-  // Limpiar el campo del nombre del cliente
-  document.getElementById('orderName').value = '';
+    // Clear cart and UI
+    cart = [];
+    updateCartUI();
+    document.getElementById('orderName').value = '';
 
-  // Mostrar botón de impresión
-  const printOrderBtn = document.getElementById('printOrderBtn');
-  printOrderBtn.style.display = 'block';
+    // Show print button
+    const printOrderBtn = document.getElementById('printOrderBtn');
+    printOrderBtn.style.display = 'block';
+    document.getElementById('processPaymentBtn').disabled = true;
+    printOrderBtn.onclick = () => printOrder(lastOrderData);
 
-  // Deshabilitar el botón de procesar pago
-  document.getElementById('processPaymentBtn').disabled = true;
-
-  // Configurar el evento de impresión
-  printOrderBtn.onclick = () => printOrder(lastOrderData);
+  } catch (error) {
+    console.error('Error saving order:', error);
+    alert('Error al guardar la orden. Por favor, intente nuevamente.');
+  }
 }
 
 // Eliminar este event listener duplicado
