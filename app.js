@@ -234,49 +234,43 @@ db.sequelize.authenticate()
       });
 
       socket.on('send-alert-to-local2', async (data) => {
-        const { productName, stockLevel, localFrom, item } = data;
+        const { productName, stockLevel, localFrom } = data;
 
         try {
-          const { data, error } = await resend.emails.send({
-            from: 'onboarding@resend.dev',
-            to: 'empanadaskm11.brc@gmail.com',
-            subject: `Alerta de Stock Bajo - ${productName}`,
-            html: `
-              <h1>⚠️ Alerta de Stock Bajo</h1>
-              <p>El producto <strong>${productName}</strong> tiene un stock bajo!.</p>
-              <p>Esta alerta fue enviada desde <strong>${localFrom}</strong>.</p>
-              <p>Por favor, reabastece este producto lo antes posible.</p>
-              <p>Fecha y hora: ${new Date().toLocaleString()}</p>
+          // Enviar email
+          await resend.emails.send({
+              from: 'onboarding@resend.dev',
+              to: 'empanadaskm11.brc@gmail.com',
+              subject: `Alerta de Stock Bajo - ${productName}`,
+              html: `
+                <h1>⚠️ Alerta de Stock Bajo</h1>
+                <p>El producto <strong>${productName}</strong> tiene un stock bajo (${stockLevel} unidades).</p>
+                <p>Esta alerta fue enviada desde <strong>${localFrom}</strong>.</p>
+                <p>Por favor, reabastece este producto lo antes posible.</p>
+                <p>Fecha y hora: ${new Date().toLocaleString()}</p>
             `
           });
 
-          if (error) {
-            console.error('Error al enviar email:', error);
-            socket.emit('alert-email-status', {
-              success: false,
-              message: 'Error al enviar email de alerta'
-            });
-          } else {
-            console.log('Email de alerta enviado:', data);
-            socket.emit('alert-email-status', {
-              success: true,
-              message: 'Email de alerta enviado correctamente'
-            });
-
-            io.emit('stock-alert-notification', {
+          // Enviar alerta a todos los clientes conectados (especialmente Local 2)
+          io.emit('stock-alert-notification', {
               productName,
               stockLevel,
               localFrom,
               timestamp: new Date().toISOString()
-            });
-          }
-        } catch (err) {
-          console.error('Error en el envío de alerta:', err);
-          socket.emit('alert-email-status', {
-            success: false,
-            message: 'Error interno al procesar la alerta'
           });
-        }
+
+          socket.emit('alert-email-status', {
+              success: true,
+              message: 'Alerta enviada correctamente'
+          });
+
+      } catch (error) {
+          console.error('Error al enviar alerta:', error);
+          socket.emit('alert-email-status', {
+              success: false,
+              message: error.message
+          });
+      }
       });
 
       socket.on('get-order-history-range', ({ local, startDate, endDate }) => {

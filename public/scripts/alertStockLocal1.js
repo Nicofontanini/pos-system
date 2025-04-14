@@ -64,27 +64,28 @@ socket.on('stock-update', function ({ local, items }) {
   
   // Función mejorada para enviar alerta
   function sendAlert(productName, stockLevel) {
+    // Agregamos logs para debug
+    console.log('Enviando alerta:', { productName, stockLevel });
+    
     const alertData = {
-      productName: productName,
-      stockLevel: stockLevel,
-      localFrom: window.location.pathname.includes('local1') ? 'Local 1' : 'Local 2',
-      timestamp: new Date().toISOString() // Agregar una marca de tiempo
+        productName: productName,
+        stockLevel: stockLevel,
+        localFrom: 'Local 1',  // Fijamos el valor para asegurar el origen correcto
+        timestamp: new Date().toISOString()
     };
 
     socket.emit('send-alert-to-local2', alertData);
-
-    // Mostrar mensaje de envío en proceso
     showNotification('Enviando alerta por email...', 'info');
-  }
+}
 
-  // Escuchar respuesta del servidor sobre el envío del email
-  socket.on('alert-email-status', function (response) {
+// Agregamos listener para el estado de la alerta
+socket.on('alert-email-status', function(response) {
     if (response.success) {
-      showNotification('Alerta enviada correctamente por email', 'success');
+        showNotification('Alerta enviada correctamente', 'success');
     } else {
-      showNotification('Error al enviar la alerta por email', 'error');
+        showNotification('Error al enviar la alerta: ' + response.message, 'error');
     }
-  });
+});
 
   // Función auxiliar para mostrar notificaciones
   function showNotification(message, type = 'info', duration = 5000) {

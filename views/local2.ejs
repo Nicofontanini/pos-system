@@ -249,6 +249,24 @@
     let totalPayments = 0; // Contador de pagos procesados
     let totalAmount = 0;   // Monto total generado
 
+    socket.on('stock-alert-notification', function(data) {
+        const alertDiv = document.getElementById('alert-message');
+        if (alertDiv) {
+            const message = `
+                ¡Alerta de Stock Bajo!
+                Producto: ${data.productName}
+                Local de origen: ${data.localFrom}
+                Fecha: ${new Date(data.timestamp).toLocaleString()}
+            `;
+            alertDiv.textContent = message;
+            alertDiv.style.display = 'block';
+            
+            // Ocultar después de 60 segundos
+            setTimeout(() => {
+                alertDiv.style.display = 'none';
+            }, 60000);
+        }
+    });
   </script>
   <script src="/scripts/opencloseModal.js" defer></script>
   <script src="/scripts/dropdown.js" defer></script>
