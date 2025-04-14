@@ -40,49 +40,47 @@ function closePaymentModal() {
 
 function selectPaymentMethod(method) {
   currentPaymentMethod = method;
-  updatePaymentInputs();
+  updatePaymentInputs(method);  // Pasar el método como parámetro
 }
 
-function updatePaymentInputs() {
-  const container = document.getElementById('paymentInputs');
-  const total = parseFloat(document.getElementById('modalTotal').textContent).toFixed(2); // Formatear el total a 2 decimales
-  container.innerHTML = '';
+function updatePaymentInputs(method) {
+    const container = document.getElementById('paymentInputs');
+    const total = document.getElementById('modalTotal').textContent;
+    container.innerHTML = '';
 
-  if (!currentPaymentMethod) return;
-
-  if (currentPaymentMethod === 'mixto') {
-    container.innerHTML = `
-  <div class="payment-input">
-    <label>Monto en efectivo:</label>
-    <input type="number" id="cashAmount" step="0.01" value="" onchange="updateRemainingAmount()">
-  </div>
-  <div class="payment-input">
-    <label>Monto transferencia:</label>
-    <input type="number" id="transferAmount" step="0.01" value="" onchange="updateRemainingAmount()">
-  </div>
-`;
-  } else if (currentPaymentMethod === 'tarjeta') {
-    container.innerHTML = `
-  <div class="payment-input">
-    <label>Monto tarjeta:</label>
-    <input type="number" id="singleAmount" step="0.01" value="" onchange="updateRemainingAmount()">
-  </div>
-  <div class="payment-input">
-    <label>Recargo (%):</label>
-    <input type="number" id="cardSurcharge" min="0" max="100" step="0.1" value="0" onchange="updateCardAmount()">
-  </div>
-`;
-  } else {
-    container.innerHTML = `
-  <div class="payment-input">
-    <label>Monto ${currentPaymentMethod}:</label>
-    <input type="number" id="singleAmount" step="0.01" value="" onchange="updateRemainingAmount()">
-  </div>
-`;
-  }
-
-  // Agregar los listeners de entrada para formatear automáticamente los valores con 2 decimales
-  addInputListeners();
+    if (currentPaymentMethod === 'mixto') {
+        container.innerHTML = `
+            <div class="payment-input">
+                <label>Monto en efectivo:</label>
+                <input type="number" id="cashAmount" step="0.01" value="" onchange="updateRemainingAmount()">
+            </div>
+            <div class="payment-input">
+                <label>Monto transferencia:</label>
+                <input type="number" id="transferAmount" step="0.01" value="" onchange="updateRemainingAmount()">
+            </div>
+        `;
+    } else if (currentPaymentMethod === 'tarjeta') {
+        container.innerHTML = `
+            <div class="payment-input">
+                <label>Monto tarjeta:</label>
+                <input type="number" id="singleAmount" step="0.01" value="" onchange="updateRemainingAmount()">
+            </div>
+            <div class="payment-input">
+                <label>Recargo (%):</label>
+                <input type="number" id="cardSurcharge" min="0" max="100" step="0.1" value="0" onchange="updateCardAmount()">
+            </div>
+        `;
+    } else {
+        container.innerHTML = `
+            <div class="payment-input">
+                <label>Monto ${currentPaymentMethod}:</label>
+                <input type="number" id="singleAmount" step="0.01" value="" onchange="updateRemainingAmount()">
+            </div>
+        `;
+    }
+    
+    // Reset remaining amount display
+    document.getElementById('remainingAmount').textContent = total;
 }
 
 function updateRemainingAmount() {
