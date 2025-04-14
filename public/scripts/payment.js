@@ -1,5 +1,8 @@
- // Variables globales para el pago
-let currentPaymentMethod = null;
+// Variables globales para el pago
+// Verificar si la variable ya existe
+if (typeof currentPaymentMethod === 'undefined') {
+    let currentPaymentMethod = null;
+}
 let paymentAmounts = {
   efectivo: 0,
   transferencia: 0
@@ -18,14 +21,16 @@ let selectedSeller = '';
 let lastOrderData = null;
 
 function showPaymentModal() {
-  const modal = document.getElementById('paymentModal');
-  const total = document.getElementById('cart-total').textContent;
-  document.getElementById('modalTotal').textContent = total;
-  document.getElementById('remainingAmount').textContent = total;
-  modal.style.display = 'block';
-  currentPaymentMethod = null;
-  paymentAmounts = { efectivo: 0, transferencia: 0 };
-  updatePaymentInputs();
+    const modal = document.getElementById('paymentModal');
+    const total = document.getElementById('cart-total').textContent;
+    document.getElementById('modalTotal').textContent = total;
+    document.getElementById('remainingAmount').textContent = total;
+    modal.style.display = 'block';
+    
+    // Reset payment inputs
+    document.getElementById('paymentInputs').innerHTML = '';
+    document.getElementById('processPaymentBtn').disabled = true;
+    document.getElementById('orderName').value = '';
 }
 
 function closePaymentModal() {
