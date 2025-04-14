@@ -466,6 +466,18 @@ app.get('/api/categories', async (req, res) => {
   }
 });
 
+// Agregar esta ruta antes de la inicialización del servidor
+app.get('/get-categories/:local', async (req, res) => {
+  try {
+    const { local } = req.params;
+    const products = await Product.findAll({ where: { local } });
+    const categories = [...new Set(products.map(p => p.category))];  // Definir categories aquí
+    res.json(categories);
+  } catch (error) {
+    console.error('Error al obtener categorías:', error);
+    res.status(500).json({ error: 'Error al obtener categorías' });
+  }
+});
 // Product CRUD operations
 app.get('/api/products', async (req, res) => {
   try {
