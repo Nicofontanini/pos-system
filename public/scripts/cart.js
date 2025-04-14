@@ -49,7 +49,7 @@ function updateCartUI() {
             <div class="cart-item-actions">
                 <button onclick="incrementItem(${item.id})">+</button>
                 <button onclick="decrementItem(${item.id})">-</button>
-                <button onclick="removeItem(${item.id})">×</button>
+                <button onclick="removeItem(${item.id})">Eliminar</button>
             </div>
         `;
 

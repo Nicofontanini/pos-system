@@ -31,6 +31,9 @@ function showPaymentModal() {
     document.getElementById('paymentInputs').innerHTML = '';
     document.getElementById('processPaymentBtn').disabled = true;
     document.getElementById('orderName').value = '';
+
+    // Agregar el event listener al botón de procesar pago
+    document.getElementById('processPaymentBtn').addEventListener('click', processPayment);
 }
 
 function closePaymentModal() {
@@ -165,8 +168,8 @@ function processPayment() {
   const orderData = {
     date: new Date().toISOString(),
     items: cart,
-    total: finalTotal, // Usamos el total con recargo
-    originalTotal: total, // Total original sin recargo
+    total: finalTotal,
+    originalTotal: total,
     paymentMethod: currentPaymentMethod,
     surchargePercent: currentPaymentMethod === 'tarjeta' ? parseFloat(document.getElementById('cardSurcharge').value) || 0 : 0,
     paymentAmounts: paymentAmounts,
@@ -174,6 +177,9 @@ function processPayment() {
     orderName: orderName,
     sellerName: selectedSeller
   };
+
+  // Guardar los datos del pedido antes de limpiar
+  lastOrderData = orderData;
 
   // Actualizar los contadores de cierre de caja
   totalPayments++; // Incrementar el contador de pagos
@@ -197,25 +203,50 @@ function processPayment() {
   // Deshabilitar el botón de procesar pago
   document.getElementById('processPaymentBtn').disabled = true;
 
-  // Configurar el evento de impresión y pasar directamente el objeto orderData
-  printOrderBtn.onclick = () => printOrder(orderData);
+  // Configurar el evento de impresión
+  printOrderBtn.onclick = () => printOrder(lastOrderData);
 }
+
+// Eliminar este event listener duplicado
+// document.addEventListener('DOMContentLoaded', function () {
+//   const printOrderBtn = document.getElementById('printOrderBtn');
+//   if (printOrderBtn) {
+//     printOrderBtn.addEventListener('click', () => {
+//       if (lastOrderData) {
+//         printOrder(lastOrderData);
+//       }
+//     });
+//   }
+// });
 
 // Función mejorada para imprimir el pedido
 function printOrder(orderData) {
   // Usar la misma función de generación de contenido que el historial
   const printContent = generateOrderPrintContent(orderData);
 
-  // Abrir ventana de impresión
-  const printWindow = window.open('', '_blank');
-  printWindow.document.write(printContent);
-  printWindow.document.close();
+  try {
+    // Abrir ventana de impresión con características específicas
+    const printWindow = window.open('', '_blank', 'width=800,height=600');
+    if (printWindow) {
+      printWindow.document.open();
+      printWindow.document.write(printContent);
+      printWindow.document.close();
 
-  // Esperar a que el contenido se cargue antes de imprimir
-  printWindow.onload = function () {
-    printWindow.print();
-    // printWindow.close(); // Opcional: cerrar la ventana después de imprimir
-  };
+      // Esperar a que el contenido se cargue antes de imprimir
+      printWindow.onload = function () {
+        try {
+          printWindow.print();
+        } catch (error) {
+          console.error('Error al imprimir:', error);
+        }
+      };
+    } else {
+      console.error('No se pudo abrir la ventana de impresión');
+      alert('Por favor, permita las ventanas emergentes para imprimir');
+    }
+  } catch (error) {
+    console.error('Error al crear la ventana de impresión:', error);
+  }
 }
 
 function generateOrderPrintContent(orderData) {
@@ -439,12 +470,6 @@ function generateOrderPrintContent(orderData) {
 
       ${docenaDetails}
 
-      <div class="payment-info">
-        <h3>Información de Pago</h3>
-        <p>Método de pago: ${orderData.paymentMethod}</p>
-        ${paymentDetails}
-      </div>
-
       <h2>Gracias</h2>
     </body>
     </html>
@@ -452,32 +477,3 @@ function generateOrderPrintContent(orderData) {
 
   return printContent;
 }
-
-// Evento para el botón de impresión cuando se carga la página
-document.addEventListener('DOMContentLoaded', function () {
-  const printOrderBtn = document.getElementById('printOrderBtn');
-  if (printOrderBtn) {
-    printOrderBtn.addEventListener('click', () => {
-      // Este evento solo debería usarse si no se ha llamado a processPayment primero
-      // De lo contrario, el evento onclick ya estará configurado
-
-      // Si necesitamos recrear los datos del pedido
-      if (!lastOrderData) {
-        const orderName = document.getElementById('orderName').value;
-        const sellerName = document.getElementById('sellerName').value;
-
-        const orderData = {
-          date: new Date().toISOString(),
-          items: cart,
-          total: parseFloat(document.getElementById('modalTotal').textContent),
-          paymentMethod: currentPaymentMethod,
-          paymentAmounts: paymentAmounts,
-          orderName: orderName,
-          sellerName: sellerName
-        };
-
-        printOrder(orderData);
-      }
-    });
-  }
-  });
