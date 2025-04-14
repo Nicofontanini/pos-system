@@ -119,10 +119,49 @@ db.sequelize.authenticate()
       console.log('Nuevo cliente conectado');
     
       // Aquí va el evento refresh-sellers
+  // Inside io.on('connection') handler
   socket.on('refresh-sellers', async () => {
     try {
+      // Get all active employees (those who have logged in but not out)
+      const activeEmployees = await db.EmployeeLog.findAll({
+        where: {
+          action: 'ingreso',
+          id: {
+            [db.Sequelize.Op.notIn]: db.sequelize.literal(`(
+              SELECT MAX(id) 
+              FROM "EmployeeLogs" 
+              WHERE action = 'egreso' 
+              GROUP BY "employeeName"
+            )`)
+          }
+        },
+        attributes: ['employeeName', 'local', 'timestamp'],
+        order: [['timestamp', 'ASC']]
+      });
+  
+      // Get current sellers
       const sellers = await db.Seller.findAll();
-      io.emit('sellers-updated', sellers);
+      const sellersData = {
+        local1: {},
+        local2: {}
+      };
+  
+      // Assign active employees to empty seller slots
+      activeEmployees.forEach(employee => {
+        const local = employee.local;
+        for (let i = 1; i <= 4; i++) {
+          const sellerKey = `vendedor${i}`;
+          if (!sellersData[local][sellerKey]) {
+            sellersData[local][sellerKey] = {
+              name: employee.employeeName,
+              updatedAt: employee.timestamp
+            };
+            break;
+          }
+        }
+      });
+  
+      io.emit('sellers-updated', sellersData);
     } catch (error) {
       console.error('Error refreshing sellers:', error);
     }
