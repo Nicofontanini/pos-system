@@ -7,7 +7,7 @@ let paymentAmounts = {
 
 // Variables globales para el carrito
 let cart = [];
-let socket = io();
+const socket = io();
 
 // Variables globales para el cierre de caja
 let totalPayments = 0;

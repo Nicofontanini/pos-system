@@ -184,7 +184,7 @@
   <!-- scripts -->
   <script src="/socket.io/socket.io.js"></script>
   <script>
-    const socket = io();
+ const socket = window.socket || io();
     // Determinar el local actual
     const currentLocal = window.location.pathname.includes('local1') ? 'local1' : 'local2';
     let orderName = ''; // Variable para almacenar el nombre del pedido

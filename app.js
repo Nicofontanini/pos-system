@@ -57,10 +57,13 @@ db.sequelize.authenticate()
     loadLastCloseTimes();
     
     // Setup controllers
-    app.get('/api/products', productController.getProducts);
+    app.get('/api/products', (req, res) => {
+      // No necesitamos autenticación para obtener productos
+      productController.getProducts(req, res);
+    });
     app.post('/api/products', isAuthenticated, productController.createProduct);
-    app.put('/api/product/:id', productController.updateProduct);
-    app.get('/api/product/:id', productController.getProductById);
+    app.put('/api/product/:id', isAuthenticated, productController.updateProduct);
+    app.get('/api/product/:id', isAuthenticated, productController.getProductById);
     
     app.get('/api/orders/local1', orderLocal1Controller.getOrders);
     app.post('/api/orders/local1', orderLocal1Controller.createOrder);

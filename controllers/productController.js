@@ -42,11 +42,24 @@ exports.createProduct = async (req, res) => {
 
 exports.getProducts = async (req, res) => {
   try {
-    const local = req.headers['x-local'];
+    const local = req.query.local || req.headers['x-local'];
+    if (!local) {
+      return res.status(400).json({ error: 'Local is required' });
+    }
+
     const products = await Product.findAll({
-      where: { local }
+      where: { local },
+      attributes: ['id', 'name', 'price']
     });
-    res.json(products);
+    
+    // Formatear los productos como un array simple
+    const formattedProducts = products.map(product => ({
+      id: product.id,
+      name: product.name,
+      price: parseFloat(product.price) // Convertir a número
+    }));
+    
+    res.json(formattedProducts);
   } catch (error) {
     console.error('Error al obtener productos:', error);
     res.status(500).json({ error: error.message });

@@ -133,6 +133,7 @@ function saveCompoundChanges(itemId, modal, products, productName, productPrice)
     
     // Add to cart
     const local = window.location.pathname.includes('local1') ? 'local1' : 'local2';
+    const socket = window.socket || io();
     socket.emit('add-to-cart', {
         local: local,
         product: {
@@ -454,6 +455,7 @@ function processSale() {
 
         if (isValid) {
           const local = window.location.pathname.includes('local1') ? 'local1' : 'local2';
+          const socket = window.socket || io();
           socket.emit('add-to-cart', {
             local: local,
             product: {
@@ -618,6 +620,7 @@ function processSale() {
         
         // Add to cart
         const local = window.location.pathname.includes('local1') ? 'local1' : 'local2';
+        const socket = window.socket || io();
         socket.emit('add-to-cart', {
             local: local,
             product: {
@@ -642,6 +645,7 @@ function processSale() {
           
           // Actualización via Socket.IO si es necesario
           const local = window.location.pathname.includes('local1') ? 'local1' : 'local2';
+          const socket = window.socket || io();
           socket.emit('increment-product', { local, productId });
         }
       }
@@ -655,6 +659,7 @@ function processSale() {
           
           // Actualización via Socket.IO si es necesario
           const local = window.location.pathname.includes('local1') ? 'local1' : 'local2';
+          const socket = window.socket || io();
           socket.emit('decrement-product', { local, productId });
         }
       }
@@ -674,6 +679,7 @@ function processSale() {
       });
 
       // Socket event listeners
+      const socket = window.socket || io();
       socket.on('product-added', function (data) {
         if (data.location === 'local1') {
           location.reload();
@@ -693,14 +699,6 @@ function processSale() {
         }
       });
 
-      // Escuchar el evento cart-updated
-    socket.on('cart-updated', function ({ local, cart: updatedCart }) {
-      // Solo actualizar si el carrito pertenece al local actual
-      if (local === (window.location.pathname.includes('local1') ? 'local1' : 'local2')) {
-        cart = updatedCart || []; // Initialize with empty array if null
-        updateCartUI(); // Update interface
-      }
-    });
       // Escuchar el evento cart-updated
     socket.on('cart-updated', function ({ local, cart: updatedCart }) {
       // Solo actualizar si el carrito pertenece al local actual

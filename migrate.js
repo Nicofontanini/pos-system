@@ -159,3 +159,5 @@ async function migrateData() {
 module.exports = {
   migrateData
 };
+
+// migrateData();
