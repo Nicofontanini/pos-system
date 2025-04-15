@@ -158,15 +158,34 @@ function confirmDelete(productId) {
 
 function deleteProduct(productId) {
     fetch(`/delete-product/local2/${productId}`, {
-      method: 'DELETE'
+        method: 'DELETE'
     })
-      .then(response => {
+    .then(response => {
         if (!response.ok) throw new Error('Error al eliminar el producto');
-        // La actualización de la UI se maneja a través de Socket.IO
-      })
-      .catch(error => {
-        alert(error.message);
-      });
+        return response.json();
+    })
+    .then(data => {
+        if (data.success) {
+            // Remove the product from the UI if it exists
+            const productElement = document.getElementById(`product-${productId}`);
+            if (productElement) {
+                productElement.remove();
+            }
+            
+            // Hide confirmation dialog if it exists
+            const confirmDialog = document.getElementById(`delete-confirm-${productId}`);
+            if (confirmDialog) {
+                confirmDialog.style.display = 'none';
+            }
+            
+            // Optional: Show success message
+            alert('Producto eliminado exitosamente');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Error al eliminar el producto');
+    });
 }
 
 function cancelDelete(productId) {

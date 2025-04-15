@@ -598,6 +598,7 @@ app.put('/update-product/:location/:id', async (req, res) => {
   }
 });
 
+app.delete('/delete-product/:local/:id', isAuthenticated, productController.deleteProduct);
 app.delete('/delete-product/:location/:id', async (req, res) => {
   try {
     const { location, id } = req.params;
