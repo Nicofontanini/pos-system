@@ -827,3 +827,22 @@
 .component-item:last-child {
   border-bottom: none;
 }
+.components-detail {
+    margin-left: 20px;
+    padding: 5px 0;
+    font-size: 0.9em;
+    color: #666;
+}
+
+.component-detail {
+    margin-left: 10px;
+    padding: 2px 0;
+}
+
+.cart-item-main {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    font-weight: bold;
+}

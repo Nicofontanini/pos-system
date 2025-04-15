@@ -462,7 +462,17 @@ function generateOrderPrintContent(orderData) {
         <tbody>
           ${orderData.items.map(item => `
             <tr>
-              <td class="product-name">${item.name}</td>
+              <td class="product-name">
+                ${item.name}
+                ${item.isCompound && item.components && item.components.length > 0 ? `
+                  <div class="ticket-components" style="margin-left: 10px; font-size: 0.9em;">
+                    <div>Productos:</div>
+                    ${item.components.map(comp => `
+                      <div style="margin-left: 15px;">• ${comp.name}: ${comp.quantity * item.quantity} unidades</div>
+                    `).join('')}
+                  </div>
+                ` : ''}
+              </td>
               <td class="quantity">${item.quantity || 1}</td>
               <td class="price">$${item.price.toFixed(2)}</td>
               <td class="subtotal">$${(item.price * (item.quantity || 1)).toFixed(2)}</td>
