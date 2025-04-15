@@ -833,3 +833,5 @@ if (process.argv.includes('--migrate')) {
     console.log('Migración completada opcionalmente');
   });
 }
+// Add this route for admin delete
+app.delete('/api/product/:id', isAuthenticated, productController.deleteProduct);

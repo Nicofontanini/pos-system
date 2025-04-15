@@ -157,8 +157,21 @@ function confirmDelete(productId) {
 }
 
 function deleteProduct(productId) {
-    fetch(`/delete-product/local2/${productId}`, {
-        method: 'DELETE'
+    const location = window.location.pathname.split('/')[1];
+    let deleteUrl;
+
+    // Handle different routes for admin and local views
+    if (location === 'admin') {
+        deleteUrl = `/api/product/${productId}`; // Use a general delete endpoint for admin
+    } else {
+        deleteUrl = `/delete-product/${location}/${productId}`; // Keep existing local-specific endpoint
+    }
+    
+    fetch(deleteUrl, {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json'
+        }
     })
     .then(response => {
         if (!response.ok) throw new Error('Error al eliminar el producto');
@@ -166,25 +179,25 @@ function deleteProduct(productId) {
     })
     .then(data => {
         if (data.success) {
-            // Remove the product from the UI if it exists
             const productElement = document.getElementById(`product-${productId}`);
             if (productElement) {
                 productElement.remove();
             }
             
-            // Hide confirmation dialog if it exists
             const confirmDialog = document.getElementById(`delete-confirm-${productId}`);
             if (confirmDialog) {
                 confirmDialog.style.display = 'none';
             }
             
-            // Optional: Show success message
             alert('Producto eliminado exitosamente');
+            
+            // Refresh the product list
+            loadProducts();
         }
     })
     .catch(error => {
         console.error('Error:', error);
-        alert('Error al eliminar el producto');
+        alert('Error al eliminar el producto: ' + (error.message || 'Error desconocido'));
     });
 }
 

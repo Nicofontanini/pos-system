@@ -104,29 +104,18 @@ exports.updateProduct = async (req, res) => {
 exports.deleteProduct = async (req, res) => {
     try {
         const { id, local } = req.params;
-        console.log(`Attempting to delete product ${id} from ${local}`); // Debug log
+        let whereClause = { id };
+        if (local) whereClause.local = local;
 
-        const deleted = await Product.destroy({
-            where: { 
-                id: id,
-                local: local
-            }
-        });
+        const deleted = await Product.destroy({ where: whereClause });
 
         if (deleted) {
             res.json({ success: true, message: 'Producto eliminado' });
         } else {
-            res.status(404).json({ 
-                success: false, 
-                error: 'Producto no encontrado',
-                details: `Product ${id} in ${local} not found`
-            });
+            res.status(404).json({ success: false, error: 'Producto no encontrado' });
         }
     } catch (error) {
         console.error('Error al eliminar producto:', error);
-        res.status(500).json({ 
-            success: false, 
-            error: error.message 
-        });
+        res.status(500).json({ success: false, error: error.message });
     }
 };
