@@ -64,8 +64,13 @@
               <button onclick="sendAlert('<%= product.name %>')" class="alert-button">Enviar alerta</button>
               <% } %>
                 <div class="actions">
-                  <button onclick="addToCart(<%= product.id %>, '<%= product.name %>', <%= product.price %>)"
-                    class="add-button">Agregar</button>
+                  <button onclick="addToCart({
+                      id: <%= product.id %>,
+                      name: '<%= product.name %>',
+                      price: <%= product.price %>,
+                      isCompound: <%= product.isCompound %>,
+                      components: <%= JSON.stringify(product.components || []) %>
+                  })" class="add-button">Agregar</button>
                 </div>
 
                 <div id="delete-confirm-<%= product.id %>" class="delete-confirm" style="display: none;">

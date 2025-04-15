@@ -116,7 +116,20 @@
 .quantity-controls {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
+}
+
+.quantity-controls button {
+  padding: 2px 8px;
+  cursor: pointer;
+}
+
+.component-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
 }
 
 .quantity-controls button {
@@ -798,4 +811,19 @@
   padding: 15px;
   border-radius: 5px;
   margin-top: 10px;
+}
+
+.components-list {
+  margin: 15px 0;
+}
+
+.component-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px;
+  border-bottom: 1px solid #ddd;
+}
+
+.component-item:last-child {
+  border-bottom: none;
 }

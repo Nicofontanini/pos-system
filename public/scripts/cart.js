@@ -8,12 +8,24 @@ if (typeof cart === 'undefined') {
 window.cart = window.cart || [];
 
 // Función para agregar al carrito
-window.addToCart = function(productId, productName, productPrice) {
+window.addToCart = function(productData) {
+    console.log('Product Data Raw:', productData);
+    
+    // Parse the data if it's a string
+    const product = typeof productData === 'string' ? JSON.parse(productData) : productData;
+    
+    // Parse each component if they are strings
+    const parsedComponents = product.components?.map(comp => 
+        typeof comp === 'string' ? JSON.parse(comp) : comp
+    ) || [];
+
     const item = {
-        id: productId,
-        name: productName,
-        price: productPrice,
-        quantity: 1
+        id: product.id,
+        name: product.name,
+        price: product.price,
+        quantity: 1,
+        isCompound: product.isCompound,
+        components: parsedComponents
     };
     
     const existingItem = cart.find(cartItem => cartItem.id === item.id);
@@ -22,11 +34,91 @@ window.addToCart = function(productId, productName, productPrice) {
         existingItem.quantity += 1;
     } else {
         cart.push(item);
+        // Show components modal if it's a compound product
+        if (item.isCompound && item.components && item.components.length > 0) {
+            console.log('Showing modal for compound product:', item);
+            showComponentsModal(item);
+        }
     }
     
     updateCartUI();
     document.getElementById('checkoutButton').disabled = false;
 };
+
+// Función para mostrar el modal con los componentes
+function showComponentsModal(item) {
+    const modal = document.createElement('div');
+    modal.className = 'modal';
+    modal.style.display = 'block';
+
+    const modalContent = document.createElement('div');
+    modalContent.className = 'modal-content';
+    
+    modalContent.innerHTML = `
+        <span class="close">&times;</span>
+        <h3>Componentes de ${item.name}</h3>
+        <div class="components-list">
+            ${item.components.map((comp, index) => `
+                <div class="component-item">
+                    <span>${comp.name}</span>
+                    <div class="quantity-controls">
+                        <button onclick="decrementComponent(${index})">-</button>
+                        <span id="comp-quantity-${index}">${comp.quantity}</span>
+                        <button onclick="incrementComponent(${index})">+</button>
+                    </div>
+                </div>
+            `).join('')}
+        </div>
+        <button onclick="confirmComponents(this)">Confirmar</button>
+        <button onclick="closeComponentsModal(this)">Cancelar</button>
+    `;
+
+    modal.appendChild(modalContent);
+    document.body.appendChild(modal);
+
+    // Guardar referencia temporal de los componentes
+    window.tempComponents = [...item.components];
+    window.currentItem = item;
+
+    const closeBtn = modal.querySelector('.close');
+    closeBtn.onclick = function() {
+        modal.remove();
+        window.tempComponents = null;
+        window.currentItem = null;
+    };
+}
+
+// Funciones para manipular cantidades de componentes
+window.incrementComponent = function(index) {
+    if (window.tempComponents) {
+        window.tempComponents[index].quantity++;
+        document.getElementById(`comp-quantity-${index}`).textContent = 
+            window.tempComponents[index].quantity;
+    }
+};
+
+window.decrementComponent = function(index) {
+    if (window.tempComponents && window.tempComponents[index].quantity > 1) {
+        window.tempComponents[index].quantity--;
+        document.getElementById(`comp-quantity-${index}`).textContent = 
+            window.tempComponents[index].quantity;
+    }
+};
+
+window.confirmComponents = function(button) {
+    if (window.currentItem && window.tempComponents) {
+        window.currentItem.components = window.tempComponents;
+        closeComponentsModal(button);
+    }
+};
+
+// Función para cerrar el modal
+function closeComponentsModal(button) {
+    const modal = button.closest('.modal');
+    if (modal) {
+        modal.remove();
+    }
+}
 
 // Función para actualizar la interfaz del carrito
 function updateCartUI() {
