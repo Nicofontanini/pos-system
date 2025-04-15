@@ -1,6 +1,6 @@
 // controllers/productController.js
-const Product = require('../models/products');
 const db = require('../models');
+const Product = db.Product;
 
 exports.createProduct = async (req, res) => {
   try {
@@ -86,7 +86,7 @@ exports.updateProduct = async (req, res) => {
     const updatedProduct = req.body;
 
     const [updated] = await Product.update(updatedProduct, {
-      where: { id: productId, local }
+      where: { id: productId } // Use productId instead of id
     });
 
     if (updated) {
@@ -97,6 +97,25 @@ exports.updateProduct = async (req, res) => {
     }
   } catch (error) {
     console.error('Error al actualizar producto:', error);
+    res.status(500).json({ success: false, error: error.message });
+  }
+};
+
+exports.deleteProduct = async (req, res) => {
+  try {
+    const productId = req.params.id;
+    const { id, local } = req.params;
+    const deleted = await Product.destroy({
+      where: { id: productId }
+    });
+
+    if (deleted) {
+      res.json({ success: true, message: 'Producto eliminado' });
+    } else {
+      res.status(404).json({ success: false, error: 'Producto no encontrado' });
+    }
+  } catch (error) {
+    console.error('Error al eliminar producto:', error);
     res.status(500).json({ success: false, error: error.message });
   }
 };

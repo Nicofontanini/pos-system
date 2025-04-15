@@ -193,4 +193,4 @@ module.exports = {
   migrateData
 };
 
-migrateData(); // Uncomment this line
+//migrateData(); // Uncomment this line
