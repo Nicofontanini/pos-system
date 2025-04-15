@@ -10,7 +10,40 @@ async function migrateData() {
     console.log('Conexión exitosa a la base de datos');
 
     // Crear las tablas si no existen
-    await db.sequelize.sync({ alter: true });
+    await db.sequelize.sync({ alter: false }); // Cambiar a false para evitar alteraciones automáticas
+
+    // Eliminar columnas no deseadas y asegurar que solo exista 'stock'
+    console.log('Limpiando columnas de stock...');
+    await db.sequelize.query('ALTER TABLE "Products" DROP COLUMN IF EXISTS "stock1";');
+    await db.sequelize.query('ALTER TABLE "Products" DROP COLUMN IF EXISTS "stock2";');
+
+    // Asegurar que la columna stock existe y tiene los valores correctos
+    const [existsStock] = await db.sequelize.query(
+      'SELECT 1 FROM information_schema.columns WHERE table_name = \'Products\' AND column_name = \'stock\''
+    );
+
+    if (!existsStock[0]) {
+      // Agregar la columna stock si no existe
+      await db.sequelize.query('ALTER TABLE "Products" ADD COLUMN "stock" INTEGER DEFAULT 0;');
+      
+      // Actualizar con los valores del JSON
+      const productos = JSON.parse(fs.readFileSync(path.join(__dirname, 'data', 'products.json')));
+      for (const local in productos) {
+        for (const producto of productos[local].products) {
+          await db.sequelize.query(`
+            UPDATE "Products" 
+            SET "stock" = :stock 
+            WHERE "name" = :name AND "local" = :local
+          `, {
+            replacements: {
+              stock: producto.stock || 0,
+              name: producto.name,
+              local: local
+            }
+          });
+        }
+      }
+    }
 
     // Check if items column exists
     console.log('Checking if items column exists...');
@@ -160,4 +193,4 @@ module.exports = {
   migrateData
 };
 
-// migrateData(); // Uncomment this line
+migrateData(); // Uncomment this line
