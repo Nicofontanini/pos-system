@@ -55,7 +55,7 @@ db.sequelize.authenticate()
   .then(() => {
     console.log('Base de datos sincronizada');
     loadLastCloseTimes();
-    
+
     // Setup controllers
     app.get('/api/products', (req, res) => {
       // No necesitamos autenticación para obtener productos
@@ -64,42 +64,42 @@ db.sequelize.authenticate()
     app.post('/api/products', isAuthenticated, productController.createProduct);
     app.put('/api/product/:id', isAuthenticated, productController.updateProduct);
     app.get('/api/product/:id', isAuthenticated, productController.getProductById);
-    
+
     app.get('/api/orders/local1', orderLocal1Controller.getOrders);
     app.post('/api/orders/local1', orderLocal1Controller.createOrder);
     app.put('/api/orders/local1/:id', orderLocal1Controller.updateOrder);
     app.delete('/api/orders/local1/:id', orderLocal1Controller.deleteOrder);
     app.post('/api/orders/local1/filter', orderLocal1Controller.filterOrdersByDate);
-    
+
     app.get('/api/orders/local2', orderLocal2Controller.getOrders);
     app.post('/api/orders/local2', orderLocal2Controller.createOrder);
     app.put('/api/orders/local2/:id', orderLocal2Controller.updateOrder);
     app.delete('/api/orders/local2/:id', orderLocal2Controller.deleteOrder);
     app.post('/api/orders/local2/filter', orderLocal2Controller.filterOrdersByDate);
-    
+
     app.get('/api/cash-register-history', cashRegisterHistoryController.getCashRegisterHistory);
     app.post('/api/cash-register-history/filter', cashRegisterHistoryController.getCashRegisterHistoryByDate);
     app.post('/api/cash-register-history', cashRegisterHistoryController.addCashRegisterEntry);
     app.put('/api/cash-register-history/:id', cashRegisterHistoryController.updateCashRegisterEntry);
     app.delete('/api/cash-register-history/:id', cashRegisterHistoryController.deleteCashRegisterEntry);
-    
+
     app.get('/api/sellers', sellersController.getAllSellers);
     app.get('/api/sellers/:id', sellersController.getSellerById);
     app.post('/api/sellers', sellersController.createSeller);
     app.put('/api/sellers/:id', sellersController.updateSeller);
     app.delete('/api/sellers/:id', sellersController.deleteSeller);
-    
+
     app.get('/api/sellers-history', sellersHistoryController.getSellersHistory);
     app.get('/api/sellers-history/:sellerId', sellersHistoryController.getSellerHistory);
     app.post('/api/sellers-history/filter', sellersHistoryController.filterSellersHistory);
     app.post('/api/sellers-history', sellersHistoryController.addSellerHistoryEntry);
     app.put('/api/sellers-history/:entryId', sellersHistoryController.updateSellerHistoryEntry);
     app.delete('/api/sellers-history/:entryId', sellersHistoryController.deleteSellerHistoryEntry);
-    
+
     app.get('/api/sellers/:id/history', sellersController.getSellerHistory);
     app.post('/api/sellers/login', sellersController.recordLogin);
     app.post('/api/sellers/logout', sellersController.recordLogout);
-    
+
     app.get('/api/employee-logs', employeeLogsController.getEmployeeLogs);
     app.post('/api/employee-logs/filter', employeeLogsController.getEmployeeLogsByDate);
     app.get('/api/employee-logs/employee/:employeeId', employeeLogsController.getEmployeeLogsByEmployee);
@@ -111,62 +111,65 @@ db.sequelize.authenticate()
     const server = app.listen(port, () => {
       console.log(`Servidor iniciado en el puerto ${port}`);
     });
-    
-    const io = socketIo(server);
-    
+
+    const io = require('socket.io')(server);
+
+    // Hacer io accesible globalmente
+    global.io = io;
+
     // Luego maneja las conexiones de socket
     io.on('connection', (socket) => {
       console.log('Nuevo cliente conectado');
-    
+
       // Aquí va el evento refresh-sellers
-  // Inside io.on('connection') handler
-  socket.on('refresh-sellers', async () => {
-    try {
-      // Get all active employees (those who have logged in but not out)
-      const activeEmployees = await db.EmployeeLog.findAll({
-        where: {
-          action: 'ingreso',
-          id: {
-            [db.Sequelize.Op.notIn]: db.sequelize.literal(`(
+      // Inside io.on('connection') handler
+      socket.on('refresh-sellers', async () => {
+        try {
+          // Get all active employees (those who have logged in but not out)
+          const activeEmployees = await db.EmployeeLog.findAll({
+            where: {
+              action: 'ingreso',
+              id: {
+                [db.Sequelize.Op.notIn]: db.sequelize.literal(`(
               SELECT MAX(id) 
               FROM "EmployeeLogs" 
               WHERE action = 'egreso' 
               GROUP BY "employeeName"
             )`)
-          }
-        },
-        attributes: ['employeeName', 'local', 'timestamp'],
-        order: [['timestamp', 'ASC']]
-      });
-  
-      // Get current sellers
-      const sellers = await db.Seller.findAll();
-      const sellersData = {
-        local1: {},
-        local2: {}
-      };
-  
-      // Assign active employees to empty seller slots
-      activeEmployees.forEach(employee => {
-        const local = employee.local;
-        for (let i = 1; i <= 4; i++) {
-          const sellerKey = `vendedor${i}`;
-          if (!sellersData[local][sellerKey]) {
-            sellersData[local][sellerKey] = {
-              name: employee.employeeName,
-              updatedAt: employee.timestamp
-            };
-            break;
-          }
+              }
+            },
+            attributes: ['employeeName', 'local', 'timestamp'],
+            order: [['timestamp', 'ASC']]
+          });
+
+          // Get current sellers
+          const sellers = await db.Seller.findAll();
+          const sellersData = {
+            local1: {},
+            local2: {}
+          };
+
+          // Assign active employees to empty seller slots
+          activeEmployees.forEach(employee => {
+            const local = employee.local;
+            for (let i = 1; i <= 4; i++) {
+              const sellerKey = `vendedor${i}`;
+              if (!sellersData[local][sellerKey]) {
+                sellersData[local][sellerKey] = {
+                  name: employee.employeeName,
+                  updatedAt: employee.timestamp
+                };
+                break;
+              }
+            }
+          });
+
+          io.emit('sellers-updated', sellersData);
+        } catch (error) {
+          console.error('Error refreshing sellers:', error);
         }
       });
-  
-      io.emit('sellers-updated', sellersData);
-    } catch (error) {
-      console.error('Error refreshing sellers:', error);
-    }
-  });
- 
+
       socket.on('add-to-cart', async ({ local, product, quantity }) => {
         try {
           if (!carts[local]) carts[local] = [];
@@ -191,7 +194,7 @@ db.sequelize.authenticate()
         const { local, productId } = data;
         const cart = carts[local] || [];
         const productIndex = cart.findIndex(item => item?.id === productId);
-        
+
         if (productIndex !== -1) {
           cart.splice(productIndex, 1);
           io.to(local).emit('cart-updated', { local, cart });
@@ -202,7 +205,7 @@ db.sequelize.authenticate()
         const { local, productId } = data;
         const cart = carts[local] || [];
         const product = cart.find(item => item?.id === productId);
-        
+
         if (product) {
           product.quantity = (product.quantity || 0) + 1;
           io.to(local).emit('cart-updated', { local, cart });
@@ -213,7 +216,7 @@ db.sequelize.authenticate()
         const { local, productId } = data;
         const cart = carts[local] || [];
         const product = cart.find(item => item?.id === productId);
-        
+
         if (product && (product.quantity || 0) > 1) {
           product.quantity = (product.quantity || 0) - 1;
           io.to(local).emit('cart-updated', { local, cart });
@@ -239,10 +242,10 @@ db.sequelize.authenticate()
         try {
           // Enviar email
           await resend.emails.send({
-              from: 'onboarding@resend.dev',
-              to: 'empanadaskm11.brc@gmail.com',
-              subject: `Alerta de Stock Bajo - ${productName}`,
-              html: `
+            from: 'onboarding@resend.dev',
+            to: 'empanadaskm11.brc@gmail.com',
+            subject: `Alerta de Stock Bajo - ${productName}`,
+            html: `
                 <h1>⚠️ Alerta de Stock Bajo</h1>
                 <p>El producto <strong>${productName}</strong> tiene un stock bajo (${stockLevel} unidades).</p>
                 <p>Esta alerta fue enviada desde <strong>${localFrom}</strong>.</p>
@@ -253,24 +256,24 @@ db.sequelize.authenticate()
 
           // Enviar alerta a todos los clientes conectados (especialmente Local 2)
           io.emit('stock-alert-notification', {
-              productName,
-              stockLevel,
-              localFrom,
-              timestamp: new Date().toISOString()
+            productName,
+            stockLevel,
+            localFrom,
+            timestamp: new Date().toISOString()
           });
 
           socket.emit('alert-email-status', {
-              success: true,
-              message: 'Alerta enviada correctamente'
+            success: true,
+            message: 'Alerta enviada correctamente'
           });
 
-      } catch (error) {
+        } catch (error) {
           console.error('Error al enviar alerta:', error);
           socket.emit('alert-email-status', {
-              success: false,
-              message: error.message
+            success: false,
+            message: error.message
           });
-      }
+        }
       });
 
       socket.on('get-order-history-range', ({ local, startDate, endDate }) => {
@@ -459,9 +462,9 @@ app.get('/logout', (req, res) => {
 app.get('/local1', isAuthenticated, async (req, res) => {
   try {
     const products = await Product.findAll({ where: { local: 'local1' } });
-    res.render('local1', { 
-      products: products.map(p => p.get({ plain: true })), 
-      user: req.session.user 
+    res.render('local1', {
+      products: products.map(p => p.get({ plain: true })),
+      user: req.session.user
     });
   } catch (error) {
     console.error('Error al obtener productos:', error);
@@ -472,9 +475,9 @@ app.get('/local1', isAuthenticated, async (req, res) => {
 app.get('/local2', isAuthenticated, async (req, res) => {
   try {
     const products = await Product.findAll({ where: { local: 'local2' } });
-    res.render('local2', { 
-      products: products.map(p => p.get({ plain: true })), 
-      user: req.session.user 
+    res.render('local2', {
+      products: products.map(p => p.get({ plain: true })),
+      user: req.session.user
     });
   } catch (error) {
     console.error('Error al obtener productos:', error);
@@ -488,9 +491,9 @@ app.get('/admin', isAuthenticated, async (req, res) => {
   }
   try {
     const products = await db.Product.findAll({ where: { local: 'local1' } });
-    res.render('admin', { 
-      products: products.map(p => p.get({ plain: true })), 
-      user: req.session.user 
+    res.render('admin', {
+      products: products.map(p => p.get({ plain: true })),
+      user: req.session.user
     });
   } catch (error) {
     console.error('Error al obtener productos:', error);
@@ -544,7 +547,7 @@ app.post('/add-product/:location', async (req, res) => {
   try {
     const { location } = req.params;
     const productData = req.body;
-    
+
     const newProduct = await Product.create({
       ...productData,
       local: location
@@ -557,7 +560,7 @@ app.post('/add-product/:location', async (req, res) => {
           local: 'local1'
         }
       });
-      
+
       if (!existingProduct) {
         await Product.create({
           ...productData,
@@ -570,9 +573,9 @@ app.post('/add-product/:location', async (req, res) => {
     res.json({ success: true, product: newProduct.get({ plain: true }) });
   } catch (error) {
     console.error('Error al agregar producto:', error);
-    res.status(500).json({ 
-      success: false, 
-      error: error.message 
+    res.status(500).json({
+      success: false,
+      error: error.message
     });
   }
 });
@@ -618,39 +621,59 @@ app.delete('/delete-product/:location/:id', async (req, res) => {
 
 // Stock transfer
 app.post('/transfer-stock', async (req, res) => {
-  try {
-    const { productId, quantity, fromLocation, toLocation } = req.body;
-    
-    const sourceProduct = await Product.findOne({ 
-      where: { id: productId, local: fromLocation }
-    });
-    
-    if (!sourceProduct) {
-      return res.status(404).json({ success: false, error: 'Producto no encontrado en ubicación de origen' });
+    try {
+        const { productId, quantity, fromLocation, toLocation } = req.body;
+
+        // Buscar el producto en la ubicación de origen
+        const sourceProduct = await Product.findOne({
+            where: { id: productId, local: fromLocation }
+        });
+
+        if (!sourceProduct) {
+            return res.status(404).json({ error: 'Producto no encontrado en la ubicación de origen' });
+        }
+
+        if (sourceProduct.stock < quantity) {
+            return res.status(400).json({ error: 'Stock insuficiente para transferir' });
+        }
+
+        // Actualizar el stock del producto origen
+        await sourceProduct.decrement('stock', { by: parseInt(quantity) });
+        const updatedSourceProduct = await sourceProduct.reload();
+
+        // Buscar o crear el producto en el destino
+        const [destinationProduct] = await Product.findOrCreate({
+            where: { name: sourceProduct.name, local: toLocation },
+            defaults: {
+                category: sourceProduct.category,
+                price: sourceProduct.price,
+                stock: 0,
+                description: sourceProduct.description,
+                isCompound: sourceProduct.isCompound,
+                components: sourceProduct.components
+            }
+        });
+
+        // Actualizar el stock del producto destino
+        await destinationProduct.increment('stock', { by: parseInt(quantity) });
+        const updatedDestProduct = await destinationProduct.reload();
+
+        // Emitir un solo evento de actualización por producto
+        io.emit('stock-update', {
+            productId: sourceProduct.id,
+            newStock: updatedSourceProduct.stock,
+            sourceLocation: fromLocation
+        });
+
+        res.json({ 
+            success: true,
+            sourceStock: updatedSourceProduct.stock,
+            destinationStock: updatedDestProduct.stock
+        });
+    } catch (error) {
+        console.error('Error al transferir stock:', error);
+        res.status(500).json({ error: 'Error al transferir stock' });
     }
-    
-    if (sourceProduct.stock < quantity) {
-      return res.status(400).json({ success: false, error: 'Stock insuficiente' });
-    }
-    
-    await sourceProduct.decrement('stock', { by: quantity });
-    
-    const [targetProduct] = await Product.findOrCreate({
-      where: { id: productId, local: toLocation },
-      defaults: {
-        ...sourceProduct.get({ plain: true }),
-        stock: 0,
-        local: toLocation
-      }
-    });
-    
-    await targetProduct.increment('stock', { by: quantity });
-    
-    res.json({ success: true });
-  } catch (error) {
-    console.error('Error al transferir stock:', error);
-    res.status(500).json({ success: false, error: error.message });
-  }
 });
 
 // Seller management
