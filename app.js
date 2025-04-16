@@ -868,12 +868,40 @@ if (process.argv.includes('--migrate')) {
 // Add this route for admin delete
 app.delete('/api/product/:id', isAuthenticated, productController.deleteProduct);
 
-// Remove this duplicate import
-// const cashRegisterHistoryController = require('./controllers/cashRegisterHistoryController');
+// Add these routes along with your other route definitions
+app.post('/api/cash-register/start', async (req, res) => {
+    try {
+        const { startTime } = req.body;
+        cashRegister.startTime = startTime;
+        res.json({ 
+            success: true, 
+            message: 'Cash register started successfully',
+            startTime 
+        });
+    } catch (error) {
+        console.error('Error starting cash register:', error);
+        res.status(500).json({ 
+            success: false, 
+            error: error.message 
+        });
+    }
+});
 
-// Mount the cash register routes
-app.use('/cash-register', cashRegisterRouter);
-
-app.post('/api/cash-register/close', cashRegisterHistoryController.addCashRegisterEntry);
 app.get('/api/cash-register/history', cashRegisterHistoryController.getCashRegisterHistory);
+app.post('/api/cash-register/close', cashRegisterHistoryController.addCashRegisterEntry);
 app.get('/api/cash-register/history/date', cashRegisterHistoryController.getCashRegisterHistoryByDate);
+
+// Keep your existing cash register routes
+app.get('/cash-register', (req, res) => {
+    res.json({
+        ...cashRegister,
+        startTime: cashRegister.startTime
+    });
+});
+
+app.post('/cash-register', (req, res) => {
+    const { totalPayments, totalAmount } = req.body;
+    cashRegister.totalPayments = totalPayments;
+    cashRegister.totalAmount = totalAmount;
+    res.json({ success: true });
+});

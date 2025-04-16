@@ -185,7 +185,7 @@ function startCashRegister() {
   cashRegisterStartTime = new Date().toISOString();
   currentOrders = [];
   
-  fetch('/cash-register/start', {
+  fetch('/api/cash-register/start', {  // Cambiar la ruta aquí
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ startTime: cashRegisterStartTime })
@@ -194,7 +194,6 @@ function startCashRegister() {
   .then(data => {
     if (data.success) {
       alert('Caja iniciada con éxito');
-      // Safely handle button display
       const startBtn = document.getElementById('startCashRegisterBtn');
       const closeBtn = document.getElementById('closeCashRegisterBtn');
       if (startBtn) startBtn.style.display = 'none';
