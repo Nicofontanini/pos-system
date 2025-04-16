@@ -887,11 +887,15 @@ app.post('/api/cash-register/start', async (req, res) => {
     }
 });
 
-app.get('/api/cash-register/history', cashRegisterHistoryController.getCashRegisterHistory);
+// Modificar estas rutas para mantener consistencia
+app.get('/api/cash-register/close', cashRegisterHistoryController.getCashRegisterHistory);
 app.post('/api/cash-register/close', cashRegisterHistoryController.addCashRegisterEntry);
-app.get('/api/cash-register/history/date', cashRegisterHistoryController.getCashRegisterHistoryByDate);
+app.get('/api/cash-register/close/date', cashRegisterHistoryController.getCashRegisterHistoryByDate);
 
-// Keep your existing cash register routes
+// Eliminar o comentar las rutas antiguas
+// app.get('/api/cash-register/history', cashRegisterHistoryController.getCashRegisterHistory);
+// app.get('/api/cash-register/history/date', cashRegisterHistoryController.getCashRegisterHistoryByDate);
+
 app.get('/cash-register', (req, res) => {
     res.json({
         ...cashRegister,

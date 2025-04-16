@@ -2,15 +2,22 @@
 const { readCashRegisterHistory, writeCashRegisterHistory } = require('../app');
 const { filterCashRegisterHistoryByDate } = require('../app');
 const db = require('../models');
-const { CashRegisterHistory } = db;
 
 exports.getCashRegisterHistory = async (req, res) => {
-  try {
-    const history = readCashRegisterHistory();
-    res.json(history);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
+    try {
+        console.log('Petición recibida en getCashRegisterHistory');
+        const history = await db.CashRegisterHistory.findAll({
+            order: [['date', 'DESC']]
+        });
+        console.log('Datos encontrados en DB:', history);
+        res.json(history);
+    } catch (error) {
+        console.error('Error en getCashRegisterHistory:', error);
+        res.status(500).json({ 
+            success: false, 
+            error: error.message 
+        });
+    }
 };
 
 exports.getCashRegisterHistoryByDate = async (req, res) => {

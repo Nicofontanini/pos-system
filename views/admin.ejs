@@ -168,31 +168,21 @@
     </main>
 
     <!-- Modal para el historial de cierres de caja -->
+    <!-- Agrega esto en la sección donde quieras mostrar el botón -->
+    <button onclick="showCashRegisterHistoryModal()" class="btn btn-primary">
+        Ver Historial de Cierres de Caja
+    </button>
+    
+    <!-- Agrega esto al final del archivo, antes del cierre del body -->
     <div id="cashRegisterHistoryModal" class="modal">
         <div class="modal-content">
             <span class="close" onclick="closeCashRegisterHistoryModal()">&times;</span>
             <h2>Historial de Cierres de Caja</h2>
-            
-            <!-- Campos de filtrado por fecha -->
-            <div class="filter-section">
-                <div>
-                    <label for="cashStartDate">Fecha Inicial:</label>
-                    <input type="date" id="cashStartDate">
-                </div>
-                <div>
-                    <label for="cashEndDate">Fecha Final:</label>
-                    <input type="date" id="cashEndDate">
-                </div>
-                <button onclick="filterCashRegisterHistory()">Filtrar</button>
-            </div>
-
-            <div id="cash-register-history" class="history-container"></div>
-            <button onclick="printCashRegisterHistory()" class="print-button">Imprimir Historial</button>
-            <button onclick="downloadCashRegisterExcel()" class="print-button">Descargar Excel</button>
+            <div id="cash-register-history"></div>
         </div>
     </div>
-
-    <!-- Modal para ver historial -->
+    
+    <script src="/scripts/cashRegisterHistoryModal.js"></script>
     <div id="employeeLogHistoryModal" class="modal">
         <div class="modal-content">
             <span class="close" onclick="closeEmployeeLogHistoryModal()">&times;</span>
