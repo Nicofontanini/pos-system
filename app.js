@@ -21,6 +21,7 @@ const employeeLogsController = require('./controllers/employeeLogsController');
 const orderLocal1Controller = require('./controllers/orderLocal1Controller');
 const orderLocal2Controller = require('./controllers/orderLocal2Controller');
 const sellersHistoryController = require('./controllers/sellersHistoryController');
+const cashRegisterRouter = require('./routes/cashRegister');
 
 // Initialize Express app
 const app = express();
@@ -332,7 +333,11 @@ let carts = {
   local1: [],
   local2: []
 };
-let cashRegister = { totalPayments: 0, totalAmount: 0 };
+let cashRegister = { 
+  totalPayments: 0, 
+  totalAmount: 0,
+  startTime: new Date().toISOString() // Add this line
+};
 let lastCashRegisterClose = { local1: null, local2: null };
 
 // Authentication credentials
@@ -791,13 +796,17 @@ app.get('/get-employee-logs', async (req, res) => {
 
 // Cash register
 app.get('/cash-register', (req, res) => {
-  res.json(cashRegister);
+  res.json({
+    ...cashRegister,
+    startTime: cashRegister.startTime
+  });
 });
 
 app.post('/cash-register', (req, res) => {
   const { totalPayments, totalAmount } = req.body;
   cashRegister.totalPayments = totalPayments;
   cashRegister.totalAmount = totalAmount;
+  // Don't modify startTime here
   res.json({ success: true });
 });
 
@@ -858,3 +867,13 @@ if (process.argv.includes('--migrate')) {
 }
 // Add this route for admin delete
 app.delete('/api/product/:id', isAuthenticated, productController.deleteProduct);
+
+// Remove this duplicate import
+// const cashRegisterHistoryController = require('./controllers/cashRegisterHistoryController');
+
+// Mount the cash register routes
+app.use('/cash-register', cashRegisterRouter);
+
+app.post('/api/cash-register/close', cashRegisterHistoryController.addCashRegisterEntry);
+app.get('/api/cash-register/history', cashRegisterHistoryController.getCashRegisterHistory);
+app.get('/api/cash-register/history/date', cashRegisterHistoryController.getCashRegisterHistoryByDate);

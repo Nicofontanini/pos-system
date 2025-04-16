@@ -2,6 +2,7 @@
 const { readCashRegisterHistory, writeCashRegisterHistory } = require('../app');
 const { filterCashRegisterHistoryByDate } = require('../app');
 const db = require('../models');
+const { CashRegisterHistory } = db;
 
 exports.getCashRegisterHistory = async (req, res) => {
   try {
@@ -25,23 +26,17 @@ exports.getCashRegisterHistoryByDate = async (req, res) => {
 
 exports.addCashRegisterEntry = async (req, res) => {
   try {
-    const { local, totalPayments, totalAmount, productSummary, startTime, closeTime } = req.body;
+    const data = req.body;
+    // Ensure ID is present
+    if (!data.id) {
+      data.id = crypto.randomUUID();
+    }
     
-    const history = readCashRegisterHistory();
-    history.push({
-      date: new Date(),
-      totalPayments,
-      totalAmount,
-      local,
-      startTime,
-      closeTime,
-      productSummary
-    });
-
-    writeCashRegisterHistory(history);
-    res.status(201).json(history);
+    const entry = await db.CashRegisterHistory.create(data);
+    res.json({ success: true, entry });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    console.error('Error creating cash register entry:', error);
+    res.status(500).json({ success: false, error: error.message });
   }
 };
 

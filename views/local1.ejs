@@ -25,6 +25,12 @@
           <!-- Botones dentro del dropdown -->
           <button onclick="showEmployeeLogModal()">Registrar Ingreso/Egreso</button>
           <button onclick="showHistory()" class="history-button">Historial de Comandas</button>
+          <!-- Add this where you want the buttons to appear -->
+          <div class="cash-register-controls">
+            <button id="startCashRegisterBtn" onclick="startCashRegister()" class="btn btn-primary">Iniciar Caja</button>
+            <button id="closeCashRegisterBtn" onclick="confirmCloseCashRegister()" class="btn btn-danger" style="display: none;">Cerrar Caja</button>
+          </div>
+          <!-- Remove this button since we already have the close button above -->
           <button onclick="confirmCloseCashRegister()" class="btn-mostrarFormulario">Cierre de Caja</button>
         </div>
       </div>
