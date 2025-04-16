@@ -46,22 +46,34 @@ exports.getEmployeeLogsByEmployee = async (req, res) => {
 };
 
 exports.logEmployeeAction = async (req, res) => {
-  try {
-    const { employeeId, action, local, details } = req.body;
-    
-    const log = await EmployeeLogs.create({
-      employeeId,
-      action,
-      timestamp: new Date(),
-      local,
-      details
-    });
-    
-    res.status(201).json(log);
-  } catch (error) {
-    console.error('Error al registrar acción de empleado:', error);
-    res.status(500).json({ error: error.message });
-  }
+    try {
+        const { employeeName, action, local } = req.body;
+        
+        const log = await EmployeeLogs.create({
+            employeeName,
+            action,
+            timestamp: new Date(),
+            local
+        });
+
+        // Emitir el evento para actualizar en tiempo real
+        req.app.io.emit('employee-log-updated', {
+            employeeName,
+            action,
+            local
+        });
+
+        res.json({ 
+            success: true, 
+            message: `${action} registrado exitosamente` 
+        });
+    } catch (error) {
+        console.error('Error:', error);
+        res.status(500).json({ 
+            success: false, 
+            error: error.message 
+        });
+    }
 };
 
 exports.deleteEmployeeLogs = async (req, res) => {

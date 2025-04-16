@@ -210,7 +210,11 @@ function loadSellerInfo() {
               'Content-Type': 'application/json',
               'X-Local': local
           },
-          body: JSON.stringify({ employeeName, action })
+          body: JSON.stringify({ 
+              employeeName, 
+              action,
+              updateSellers: true // Añadimos este flag
+          })
       })
           .then(response => response.json())
           .then(data => {
@@ -218,12 +222,36 @@ function loadSellerInfo() {
                   alert(`Registro de ${action} exitoso para ${employeeName}`);
                   document.getElementById('logEmployeeName').value = '';
                   closeEmployeeLogModal();
-                  // Emitir evento para actualizar vendedores
-                  socket.emit('refresh-sellers');
+                  
+                  // Actualizar los botones de vendedor
+                  updateSellerButtons(employeeName, action);
               }
           })
           .catch(error => {
               console.error('Error:', error);
               alert('Error al registrar la acción');
-          });
-  }
+          });  }
+
+      function updateSellerButtons(employeeName, action) {
+          const buttons = document.querySelectorAll('[id^="seller"]');
+          
+          if (action === 'ingreso') {
+              // Buscar el primer botón vacío y asignar el empleado
+              for (let button of buttons) {
+                  if (button.textContent === 'Vacío') {
+                      button.textContent = employeeName;
+                      button.disabled = false;
+                      break;
+                  }
+              }
+          } else if (action === 'egreso') {
+              // Buscar el botón con el nombre del empleado y vaciarlo
+              for (let button of buttons) {
+                  if (button.textContent === employeeName) {
+                      button.textContent = 'Vacío';
+                      button.disabled = true;
+                      break;
+                  }
+              }
+          }
+        }
