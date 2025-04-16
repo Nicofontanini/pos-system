@@ -51,28 +51,8 @@ function saveProduct() {
             resetForm();
             loadProducts();
             
-            // Only synchronize with other locals if this is a NEW product (not an edit)
-            if (!editProductId) {
-                // Sincronizar con local1
-                fetch('/add-product/local1', {
-                    method: 'POST',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify(product)
-                })
-                .then(res => res.json())
-                .then(data => console.log('Respuesta de local1:', data))
-                .catch(err => console.error('Error sincronizando con local1:', err));
-                
-                // Sincronizar con local2
-                fetch('/add-product/local2', {
-                    method: 'POST',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify(product)
-                })
-                .then(res => res.json())
-                .then(data => console.log('Respuesta de local2:', data))
-                .catch(err => console.error('Error sincronizando con local2:', err));
-            }
+            // Eliminamos la sincronización redundante con local1 y local2
+            // ya que el servidor maneja esto internamente
         } else {
             alert('Error al guardar el producto: ' + data.error);
         }
@@ -223,7 +203,6 @@ function resetForm() {
 }
 
 function loadProducts() {
-    // Get the current location from the URL
     const location = window.location.pathname.split('/')[1];
     
     fetch(`/api/products?local=${location}`)
@@ -248,6 +227,19 @@ function loadProducts() {
                     <div class="actions">
                         <button onclick="editProduct(${JSON.stringify(product)})" class="edit-button">Editar</button>
                         <button onclick="confirmDelete(${product.id})" class="delete-button">Eliminar</button>
+                        ${location === 'local2' ? `
+                            <button 
+                                onclick="addToCart(${JSON.stringify({
+                                    id: product.id,
+                                    name: product.name,
+                                    price: product.price,
+                                    isCompound: product.isCompound,
+                                    components: product.components || []
+                                })})"
+                                class="add-button">
+                                Agregar
+                            </button>
+                        ` : ''}
                         <div class="transfer-form">
                             <label>Transferir a Foodtruck:</label>
                             <input type="number" id="quantity-${product.id}" min="1" max="${product.stock}" value="0">

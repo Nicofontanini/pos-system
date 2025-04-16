@@ -274,7 +274,22 @@
   <script src="/scripts/form.js"></script>
   <script src="/scripts/formDocena.js"></script>
   <script src="/scripts/alert&tranferStock.js"></script>
+  <script src="/scripts/compoundProducts.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.4/xlsx.full.min.js"></script>
+<!-- Agregar antes de cerrar el body -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const isCompoundCheckbox = document.getElementById('isCompound');
+      if (isCompoundCheckbox) {
+        isCompoundCheckbox.addEventListener('change', function() {
+          const compoundSection = document.getElementById('compoundProductsSection');
+          if (compoundSection) {
+            compoundSection.style.display = this.checked ? 'block' : 'none';
+          }
+        });
+      }
+    });
+  </script>
 </body>
 
 </html>
