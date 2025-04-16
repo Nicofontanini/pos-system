@@ -1,51 +1,53 @@
 function transferStock(productId) {
     const quantity = document.getElementById(`quantity-${productId}`).value;
     const errorDiv = document.getElementById(`error-${productId}`);
+    const quantityInput = document.getElementById(`quantity-${productId}`);
 
     fetch('/transfer-stock', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        productId,
-        quantity: parseInt(quantity),
-        fromLocation: 'local2',
-        toLocation: 'local1'
-      })
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            productId,
+            quantity: parseInt(quantity),
+            fromLocation: 'local2',
+            toLocation: 'local1'
+        })
     })
-      .then(response => {
+    .then(response => {
         if (!response.ok) {
-          throw new Error('Error en la transferencia');
+            return response.json().then(data => {
+                throw new Error(data.error || 'Error en la transferencia');
+            });
         }
-        return response.text();
-      })
-      .then(() => {
+        return response.json();
+    })
+    .then(data => {
         errorDiv.style.display = 'none';
-      })
-      .catch(error => {
+        quantityInput.value = ""; // Reset input value
+        // No actualizamos el stock aquí, esperamos la actualización por socket
+    })
+    .catch(error => {
         errorDiv.textContent = error.message;
         errorDiv.style.display = 'block';
-      });
-  }
+    });
+}
 
-
-  socket.on('stock-update', function (data) {
-    if (data.sourceLocation === 'local2') {
-      const stockElement = document.getElementById(`stock-${data.productId}`);
-      if (stockElement) {
-        stockElement.textContent = data.sourceStock;
-        // Update max quantity in input
+// Modificar el socket listener para manejar la actualización única
+socket.on('stock-update', function (data) {
+    console.log('Recibiendo actualización de stock:', data); // Debug log
+    const stockElement = document.getElementById(`stock-${data.productId}`);
+    if (stockElement) {
+        stockElement.textContent = data.newStock;
         const quantityInput = document.getElementById(`quantity-${data.productId}`);
-        quantityInput.max = data.sourceStock;
-        if (parseInt(quantityInput.value) > data.sourceStock) {
-          quantityInput.value = data.sourceStock;
+        if (quantityInput) {
+            quantityInput.max = data.newStock;
         }
-      }
     }
-  });
+});
 
-  socket.on('receive-alert-from-local1', function (alertMessage) {
+socket.on('receive-alert-from-local1', function (alertMessage) {
     const alertDiv = document.getElementById('alert-message');
 
     // Verificar si alertMessage es un objeto

@@ -15,7 +15,9 @@ exports.createOrder = async (req, res) => {
 
 exports.getOrders = async (req, res) => {
   try {
-    const orders = await OrderLocal2.findAll();
+    const orders = await Orders2.findAll({
+      order: [['date', 'DESC']] // Optional: order by date descending
+    });
     res.json(orders);
   } catch (error) {
     console.error('Error al obtener órdenes:', error);
