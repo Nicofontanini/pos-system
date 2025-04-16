@@ -111,9 +111,18 @@
             <div class="actions">
               <button onclick="editProduct(<%= JSON.stringify(product) %>)" class="edit-button">Editar</button>
               <button onclick="confirmDelete(<%= product.id %>)" class="delete-button">Eliminar</button>
-              <button style="width: 30%;"
-                onclick="addToCart(<%= product.id %>, '<%= product.name %>', <%= product.price %>)"
-                class="add-button">Agregar</button>
+              <!-- Replace the existing add button with this -->
+              <button 
+                onclick="addToCart(<%= JSON.stringify({
+                    id: product.id,
+                    name: product.name,
+                    price: product.price,
+                    isCompound: product.isCompound,
+                    components: product.components || []
+                }) %>)"
+                class="add-button">
+                Agregar
+            </button>
 
 
               <div class="transfer-form">
@@ -241,34 +250,17 @@
   <!-- scripts -->
   <script src="/socket.io/socket.io.js"></script>
   <script>
-    const socket = io();
-    // Determinar el local actual
-    const currentLocal = window.location.pathname.includes('local1') ? 'local1' : 'local2';
-    let orderName = ''; // Variable para almacenar el nombre del pedido
-    let selectedSeller = ''; // Variable para almacenar el vendedor seleccionado
-    let totalPayments = 0; // Contador de pagos procesados
-    let totalAmount = 0;   // Monto total generado
-
-    socket.on('stock-alert-notification', function(data) {
-        const alertDiv = document.getElementById('alert-message');
-        if (alertDiv) {
-            const message = `
-                ¡Alerta de Stock Bajo!
-                Producto: ${data.productName}
-                Local de origen: ${data.localFrom}
-                Fecha: ${new Date(data.timestamp).toLocaleString()}
-            `;
-            alertDiv.textContent = message;
-            alertDiv.style.display = 'block';
-            
-            // Ocultar después de 60 segundos
-            setTimeout(() => {
-                alertDiv.style.display = 'none';
-            }, 60000);
-        }
-    });
-  </script>
-  <script src="/scripts/opencloseModal.js" defer></script>
+    // Configuración global
+    window.socket = window.socket || io();
+    window.currentLocal = window.location.pathname.includes('local1') ? 'local1' : 'local2';
+    window.orderName = ''; 
+    window.selectedSeller = ''; 
+    window.totalPayments = 0;
+    window.totalAmount = 0;
+</script>
+<script src="/scripts/payment.js"></script>
+<script src="/scripts/cart.js"></script>
+<script src="/scripts/opencloseModal.js" defer></script>
   <script src="/scripts/dropdown.js" defer></script>
   <script src="/scripts/fullscreenBtn.js" defer></script>
   <script src="/scripts/closeboxConfirme.js" defer></script>
