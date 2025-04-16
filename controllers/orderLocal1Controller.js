@@ -1,12 +1,9 @@
 // controllers/orderLocal1Controller.js
-const { Orders } = require('../models');
+const { Orders, Product } = require('../models');
 const { Op } = require('sequelize');
 
 exports.createOrder = async (req, res) => {
   try {
-    console.log('Received order data:', req.body); // Debug log
-
-    // Ensure all required fields are present
     const orderData = {
       date: new Date(),
       total: req.body.total,
@@ -19,17 +16,28 @@ exports.createOrder = async (req, res) => {
       status: 'completed'
     };
 
-    console.log('Processed order data:', orderData); // Debug log
+    // Actualizar stock
+    for (const item of orderData.items) {
+      const product = await Product.findByPk(item.id);
+      if (!product) {
+        throw new Error(`Product with id ${item.id} not found`);
+      }
+      
+      const newStock = product.stock - item.quantity;
+      if (newStock < 0) {
+        throw new Error(`Insufficient stock for product ${product.name}`);
+      }
+      
+      await product.update({ stock: newStock });
+    }
 
     const newOrder = await Orders.create(orderData);
-    console.log('Order created:', newOrder.toJSON()); // Debug log
-
     res.status(201).json(newOrder);
   } catch (error) {
-    console.error('Detailed error:', error); // More detailed error logging
+    console.error('Error creating order:', error);
     res.status(500).json({ 
       error: error.message,
-      stack: error.stack // Include stack trace in development
+      details: 'Error processing order'
     });
   }
 };
