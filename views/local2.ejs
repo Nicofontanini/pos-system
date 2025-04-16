@@ -113,13 +113,13 @@
               <button onclick="confirmDelete(<%= product.id %>)" class="delete-button">Eliminar</button>
               <!-- Replace the existing add button with this -->
               <button 
-                onclick="addToCart(<%= JSON.stringify({
-                    id: product.id,
-                    name: product.name,
-                    price: product.price,
-                    isCompound: product.isCompound,
-                    components: product.components || []
-                }) %>)"
+                onclick="addToCart({
+                    id: <%= product.id %>,
+                    name: '<%= product.name %>',
+                    price: Number(<%= product.price %>),
+                    isCompound: <%= product.isCompound %>,
+                    components: <%= JSON.stringify(product.components || []) %>
+                })"
                 class="add-button">
                 Agregar
             </button>
@@ -265,10 +265,8 @@
   <script src="/scripts/fullscreenBtn.js" defer></script>
   <script src="/scripts/closeboxConfirme.js" defer></script>
   <script src="/scripts/employeeLogModal.js" defer></script>
-  <script src="/scripts/payment.js"></script>
   <script src="/scripts/seller.js"></script>
   <script src="/scripts/historyPadidos.js"></script>
-  <script src="/scripts/cart.js"></script>
   <script src="/scripts/crudOperations.js"></script>
   <script src="/scripts/filterProducts.js"></script>
   <script src="/scripts/form.js"></script>
