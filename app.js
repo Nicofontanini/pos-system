@@ -378,11 +378,11 @@ db.sequelize.authenticate()
             }
             
             console.log('Enviando cierre de caja:', plainEntry.id);
-            socket.emit('single-cash-register', plainEntry);
-        } catch (error) {
-            console.error('Error al obtener cierre de caja individual:', error);
-            socket.emit('single-cash-register', null);
-        }
+            socket.emit('single-cash-register', { ...plainEntry, forPrint: data.forPrint });
+          } catch (error) {
+              console.error('Error al obtener cierre de caja individual:', error);
+              socket.emit('single-cash-register', null);
+          }
       });
 
       socket.on('disconnect', () => {

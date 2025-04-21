@@ -193,7 +193,7 @@ function startCashRegister() {
   .then(response => response.json())
   .then(data => {
     if (data.success) {
-      alert('Caja iniciada con éxito');
+      // alert('Caja iniciada con éxito');
       const startBtn = document.getElementById('startCashRegisterBtn');
       const closeBtn = document.getElementById('closeCashRegisterBtn');
       if (startBtn) startBtn.style.display = 'none';
@@ -207,8 +207,8 @@ function startCashRegister() {
 }
 
 // Add this at the bottom of the file
+// Solo un event listener al cargar el documento
 document.addEventListener('DOMContentLoaded', function() {
-  // Add click event listeners to buttons
   const startBtn = document.getElementById('startCashRegisterBtn');
   const closeBtn = document.getElementById('closeCashRegisterBtn');
   
@@ -220,3 +220,5 @@ document.addEventListener('DOMContentLoaded', function() {
     closeBtn.addEventListener('click', confirmCloseCashRegister);
   }
 });
+
+// Eliminar cualquier otro addEventListener para estos botones

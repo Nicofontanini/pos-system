@@ -342,13 +342,17 @@ socket.on('update-cash-register-history', (history) => {
 </table>
 `;
 
-        entryElement.innerHTML = `
+entryElement.innerHTML = `
 <div class="entry-header">
   <h3>Cierre #${history.length - index} - ${formattedCloseTime}</h3>
   <p><strong>Local:</strong> ${entry.local.toUpperCase()}</p>
   <p><strong>Período:</strong> ${formattedStartTime} a ${formattedCloseTime}</p>
   <p><strong>Total Ventas:</strong> $${entry.paymentSummary.total.toFixed(2)}</p>
   <p><strong>Pedidos Procesados:</strong> ${entry.ordersCount}</p>
+  <div class="button-group">
+    <button onclick="downloadSingleCashRegister('${entry.id}')" class="download-btn">Descargar Excel</button>
+    <button onclick="printSingleCashRegister('${entry.id}')" class="print-btn">Imprimir</button>
+  </div>
 </div>
 <div class="entry-details">
   <button class="toggle-details" onclick="toggleDetails(this)">Mostrar Detalles</button>
@@ -363,6 +367,13 @@ socket.on('update-cash-register-history', (history) => {
 
         historyContainer.appendChild(entryElement);
     });
+     // Si no hay resultados, mostrar mensaje
+     if (history.length === 0) {
+        const noResults = document.createElement('div');
+        noResults.className = 'no-results';
+        noResults.innerHTML = '<p>No se encontraron cierres de caja en el período especificado.</p>';
+        historyContainer.appendChild(noResults);
+    }
 });
 
 // Función para mostrar/ocultar detalles
@@ -388,31 +399,147 @@ function closeCashRegisterHistoryModal() {
     const modal = document.getElementById('cashRegisterHistoryModal');
     modal.style.display = 'none';
 }
-function printCashRegisterHistory() {
-    const historyContent = document.getElementById('cash-register-history').innerHTML;
-    const printWindow = window.open('', '_blank');
-    printWindow.document.write(`
-<!DOCTYPE html>
-<html>
-<head>
-<style>
-  body { font-family: Arial, sans-serif; padding: 20px; }
-  table { width: 100%; border-collapse: collapse; margin: 5px 0; }
-  th, td { border: 1px solid #ddd; padding: 1px; text-align: left; }
-  th { background-color: #f2f2f2; }
-  .total { font-weight: bold; font-size: 1.2em; margin-top: 20px; }
-  .payment-info { margin-top: 20px; padding: 10px; border: 1px solid #ddd; background-color: #f9f9f9; }
-</style>
-</head>
-<body>
-<h2>Historial de Cierres de Caja</h2>
-${historyContent}
-</body>
-</html>
-`);
-    printWindow.document.close();
-    printWindow.print();
+
+function printSingleCashRegister(id) {
+    socket.emit('get-single-cash-register', { id: id, forPrint: true });
 }
+
+// Modificar el evento para manejar tanto la descarga como la impresión
+socket.on('single-cash-register', (entry) => {
+    if (!entry) {
+        console.error('No se recibieron datos del cierre de caja');
+        alert('No se pudo obtener la información del cierre de caja');
+        return;
+    }
+    
+    // Si es para imprimir, crear una ventana de impresión
+    if (entry.forPrint === true) {
+        // Crear contenido HTML para imprimir
+        let printContent = `
+        <html>
+        <head>
+            <title>Cierre de Caja - ${entry.local} - ${new Date(entry.closeTime).toLocaleDateString()}</title>
+            <style>
+                body { font-family: Arial, sans-serif; margin: 20px; }
+                h1 { text-align: center; margin-bottom: 20px; }
+                .info { margin-bottom: 15px; }
+                table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
+                th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+                th { background-color: #f2f2f2; }
+                .total-row { font-weight: bold; background-color: #f9f9f9; }
+                .section-title { margin-top: 20px; margin-bottom: 10px; font-weight: bold; }
+                @media print {
+                    button { display: none; }
+                }
+            </style>
+        </head>
+        <body>
+            <button onclick="window.print()" style="padding: 10px; margin-bottom: 20px;">Imprimir</button>
+            <h1>INFORME DE CIERRE DE CAJA</h1>
+            
+            <div class="info">
+                <p><strong>Local:</strong> ${entry.local.toUpperCase()}</p>
+                <p><strong>Fecha cierre:</strong> ${new Date(entry.closeTime).toLocaleString()}</p>
+                <p><strong>Período:</strong> ${new Date(entry.startTime).toLocaleString()} - ${new Date(entry.closeTime).toLocaleString()}</p>
+                <p><strong>Total:</strong> $${entry.paymentSummary.total.toFixed(2)}</p>
+            </div>
+            
+            <div class="section-title">MÉTODOS DE PAGO</div>
+            <table>
+                <tr>
+                    <th>Tipo</th>
+                    <th>Monto</th>
+                    <th>Porcentaje</th>
+                </tr>`;
+                
+        ['efectivo', 'transferencia', 'mixto'].forEach(method => {
+            if (entry.paymentSummary[method] > 0) {
+                printContent += `
+                <tr>
+                    <td>${method.charAt(0).toUpperCase() + method.slice(1)}</td>
+                    <td>$${entry.paymentSummary[method].toFixed(2)}</td>
+                    <td>${((entry.paymentSummary[method]/entry.paymentSummary.total)*100).toFixed(2)}%</td>
+                </tr>`;
+            }
+        });
+                
+        printContent += `
+                <tr class="total-row">
+                    <td>TOTAL</td>
+                    <td>$${entry.paymentSummary.total.toFixed(2)}</td>
+                    <td>100%</td>
+                </tr>
+            </table>`;
+            
+        if (entry.productSummary?.length > 0) {
+            printContent += `
+            <div class="section-title">PRODUCTOS VENDIDOS</div>
+            <table>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Precio Unitario</th>
+                    <th>Cantidad</th>
+                    <th>Stock Inicial</th>
+                    <th>Stock Restante</th>
+                    <th>Total</th>
+                </tr>`;
+                
+            entry.productSummary.forEach(p => {
+                printContent += `
+                <tr>
+                    <td>${p.name}</td>
+                    <td>$${p.price.toFixed(2)}</td>
+                    <td>${p.quantitySold}</td>
+                    <td>${p.initialStock}</td>
+                    <td>${p.remainingStock}</td>
+                    <td>$${p.totalSold.toFixed(2)}</td>
+                </tr>`;
+            });
+                
+            printContent += `</table>`;
+        }
+            
+        if (entry.orders?.length > 0) {
+            printContent += `
+            <div class="section-title">PEDIDOS INCLUIDOS</div>
+            <table>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Vendedor</th>
+                    <th>Total</th>
+                    <th>Método de Pago</th>
+                </tr>`;
+                
+            entry.orders.forEach(order => {
+                printContent += `
+                <tr>
+                    <td>${order.id}</td>
+                    <td>${order.orderName}</td>
+                    <td>${order.sellerName}</td>
+                    <td>$${order.total.toFixed(2)}</td>
+                    <td>${order.paymentMethod}</td>
+                </tr>`;
+            });
+                
+            printContent += `</table>`;
+        }
+            
+        printContent += `
+        </body>
+        </html>`;
+            
+        // Abrir ventana de impresión
+        const printWindow = window.open('', '_blank');
+        printWindow.document.write(printContent);
+        printWindow.document.close();
+        
+        return;
+    }
+    
+    // Si no es para imprimir, continuar con la descarga del Excel
+    // El código existente para la descarga de Excel se mantiene igual
+});
 
 document.addEventListener('DOMContentLoaded', function () {
     loadSellerInfo();
@@ -976,7 +1103,7 @@ socket.on('employee-log-updated', function (newLog) {
 
 // Función para descargar un cierre específico en Excel
 function downloadSingleCashRegister(id) {
-    socket.emit('get-single-cash-register', { id: id });
+    socket.emit('get-single-cash-register', { id: id, forPrint: false });
 }
 
 // Escuchar el evento para descargar un cierre específico
@@ -1168,7 +1295,8 @@ socket.on('update-cash-register-history', (history) => {
   <p><strong>Total Ventas:</strong> $${entry.paymentSummary.total.toFixed(2)}</p>
   <p><strong>Pedidos Procesados:</strong> ${entry.ordersCount}</p>
   <button onclick="downloadSingleCashRegister('${entry.id}')" class="download-btn">Descargar Excel</button>
-</div>
+ <button onclick="printSingleCashRegister('${entry.id}')" class="print-btn">Imprimir</button>
+  </div>
 <div class="entry-details">
   <button class="toggle-details" onclick="toggleDetails(this)">Mostrar Detalles</button>
   <div class="details-content" style="display:none;">
@@ -1193,13 +1321,13 @@ socket.on('update-cash-register-history', (history) => {
 });
 
 // Función para filtrar el historial de cierres
-function filterCashRegisterHistory() {
-    const startDate = document.getElementById('cashStartDate').value;
-    const endDate = document.getElementById('cashEndDate').value;
+// function filterCashRegisterHistory() {
+//     const startDate = document.getElementById('cashStartDate').value;
+//     const endDate = document.getElementById('cashEndDate').value;
     
-    // Actualizar el historial con las fechas de filtro
-    loadCashRegisterHistory(startDate, endDate);
-}
+//     // Actualizar el historial con las fechas de filtro
+//     loadCashRegisterHistory(startDate, endDate);
+// }
 
 // Actualizar la función loadCashRegisterHistory para aceptar fechas de filtro
 function loadCashRegisterHistory(startDate = '', endDate = '') {
