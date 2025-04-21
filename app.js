@@ -1017,3 +1017,51 @@ app.post('/cash-register', (req, res) => {
     cashRegister.totalAmount = totalAmount;
     res.json({ success: true });  
 });
+
+app.post('/api/stock/:local/update', async (req, res) => {
+  try {
+    const { local } = req.params;
+    const { items } = req.body;
+
+    console.log(`Actualizando stock en ${local}:`, items);
+
+    for (const item of items) {
+      if (item.isCompound && item.stockToUpdate) {
+        // Actualizar stock de componentes de productos compuestos
+        for (const component of item.stockToUpdate) {
+          await db.Product.update(
+            { 
+              stock: db.sequelize.literal(`stock - ${component.quantityToReduce}`) 
+            },
+            { 
+              where: { 
+                id: component.id,
+                local: local 
+              }
+            }
+          );
+          console.log(`Stock actualizado para componente ${component.name} en ${local}`);
+        }
+      } else if (item.stockToUpdate) {
+        // Actualizar stock de productos simples
+        await db.Product.update(
+          { 
+            stock: db.sequelize.literal(`stock - ${item.stockToUpdate[0].quantityToReduce}`) 
+          },
+          { 
+            where: { 
+              id: item.stockToUpdate[0].id,
+              local: local 
+            }
+          }
+        );
+        console.log(`Stock actualizado para producto ${item.name} en ${local}`);
+      }
+    }
+
+    res.json({ success: true, message: 'Stock actualizado correctamente' });
+  } catch (error) {
+    console.error('Error al actualizar el stock:', error);
+    res.status(500).json({ success: false, error: error.message });
+  }
+});

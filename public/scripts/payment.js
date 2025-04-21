@@ -159,12 +159,23 @@ async function processPayment() {
   let total = parseFloat(document.getElementById('modalTotal').textContent);
   let finalTotal = total;
 
+  // Determinar el local
+  const currentLocal = window.location.pathname.includes('local1') ? 'local1' : 'local2';
+
   if (currentPaymentMethod === 'tarjeta') {
     const surcharge = parseFloat(document.getElementById('cardSurcharge').value) || 0;
     finalTotal = total + (total * surcharge / 100);
   }
 
-  // Preparar los datos de la orden con la información de stock a actualizar
+  // Check if orderName is "personal" (case insensitive)
+  if (orderName.toLowerCase() === 'personal') {
+    finalTotal = 0;
+    total = 0;
+  } else if (currentPaymentMethod === 'tarjeta') {
+    const surcharge = parseFloat(document.getElementById('cardSurcharge').value) || 0;
+    finalTotal = total + (total * surcharge / 100);
+  }
+
   const orderData = {
     date: new Date().toISOString(),
     items: cart.map(item => {
@@ -174,7 +185,8 @@ async function processPayment() {
           stockToUpdate: item.components.map(comp => ({
             id: comp.productId,
             name: comp.name,
-            quantityToReduce: comp.quantity // Ya está multiplicado por item.quantity en cart.js
+            quantityToReduce: comp.quantity * item.quantity, // Multiplicar por la cantidad del producto compuesto
+            isComponent: true
           }))
         };
       }
@@ -183,29 +195,42 @@ async function processPayment() {
         stockToUpdate: [{
           id: item.id,
           name: item.name,
-          quantityToReduce: item.quantity
+          quantityToReduce: item.quantity,
+          isComponent: false
         }]
       };
     }),
     total: finalTotal,
     originalTotal: total,
-    paymentMethod: currentPaymentMethod,
-    surchargePercent: currentPaymentMethod === 'tarjeta' ? parseFloat(document.getElementById('cardSurcharge').value) || 0 : 0,
-    paymentAmounts: paymentAmounts,
-    local: window.location.pathname.includes('local1') ? 'local1' : 'local2',
+    paymentMethod: orderName.toLowerCase() === 'personal' ? 'personal' : currentPaymentMethod,
+    surchargePercent: currentPaymentMethod === 'tarjeta' ? 
+      parseFloat(document.getElementById('cardSurcharge').value) || 0 : 0,
+      paymentAmounts: orderName.toLowerCase() === 'personal' ? { personal: 0 } : paymentAmounts,
+    local: currentLocal,
     orderName: orderName,
-    sellerName: selectedSeller
+    sellerName: selectedSeller,
+    updateStock: true // Flag para indicar que se debe actualizar el stock
   };
 
   try {
-    // Verificar stock antes de procesar
-    const stockCheck = await verifyStock(orderData.items);
-    if (!stockCheck.success) {
-      alert(`Stock insuficiente para: ${stockCheck.products.join(', ')}`);
-      return;
+    // Primero actualizamos el stock
+    const stockUpdateResponse = await fetch(`/api/stock/${currentLocal}/update`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        items: orderData.items,
+        local: currentLocal
+      })
+    });
+
+    if (!stockUpdateResponse.ok) {
+      throw new Error('Error al actualizar el stock');
     }
 
-    const response = await fetch(`/api/orders/${orderData.local}`, {
+    // Luego procesamos la orden
+    const orderResponse = await fetch(`/api/orders/${currentLocal}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -213,13 +238,13 @@ async function processPayment() {
       body: JSON.stringify(orderData)
     });
 
-    if (!response.ok) {
-      throw new Error('Failed to save order');
+    if (!orderResponse.ok) {
+      throw new Error('Error al procesar la orden');
     }
 
-    // Actualizar el stock en la interfaz
+    // Actualizar la interfaz
     updateStockDisplay(orderData.items);
-
+    
     // Continue with existing functionality after successful save
     lastOrderData = orderData;
     totalPayments++;
