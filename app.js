@@ -349,6 +349,41 @@ db.sequelize.authenticate()
             socket.emit('update-cash-register-history', []);
         }
       });
+      
+      // Agregar manejador para obtener un cierre de caja específico
+      socket.on('get-single-cash-register', async (data) => {
+        console.log('Solicitud de cierre de caja individual recibida:', data);
+        
+        try {
+            // Buscar el registro en la base de datos
+            const entry = await db.CashRegisterHistory.findOne({
+                where: { id: data.id }
+            });
+            
+            if (!entry) {
+                console.log('Cierre de caja no encontrado:', data.id);
+                socket.emit('single-cash-register', null);
+                return;
+            }
+            
+            // Convertir a objeto plano
+            const plainEntry = entry.get({ plain: true });
+            
+            // Asegurar que los valores numéricos sean números
+            if (plainEntry.paymentSummary) {
+                plainEntry.paymentSummary.total = Number(plainEntry.paymentSummary.total || 0);
+                plainEntry.paymentSummary.efectivo = Number(plainEntry.paymentSummary.efectivo || 0);
+                plainEntry.paymentSummary.transferencia = Number(plainEntry.paymentSummary.transferencia || 0);
+                plainEntry.paymentSummary.mixto = Number(plainEntry.paymentSummary.mixto || 0);
+            }
+            
+            console.log('Enviando cierre de caja:', plainEntry.id);
+            socket.emit('single-cash-register', plainEntry);
+        } catch (error) {
+            console.error('Error al obtener cierre de caja individual:', error);
+            socket.emit('single-cash-register', null);
+        }
+      });
 
       socket.on('disconnect', () => {
         console.log('Cliente desconectado');
