@@ -14,8 +14,13 @@ function closeCashRegisterHistoryModal() {
 // Function to load all cash register history
 async function loadCashRegisterHistory() {
     try {
-        const response = await fetch('/api/cash-register/closes');
+        console.log('Cargando historial de caja...');
+        const response = await fetch('/api/cash-register-history');
+        if (!response.ok) {
+            throw new Error(`Error HTTP: ${response.status}`);
+        }
         const history = await response.json();
+        console.log('Datos recibidos:', history);
         displayCashRegisterHistory(history);
     } catch (error) {
         console.error('Error loading cash register history:', error);

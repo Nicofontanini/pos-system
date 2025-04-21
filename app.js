@@ -309,6 +309,38 @@ db.sequelize.authenticate()
         socket.emit('order-history', orders);
       });
 
+      // Add handler for cash register history
+      socket.on('get-cash-register-history', (data) => {
+        console.log('Solicitud de historial de cierres de caja recibida:', data);
+        
+        try {
+            let history = readCashRegisterHistory();
+            
+            // Filter by local if specified
+            if (data.local) {
+                history = history.filter(entry => entry.local === data.local);
+            }
+            
+            // Filter by date range if specified
+            if (data.startDate && data.endDate) {
+                const startDate = new Date(data.startDate);
+                const endDate = new Date(data.endDate);
+                endDate.setHours(23, 59, 59, 999); // Include the entire end day
+                
+                history = history.filter(entry => {
+                    const closeTime = new Date(entry.closeTime);
+                    return closeTime >= startDate && closeTime <= endDate;
+                });
+            }
+            
+            console.log(`Enviando ${history.length} registros de cierres de caja`);
+            socket.emit('update-cash-register-history', history);
+        } catch (error) {
+            console.error('Error al obtener historial de cierres de caja:', error);
+            socket.emit('update-cash-register-history', []);
+        }
+      });
+
       socket.on('disconnect', () => {
         console.log('Cliente desconectado');
       });
@@ -907,5 +939,5 @@ app.post('/cash-register', (req, res) => {
     const { totalPayments, totalAmount } = req.body;
     cashRegister.totalPayments = totalPayments;
     cashRegister.totalAmount = totalAmount;
-    res.json({ success: true });
+    res.json({ success: true });  
 });

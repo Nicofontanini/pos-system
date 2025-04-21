@@ -235,8 +235,34 @@ socket.on('update-cash-register-history', (history) => {
 });
 
 function loadCashRegisterHistory() {
-    // Solicitar el historial de cierres de caja al servidor
-    socket.emit('get-cash-register-history');
+    console.log('Solicitando historial de cierres de caja...');
+    const local = window.location.pathname.includes('local1') ? 'local1' : 'local2';
+    
+    // Obtener fechas de filtro si existen
+    const startDate = document.getElementById('cashStartDate')?.value || '';
+    const endDate = document.getElementById('cashEndDate')?.value || '';
+    
+    // Solicitar el historial de cierres de caja al servidor usando socket
+    socket.emit('get-cash-register-history', { local, startDate, endDate });
+    
+    // Mostrar indicador de carga
+    const historyContainer = document.getElementById('cash-register-history');
+    if (historyContainer) {
+        historyContainer.innerHTML = '<p>Cargando historial...</p>';
+    }
+}
+
+// Función para filtrar el historial por fechas
+function filterCashRegisterHistory() {
+    const startDate = document.getElementById('cashStartDate').value;
+    const endDate = document.getElementById('cashEndDate').value;
+    
+    if (!startDate || !endDate) {
+        alert('Por favor seleccione ambas fechas');
+        return;
+    }
+    
+    loadCashRegisterHistory(); // Reutilizamos la misma función
 }
 
 // Actualizar la función que muestra el historial
