@@ -310,11 +310,20 @@ db.sequelize.authenticate()
       });
 
       // Add handler for cash register history
-      socket.on('get-cash-register-history', (data) => {
+      socket.on('get-cash-register-history', async (data) => {
         console.log('Solicitud de historial de cierres de caja recibida:', data);
         
         try {
-            let history = readCashRegisterHistory();
+            // Use database model instead of JSON file
+            let history = await db.CashRegisterHistory.findAll();
+            
+            // Convert to plain objects and ensure numeric values
+            history = history.map(entry => {
+                const plainEntry = entry.get({ plain: true });
+                // Ensure totalAmount is a number
+                plainEntry.totalAmount = Number(plainEntry.totalAmount);
+                return plainEntry;
+            });
             
             // Filter by local if specified
             if (data.local) {
@@ -401,12 +410,33 @@ function writeOrders(local, orders) {
   writeFile(`data/orders-${local}.json`, orders);
 }
 
-function readCashRegisterHistory() {
-  return readFile('data/cashRegisterHistory.json', []);
+// Replace these file-based functions with database functions
+async function readCashRegisterHistory() {
+  try {
+    const history = await db.CashRegisterHistory.findAll();
+    return history;
+  } catch (error) {
+    console.error('Error reading cash register history from DB:', error);
+    return [];
+  }
 }
 
-function writeCashRegisterHistory(data) {
-  writeFile('data/cashRegisterHistory.json', data);
+async function writeCashRegisterHistory(data) {
+  try {
+    // If data is an array of entries
+    if (Array.isArray(data)) {
+      // Delete all existing entries and replace with new ones
+      await db.CashRegisterHistory.destroy({ where: {} });
+      await db.CashRegisterHistory.bulkCreate(data);
+    } else {
+      // If it's a single entry, create it
+      await db.CashRegisterHistory.create(data);
+    }
+    return true;
+  } catch (error) {
+    console.error('Error writing cash register history to DB:', error);
+    return false;
+  }
 }
 
 function readSellers() {
@@ -452,12 +482,23 @@ function isAuthenticated(req, res, next) {
 // Initialize data
 function loadLastCloseTimes() {
   try {
-    const history = readCashRegisterHistory();
-    history.forEach(entry => {
-      if (entry.local && entry.closeTime) {
-        lastCashRegisterClose[entry.local] = entry.closeTime;
-      }
-    });
+    // Replace this with a database query
+    db.CashRegisterHistory.findAll()
+      .then(historyRecords => {
+        // Convert Sequelize models to plain objects
+        const history = historyRecords.map(record => record.get({ plain: true }));
+        
+        // Now we can safely use forEach
+        history.forEach(entry => {
+          if (entry.local && entry.closeTime) {
+            lastCashRegisterClose[entry.local] = entry.closeTime;
+          }
+        });
+        console.log('Historial de cierres de caja cargado correctamente');
+      })
+      .catch(error => {
+        console.error('Error al cargar historial de cierre desde DB:', error);
+      });
   } catch (error) {
     console.error('Error al cargar historial de cierre:', error);
   }

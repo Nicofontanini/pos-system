@@ -91,7 +91,7 @@ socket.on('update-cash-register-history', (history) => {
   <p><strong>Cierre #${index + 1}</strong></p>
   <p>Fecha: ${new Date(entry.date).toLocaleString()}</p>
   <p>Pagos procesados: ${entry.totalPayments}</p>
-  <p>Monto total: $${entry.totalAmount.toFixed(2)}</p>
+  <p>Monto total: $${(Number(entry.totalAmount) || 0).toFixed(2)}</p>
   <hr>
 `;
     historyContainer.appendChild(entryElement);

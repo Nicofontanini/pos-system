@@ -1,38 +1,37 @@
 // models/cashRegisterHistory.js
 module.exports = (sequelize, DataTypes) => {
   const CashRegisterHistory = sequelize.define('CashRegisterHistory', {
-    date: {
-      type: DataTypes.DATE,
-      allowNull: false
-    },
-    totalPayments: {
+    id: {
       type: DataTypes.INTEGER,
-      allowNull: false
-    },
-    totalAmount: {
-      type: DataTypes.DECIMAL(10, 2),
-      allowNull: false
+      primaryKey: true,
+      autoIncrement: true
     },
     local: {
       type: DataTypes.STRING,
-      allowNull: false
-    },
-    closeTime: {
-      type: DataTypes.DATE,
       allowNull: false
     },
     startTime: {
       type: DataTypes.DATE,
       allowNull: false
     },
-    productSummary: {
-      type: DataTypes.JSONB,
-      allowNull: false,
-      defaultValue: []
+    closeTime: {
+      type: DataTypes.DATE,
+      allowNull: false
+    },
+    totalPayments: {
+      type: DataTypes.INTEGER,
+      defaultValue: 0
+    },
+    totalAmount: {
+      type: DataTypes.FLOAT,
+      defaultValue: 0
+    },
+    ordersCount: {
+      type: DataTypes.INTEGER,
+      defaultValue: 0
     },
     paymentSummary: {
-      type: DataTypes.JSONB,
-      allowNull: false,
+      type: DataTypes.JSON,
       defaultValue: {
         efectivo: 0,
         transferencia: 0,
@@ -40,18 +39,16 @@ module.exports = (sequelize, DataTypes) => {
         total: 0
       }
     },
-    ordersCount: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      defaultValue: 0
+    productSummary: {
+      type: DataTypes.JSON,
+      defaultValue: []
     },
     orders: {
-      type: DataTypes.JSONB,
-      allowNull: false,
+      type: DataTypes.JSON,
       defaultValue: []
     }
   }, {
-    tableName: 'CashRegisterHistories'
+    timestamps: true
   });
 
   return CashRegisterHistory;
