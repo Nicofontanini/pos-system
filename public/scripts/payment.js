@@ -159,15 +159,34 @@ async function processPayment() {
   let total = parseFloat(document.getElementById('modalTotal').textContent);
   let finalTotal = total;
 
-  // Si es pago con tarjeta, calculamos el total con el recargo
   if (currentPaymentMethod === 'tarjeta') {
     const surcharge = parseFloat(document.getElementById('cardSurcharge').value) || 0;
     finalTotal = total + (total * surcharge / 100);
   }
 
+  // Preparar los datos de la orden con la información de stock a actualizar
   const orderData = {
     date: new Date().toISOString(),
-    items: cart,
+    items: cart.map(item => {
+      if (item.isCompound && item.components) {
+        return {
+          ...item,
+          stockToUpdate: item.components.map(comp => ({
+            id: comp.productId,
+            name: comp.name,
+            quantityToReduce: comp.quantity // Ya está multiplicado por item.quantity en cart.js
+          }))
+        };
+      }
+      return {
+        ...item,
+        stockToUpdate: [{
+          id: item.id,
+          name: item.name,
+          quantityToReduce: item.quantity
+        }]
+      };
+    }),
     total: finalTotal,
     originalTotal: total,
     paymentMethod: currentPaymentMethod,
@@ -179,7 +198,13 @@ async function processPayment() {
   };
 
   try {
-    // Save order to database
+    // Verificar stock antes de procesar
+    const stockCheck = await verifyStock(orderData.items);
+    if (!stockCheck.success) {
+      alert(`Stock insuficiente para: ${stockCheck.products.join(', ')}`);
+      return;
+    }
+
     const response = await fetch(`/api/orders/${orderData.local}`, {
       method: 'POST',
       headers: {
@@ -191,6 +216,9 @@ async function processPayment() {
     if (!response.ok) {
       throw new Error('Failed to save order');
     }
+
+    // Actualizar el stock en la interfaz
+    updateStockDisplay(orderData.items);
 
     // Continue with existing functionality after successful save
     lastOrderData = orderData;
@@ -211,9 +239,66 @@ async function processPayment() {
     printOrderBtn.onclick = () => printOrder(lastOrderData);
 
   } catch (error) {
-    console.error('Error saving order:', error);
-    alert('Error al guardar la orden. Por favor, intente nuevamente.');
+    console.error('Error:', error);
+    alert('Error al procesar la orden. Por favor, intente nuevamente.');
   }
+}
+
+// Función para verificar el stock disponible
+async function verifyStock(items) {
+  const insufficientProducts = [];
+
+  for (const item of items) {
+    if (item.isCompound && item.components) {
+      // Verificar stock de cada componente
+      for (const comp of item.components) {
+        const stockElement = document.getElementById(`stock-${comp.productId}`);
+        if (stockElement) {
+          const currentStock = parseInt(stockElement.textContent);
+          if (currentStock < comp.quantity) {
+            insufficientProducts.push(`${comp.name} (componente de ${item.name})`);
+          }
+        }
+      }
+    } else {
+      // Verificar stock de producto simple
+      const stockElement = document.getElementById(`stock-${item.id}`);
+      if (stockElement) {
+        const currentStock = parseInt(stockElement.textContent);
+        if (currentStock < item.quantity) {
+          insufficientProducts.push(item.name);
+        }
+      }
+    }
+  }
+
+  return {
+    success: insufficientProducts.length === 0,
+    products: insufficientProducts
+  };
+}
+
+// Función para actualizar el stock en la interfaz
+function updateStockDisplay(items) {
+  items.forEach(item => {
+    if (item.isCompound && item.stockToUpdate) {
+      // Actualizar stock de cada componente
+      item.stockToUpdate.forEach(component => {
+        const stockElement = document.getElementById(`stock-${component.id}`);
+        if (stockElement) {
+          const currentStock = parseInt(stockElement.textContent);
+          stockElement.textContent = currentStock - component.quantityToReduce;
+        }
+      });
+    } else if (item.stockToUpdate) {
+      // Actualizar stock de producto simple
+      const stockElement = document.getElementById(`stock-${item.stockToUpdate[0].id}`);
+      if (stockElement) {
+        const currentStock = parseInt(stockElement.textContent);
+        stockElement.textContent = currentStock - item.stockToUpdate[0].quantityToReduce;
+      }
+    }
+  });
 }
 
 // Eliminar este event listener duplicado
