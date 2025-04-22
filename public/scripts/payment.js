@@ -578,7 +578,7 @@ function generateOrderPrintContent(orderData) {
                   <div class="ticket-components" style="margin-left: 10px; font-size: 0.9em;">
                     <div>Productos:</div>
                     ${item.components.map(comp => `
-                      <div style="margin-left: 15px;">• ${comp.name}: ${comp.quantity * item.quantity} unidades</div>
+                      <div style="margin-left: 15px;">• ${comp.name}: ${comp.quantity * item.quantity}</div>
                     `).join('')}
                   </div>
                 ` : ''}

@@ -62,7 +62,7 @@ function showComponentsModal(item) {
                 <div class="component-item">
                     <span>${comp.name}</span>
                     <div class="quantity-controls">
-                        <button onclick="decrementComponent(${index})">-</button>
+                        <button onclick="decrementComponent(${index})" ${comp.quantity <= 0 ? 'disabled' : ''}>-</button>
                         <span id="comp-quantity-${index}">${comp.quantity}</span>
                         <button onclick="incrementComponent(${index})">+</button>
                     </div>
@@ -98,7 +98,8 @@ window.incrementComponent = function(index) {
 };
 
 window.decrementComponent = function(index) {
-    if (window.tempComponents && window.tempComponents[index].quantity > 1) {
+    if (window.tempComponents) {
+        // Remove the quantity check to allow going down to 0
         window.tempComponents[index].quantity--;
         document.getElementById(`comp-quantity-${index}`).textContent = 
             window.tempComponents[index].quantity;
@@ -147,7 +148,7 @@ function updateCartUI() {
                     <small>Detalles:</small>
                     ${item.components.map(comp => `
                         <div class="component-detail">
-                            <small>- ${comp.name} (${comp.quantity * item.quantity} unidades)</small>
+                            <small>- ${comp.name} (${comp.quantity * item.quantity})</small>
                         </div>
                     `).join('')}
                 </div>
@@ -230,7 +231,7 @@ function generateOrderTicket() {
                     <div class="ticket-component-detail">
                         • ${comp.name}
                         <div class="component-quantity">
-                            ${cantidadTotal} unidades
+                            ${cantidadTotal}
                         </div>
                     </div>`;
             });
