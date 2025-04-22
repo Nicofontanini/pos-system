@@ -326,18 +326,6 @@ function updateStockDisplay(items) {
   });
 }
 
-// Eliminar este event listener duplicado
-// document.addEventListener('DOMContentLoaded', function () {
-//   const printOrderBtn = document.getElementById('printOrderBtn');
-//   if (printOrderBtn) {
-//     printOrderBtn.addEventListener('click', () => {
-//       if (lastOrderData) {
-//         printOrder(lastOrderData);
-//       }
-//     });
-//   }
-// });
-
 // Función mejorada para imprimir el pedido
 function printOrder(orderData) {
   // Usar la misma función de generación de contenido que el historial

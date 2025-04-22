@@ -51,8 +51,9 @@ function saveProduct() {
             resetForm();
             loadProducts();
             
-            // Eliminamos la sincronización redundante con local1 y local2
-            // ya que el servidor maneja esto internamente
+            setTimeout(() => {
+                window.location.reload();
+            }, 500);
         } else {
             alert('Error al guardar el producto: ' + data.error);
         }
