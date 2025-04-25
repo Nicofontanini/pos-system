@@ -126,13 +126,6 @@
                             <button onclick="editProduct(<%= JSON.stringify(product) %>)"
                                 class="edit-button">Editar</button>
                             <button onclick="confirmDelete(<%= product.id %>)" class="delete-button">Eliminar</button>
-                            <!-- <div class="transfer-form">
-                                <label>Transferir a Foodtruck:</label>
-                                <input type="number" id="quantity-<%= product.id %>" min="1" max="<%= product.stock %>"
-                                    value="0">
-                                <button onclick="transferStock(<%= product.id %>)">Transferir</button>
-                                <div id="error-<%= product.id %>" class="error-message"></div>
-                            </div> -->
                         </div>
 
                         <div id="delete-confirm-<%= product.id %>" class="delete-confirm" style="display: none;">

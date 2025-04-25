@@ -9,7 +9,6 @@ const bcrypt = require('bcrypt');
 const { Resend } = require('resend');
 const dotenv = require('dotenv');
 const sequelize = require('./config/config');
-const migrate = require('./migrate');
 const db = require('./models');
 const Product = db.Product;
 
@@ -21,7 +20,6 @@ const employeeLogsController = require('./controllers/employeeLogsController');
 const orderLocal1Controller = require('./controllers/orderLocal1Controller');
 const orderLocal2Controller = require('./controllers/orderLocal2Controller');
 const sellersHistoryController = require('./controllers/sellersHistoryController');
-const cashRegisterRouter = require('./routes/cashRegister');
 
 // Initialize Express app
 const app = express();
@@ -244,7 +242,7 @@ db.sequelize.authenticate()
           // Enviar email
           await resend.emails.send({
             from: 'onboarding@resend.dev',
-            to: 'empanadaskm11.brc@gmail.com',
+            to: 'anicolasfontanini@gmail.com',
             subject: `Alerta de Stock Bajo - ${productName}`,
             html: `
                 <h1>⚠️ Alerta de Stock Bajo</h1>
@@ -394,17 +392,6 @@ db.sequelize.authenticate()
     console.error('Error al sincronizar la base de datos:', err);
   });
 
-// Define file paths
-const DATA_DIR = path.join(__dirname, 'data');
-const productsPath = path.join(DATA_DIR, 'products.json');
-const ordersPath = path.join(DATA_DIR, 'orders.json');
-const orders2Path = path.join(DATA_DIR, 'orders2.json');
-const sellersPath = path.join(DATA_DIR, 'sellers.json');
-const sellersHistoryPath = path.join(DATA_DIR, 'sellers_history.json');
-const cashRegisterFilePath = path.join(DATA_DIR, 'cashRegisterHistory.json');
-
-// Server state variables
-let inventory = null;
 let carts = {
   local1: [],
   local2: []

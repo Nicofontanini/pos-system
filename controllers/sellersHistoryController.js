@@ -1,5 +1,13 @@
 // controllers/sellersHistoryController.js
-const { readSellersHistory, writeSellersHistory } = require('../app');
+// Remove these lines
+// const { readSellersHistory, writeSellersHistory } = require('../app');
+
+// Add these instead
+const { 
+  readSellersHistory, 
+  writeSellersHistory 
+} = require('../utils/sellersHistoryUtils');
+
 const db = require('../models');
 
 exports.getSellersHistory = async (req, res) => {

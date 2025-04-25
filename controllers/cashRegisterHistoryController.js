@@ -1,6 +1,15 @@
 // controllers/cashRegisterHistoryController.js
-const { readCashRegisterHistory, writeCashRegisterHistory } = require('../app');
-const { filterCashRegisterHistoryByDate } = require('../app');
+// Remove these lines
+// const { readCashRegisterHistory, writeCashRegisterHistory } = require('../app');
+// const { filterCashRegisterHistoryByDate } = require('../app');
+
+// Add these instead
+const { 
+  readCashRegisterHistory, 
+  writeCashRegisterHistory,
+  filterCashRegisterHistoryByDate 
+} = require('../utils/cashRegisterUtils');
+
 const db = require('../models');
 
 exports.getCashRegisterHistory = async (req, res) => {
