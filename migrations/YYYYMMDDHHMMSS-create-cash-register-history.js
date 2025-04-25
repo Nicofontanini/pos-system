@@ -2,12 +2,10 @@
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('CashRegisterCloses', {
+    await queryInterface.createTable('CashRegisterHistories', {
       id: {
-        allowNull: false,
-        autoIncrement: true,
-        primaryKey: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.STRING,
+        primaryKey: true
       },
       date: {
         type: Sequelize.DATE,
@@ -18,7 +16,7 @@ module.exports = {
         allowNull: false
       },
       totalAmount: {
-        type: Sequelize.DECIMAL(10, 2),
+        type: Sequelize.DECIMAL(10,2),
         allowNull: false
       },
       local: {
@@ -41,17 +39,11 @@ module.exports = {
       paymentSummary: {
         type: Sequelize.JSONB,
         allowNull: false,
-        defaultValue: {
-          efectivo: 0,
-          transferencia: 0,
-          mixto: 0,
-          total: 0
-        }
+        defaultValue: {}
       },
       ordersCount: {
         type: Sequelize.INTEGER,
-        allowNull: false,
-        defaultValue: 0
+        allowNull: false
       },
       orders: {
         type: Sequelize.JSONB,
@@ -59,17 +51,17 @@ module.exports = {
         defaultValue: []
       },
       createdAt: {
-        allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
+        allowNull: false
       },
       updatedAt: {
-        allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
+        allowNull: false
       }
     });
   },
 
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable('CashRegisterCloses');
+    await queryInterface.dropTable('CashRegisterHistories');
   }
 };

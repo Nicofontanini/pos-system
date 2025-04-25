@@ -32,19 +32,40 @@ exports.getCashRegisterHistoryByDate = async (req, res) => {
 };
 
 exports.addCashRegisterEntry = async (req, res) => {
-  try {
-    const data = req.body;
-    // Ensure ID is present
-    if (!data.id) {
-      data.id = crypto.randomUUID();
+    try {
+        const closeData = req.body;
+        const currentDate = new Date(); // Creamos una fecha actual por defecto
+        
+        // Aseguramos que todos los campos tengan valores válidos
+        const entry = {
+            date: closeData.date || currentDate, // Usamos la fecha del cierre o la actual
+            totalPayments: parseInt(closeData.totalPayments) || 0,
+            totalAmount: parseFloat(closeData.totalAmount) || 0,
+            local: closeData.local,
+            closeTime: closeData.closeTime || currentDate,
+            startTime: closeData.startTime,
+            productSummary: closeData.productSummary || [],
+            paymentSummary: {
+                efectivo: parseFloat(closeData.paymentSummary?.efectivo) || 0,
+                transferencia: parseFloat(closeData.paymentSummary?.transferencia) || 0,
+                mixto: parseFloat(closeData.paymentSummary?.mixto) || 0,
+                total: parseFloat(closeData.paymentSummary?.total) || 0
+            },
+            ordersCount: parseInt(closeData.ordersCount) || 0,
+            orders: closeData.orders || []
+        };
+
+        // Validación adicional
+        if (!entry.date) {
+            throw new Error('La fecha es requerida');
+        }
+
+        const result = await db.CashRegisterHistory.create(entry);
+        res.json({ success: true, data: result });
+    } catch (error) {
+        console.error('Error creating cash register entry:', error);
+        res.status(500).json({ success: false, error: error.message });
     }
-    
-    const entry = await db.CashRegisterHistory.create(data);
-    res.json({ success: true, entry });
-  } catch (error) {
-    console.error('Error creating cash register entry:', error);
-    res.status(500).json({ success: false, error: error.message });
-  }
 };
 
 exports.updateCashRegisterEntry = async (req, res) => {

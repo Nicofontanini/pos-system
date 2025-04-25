@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const db = require('../models');  // Add this line
 
 // Add this route handler for starting the cash register
 router.post('/api/cash-register/start', async (req, res) => {
@@ -22,8 +23,13 @@ router.post('/api/cash-register/start', async (req, res) => {
 router.post('/api/cash-register/close', async (req, res) => {
     try {
         const closeData = req.body;
-        // Guardar en la base de datos
-        await db.CashRegister.create(closeData);
+        // Change from CashRegister to CashRegisterHistory
+        await db.CashRegisterHistory.create({
+            ...closeData,
+            totalPayments: parseInt(closeData.totalPayments),
+            totalAmount: parseFloat(closeData.totalAmount),
+            ordersCount: parseInt(closeData.ordersCount)
+        });
         res.json({ success: true });
     } catch (error) {
         console.error('Error al cerrar caja:', error);

@@ -6,14 +6,14 @@ module.exports = {
     // Update any existing records with null items to an empty array
     await queryInterface.sequelize.query(
       `UPDATE "Orders" 
-      SET "items" = '[]'::jsonb 
+      SET "items" = '{}'::json[] 
       WHERE "items" IS NULL`
     );
 
     // Update any existing records with null paymentAmounts to an empty object
     await queryInterface.sequelize.query(
       `UPDATE "Orders" 
-      SET "paymentAmounts" = '{}'::jsonb 
+      SET "paymentAmounts" = '{}'::json 
       WHERE "paymentAmounts" IS NULL`
     );
   },
@@ -23,13 +23,13 @@ module.exports = {
     await queryInterface.sequelize.query(
       `UPDATE "Orders" 
       SET "items" = NULL 
-      WHERE "items" = '[]'::jsonb`
+      WHERE "items" = '{}'::json[]`
     );
 
     await queryInterface.sequelize.query(
       `UPDATE "Orders" 
       SET "paymentAmounts" = NULL 
-      WHERE "paymentAmounts" = '{}'::jsonb`
+      WHERE "paymentAmounts" = '{}'::json`
     );
   }
 };

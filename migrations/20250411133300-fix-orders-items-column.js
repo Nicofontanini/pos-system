@@ -1,45 +1,24 @@
-'use strict';
-
 module.exports = {
   async up(queryInterface, Sequelize) {
-    // Primero verificar si la columna ya existe
+    // First check if the column exists
     const tableInfo = await queryInterface.describeTable('Orders');
-    
     if (!tableInfo.items) {
-      // Si no existe, crear la columna permitiendo valores nulos inicialmente
+      // Only add the column if it doesn't exist
       await queryInterface.addColumn('Orders', 'items', {
-        type: Sequelize.JSONB,
+        type: Sequelize.ARRAY(Sequelize.JSON),
         allowNull: true
       });
-
-      // Actualizar registros existentes con array vacío
-      await queryInterface.sequelize.query(
-        `UPDATE "Orders" SET "items" = '[]'::jsonb WHERE "items" IS NULL`
-      );
-
-      // Finalmente hacer la columna NOT NULL
-      await queryInterface.changeColumn('Orders', 'items', {
-        type: Sequelize.JSONB,
-        allowNull: false,
-        defaultValue: []
-      });
     } else {
-      // Si ya existe, actualizar los nulos
-      await queryInterface.sequelize.query(
-        `UPDATE "Orders" SET "items" = '[]'::jsonb WHERE "items" IS NULL`
-      );
-      
-      // Añadir restricción NOT NULL
+      // If column exists, just modify its type
       await queryInterface.changeColumn('Orders', 'items', {
-        type: Sequelize.JSONB,
-        allowNull: false,
-        defaultValue: []
+        type: Sequelize.ARRAY(Sequelize.JSON),
+        allowNull: true
       });
     }
   },
 
-  async down(queryInterface) {
-    // Revertir los cambios
+  async down(queryInterface, Sequelize) {
+    // Revert the changes
     await queryInterface.changeColumn('Orders', 'items', {
       type: Sequelize.JSONB,
       allowNull: true

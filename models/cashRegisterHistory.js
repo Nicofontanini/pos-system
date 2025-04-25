@@ -2,9 +2,15 @@
 module.exports = (sequelize, DataTypes) => {
   const CashRegisterHistory = sequelize.define('CashRegisterHistory', {
     id: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.UUID,
+      defaultValue: DataTypes.UUIDV4,
       primaryKey: true,
-      autoIncrement: true
+      allowNull: false
+    },
+    date: {
+      type: DataTypes.DATE,
+      allowNull: false,
+      defaultValue: DataTypes.NOW
     },
     local: {
       type: DataTypes.STRING,

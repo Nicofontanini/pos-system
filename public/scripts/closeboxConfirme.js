@@ -31,18 +31,17 @@ function closeCashRegister() {
     return;
   }
 
-  // First load the latest orders
   loadOrders()
     .then(() => fetch('/cash-register'))
     .then(response => response.json())
     .then(data => {
+      const currentDate = new Date().toISOString(); // Aseguramos tener una fecha válida
       const closeData = {
-        id: crypto.randomUUID(), // Add unique ID
-        date: new Date().toISOString(),
+        date: currentDate,  // Agregamos explícitamente la fecha
         totalPayments,
         totalAmount,
         local: window.location.pathname.includes('local1') ? 'local1' : 'local2',
-        closeTime: new Date().toISOString(),
+        closeTime: currentDate,
         startTime: cashRegisterStartTime,
         productSummary: getProductSummary(),
         paymentSummary: {
