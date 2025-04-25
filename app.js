@@ -242,7 +242,7 @@ db.sequelize.authenticate()
           // Enviar email
           await resend.emails.send({
             from: 'onboarding@resend.dev',
-            to: 'anicolasfontanini@gmail.com',
+            to: 'empanadaskm11.brc@gmail.com',
             subject: `Alerta de Stock Bajo - ${productName}`,
             html: `
                 <h1>⚠️ Alerta de Stock Bajo</h1>
