@@ -16,7 +16,7 @@ exports.getCashRegisterHistory = async (req, res) => {
     try {
         console.log('Petición recibida en getCashRegisterHistory');
         const history = await db.CashRegisterHistory.findAll({
-            order: [['date', 'DESC']]
+            order: [['date', 'DESC']] // Volvemos a usar 'date' como estaba originalmente
         });
         console.log('Datos encontrados en DB:', history);
         res.json(history);

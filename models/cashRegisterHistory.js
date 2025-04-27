@@ -1,12 +1,15 @@
-// models/cashRegisterHistory.js
-module.exports = (sequelize, DataTypes) => {
-  const CashRegisterHistory = sequelize.define('CashRegisterHistory', {
+const { Model, DataTypes } = require('sequelize');
+
+module.exports = (sequelize) => {
+  class CashRegisterHistory extends Model {}
+
+  CashRegisterHistory.init({
     id: {
-      type: DataTypes.UUID,
-      defaultValue: DataTypes.UUIDV4,
+      type: DataTypes.INTEGER,
       primaryKey: true,
-      allowNull: false
+      autoIncrement: true
     },
+    // Cambiamos 'date' por 'registerDate' para evitar palabras reservadas
     date: {
       type: DataTypes.DATE,
       allowNull: false,
@@ -18,18 +21,18 @@ module.exports = (sequelize, DataTypes) => {
     },
     startTime: {
       type: DataTypes.DATE,
-      allowNull: false
+      allowNull: true
     },
     closeTime: {
       type: DataTypes.DATE,
-      allowNull: false
+      allowNull: true
     },
     totalPayments: {
       type: DataTypes.INTEGER,
       defaultValue: 0
     },
     totalAmount: {
-      type: DataTypes.FLOAT,
+      type: DataTypes.DECIMAL(10, 2),
       defaultValue: 0
     },
     ordersCount: {
@@ -37,23 +40,20 @@ module.exports = (sequelize, DataTypes) => {
       defaultValue: 0
     },
     paymentSummary: {
-      type: DataTypes.JSON,
-      defaultValue: {
-        efectivo: 0,
-        transferencia: 0,
-        mixto: 0,
-        total: 0
-      }
+      type: DataTypes.JSONB,
+      defaultValue: {}
     },
     productSummary: {
-      type: DataTypes.JSON,
+      type: DataTypes.JSONB,
       defaultValue: []
     },
     orders: {
-      type: DataTypes.JSON,
+      type: DataTypes.JSONB,
       defaultValue: []
     }
   }, {
+    sequelize,
+    modelName: 'CashRegisterHistory',
     timestamps: true
   });
 
