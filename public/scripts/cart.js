@@ -25,7 +25,10 @@ window.addToCart = function(productData) {
         price: product.price,
         quantity: 1,
         isCompound: product.isCompound,
-        components: parsedComponents
+        components: parsedComponents.map(comp => ({
+            ...comp,
+            quantity: 0  // Inicializamos las cantidades de componentes en 0
+        }))
     };
     
     const existingItem = cart.find(cartItem => cartItem.id === item.id);
@@ -63,7 +66,7 @@ function showComponentsModal(item) {
                     <span>${comp.name}</span>
                     <div class="quantity-controls">
                         <button onclick="decrementComponent(${index})" ${comp.quantity <= 0 ? 'disabled' : ''}>-</button>
-                        <span id="comp-quantity-${index}">${comp.quantity}</span>
+                        <span id="comp-quantity-${index}">0</span>
                         <button onclick="incrementComponent(${index})">+</button>
                     </div>
                 </div>
@@ -90,21 +93,33 @@ function showComponentsModal(item) {
 
 // Funciones para manipular cantidades de componentes
 window.incrementComponent = function(index) {
-    if (window.tempComponents) {
-        window.tempComponents[index].quantity++;
-        document.getElementById(`comp-quantity-${index}`).textContent = 
-            window.tempComponents[index].quantity;
+    if (window.tempComponents && window.tempComponents[index]) {
+        window.tempComponents[index].quantity = (window.tempComponents[index].quantity || 0) + 1;
+        updateComponentDisplay(index);
     }
 };
 
 window.decrementComponent = function(index) {
-    if (window.tempComponents) {
-        // Remove the quantity check to allow going down to 0
-        window.tempComponents[index].quantity--;
-        document.getElementById(`comp-quantity-${index}`).textContent = 
-            window.tempComponents[index].quantity;
+    if (window.tempComponents && window.tempComponents[index]) {
+        const currentQuantity = window.tempComponents[index].quantity || 0;
+        if (currentQuantity > 0) {
+            window.tempComponents[index].quantity = currentQuantity - 1;
+            updateComponentDisplay(index);
+        }
     }
 };
+
+// Nueva función auxiliar para actualizar la visualización
+function updateComponentDisplay(index) {
+    const quantityDisplay = document.getElementById(`comp-quantity-${index}`);
+    const decrementButton = document.querySelector(`button[onclick="decrementComponent(${index})"]`);
+    
+    if (quantityDisplay && decrementButton) {
+        const quantity = window.tempComponents[index].quantity;
+        quantityDisplay.textContent = quantity;
+        decrementButton.disabled = quantity <= 0;
+    }
+}
 
 window.confirmComponents = function(button) {
     if (window.currentItem && window.tempComponents) {
