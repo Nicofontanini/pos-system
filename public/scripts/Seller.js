@@ -241,6 +241,8 @@ function loadSellerInfo() {
                   if (button.textContent === 'Vacío') {
                       button.textContent = employeeName;
                       button.disabled = false;
+                      // Guardar en localStorage
+                      localStorage.setItem(button.id, employeeName);
                       break;
                   }
               }
@@ -250,8 +252,25 @@ function loadSellerInfo() {
                   if (button.textContent === employeeName) {
                       button.textContent = 'Vacío';
                       button.disabled = true;
+                      // Eliminar del localStorage
+                      localStorage.removeItem(button.id);
                       break;
                   }
               }
           }
-        }
+      }
+
+      // Agregar esta nueva función para cargar los vendedores al iniciar
+      function loadSellersFromStorage() {
+          const buttons = document.querySelectorAll('[id^="seller"]');
+          buttons.forEach(button => {
+              const sellerName = localStorage.getItem(button.id);
+              if (sellerName) {
+                  button.textContent = sellerName;
+                  button.disabled = false;
+              }
+          });
+      }
+
+      // Llamar a esta función cuando se carga la página
+      document.addEventListener('DOMContentLoaded', loadSellersFromStorage);
