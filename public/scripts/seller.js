@@ -6,17 +6,14 @@ function loadSellerInfo() {
       .then(response => response.json())
       .then(data => {
         const sellerInfo = document.getElementById('sellerInfo');
-           if (!sellerInfo) {
-            console.warn('No se encontró el elemento sellerInfo en el DOM');
-            return;
-        }
+           if (sellerInfo) {
         sellerInfo.innerHTML = `
       <p>Vendedor 1: ${data[local].vendedor1 ? data[local].vendedor1.name : 'No definido'} (Última actualización: ${data[local].vendedor1 ? new Date(data[local].vendedor1.updatedAt).toLocaleString() : 'N/A'})</p>
       <p>Vendedor 2: ${data[local].vendedor2 ? data[local].vendedor2.name : 'No definido'} (Última actualización: ${data[local].vendedor2 ? new Date(data[local].vendedor2.updatedAt).toLocaleString() : 'N/A'})</p>
       <p>Vendedor 3: ${data[local].vendedor3 ? data[local].vendedor3.name : 'No definido'} (Última actualización: ${data[local].vendedor3 ? new Date(data[local].vendedor3.updatedAt).toLocaleString() : 'N/A'})</p>
       <p>Vendedor 4: ${data[local].vendedor4 ? data[local].vendedor4.name : 'No definido'} (Última actualización: ${data[local].vendedor4 ? new Date(data[local].vendedor4.updatedAt).toLocaleString() : 'N/A'})</p>
     `;
-
+ }
         // Actualizar los botones del modal de pago
         for (let i = 1; i <= 4; i++) {
           const seller = data[local][`vendedor${i}`];
