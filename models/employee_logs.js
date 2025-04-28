@@ -32,7 +32,8 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'EmployeeLog',
-    tableName: 'EmployeeLogs'
+    tableName: 'EmployeeLogs',
+    timestamps: false  // Add this line to disable timestamps
   });
 
   return EmployeeLog;
