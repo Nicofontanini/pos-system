@@ -262,24 +262,17 @@ function loadSellerInfo() {
       }
 
 // Agregar esta nueva función para cargar los vendedores al iniciar
-     function loadSellersFromStorage() {
-    const local = window.location.pathname.includes('local1') ? 'local1' : 'local2';
-    const sellers = JSON.parse(localStorage.getItem(`${local}_sellers`)) || {};
-    
-    for (let i = 1; i <= 4; i++) {
-        const button = document.getElementById(`seller${i}`);
-        if (button) {
-            const seller = sellers[`vendedor${i}`];
-            if (seller) {
-                button.textContent = seller.name || seller;
-                button.disabled = false;
-            } else {
-                button.textContent = 'Vacío';
-                button.disabled = true;
-            }
-        }
-    }
-}
+ function loadSellersFromStorage() {
+          const buttons = document.querySelectorAll('[id^="seller"]');
+          buttons.forEach(button => {
+              const sellerName = localStorage.getItem(button.id);
+              if (sellerName) {
+                  button.textContent = sellerName;
+                  button.disabled = false;
+              }
+          });
+      }
+
 
       // Llamar a esta función cuando se carga la página
  document.addEventListener('DOMContentLoaded', loadSellersFromStorage);
