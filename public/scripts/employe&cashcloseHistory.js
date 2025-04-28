@@ -144,15 +144,16 @@ socket.on('order-history', function (history) {
     container.innerHTML = '';
 
     history.forEach(order => {
+        const total = parseFloat(order.total) || 0;
         const orderElement = document.createElement('div');
         orderElement.className = 'order-card';
         orderElement.innerHTML = `
-<p>Fecha: ${new Date(order.date).toLocaleString()}</p>
-<p>Nombre del Cliente: ${order.orderName}</p> <!-- Nombre del pedido -->
-<p>Vendedor: ${order.sellerName}</p> <!-- Mostrar el nombre del vendedor -->
-<p>Total: $${order.total}</p>
-<p>Método de pago: ${order.paymentMethod}</p>
-<button onclick='printSingleOrder(${JSON.stringify(order)})'>Imprimir</button>
+            <p>Fecha: ${new Date(order.date).toLocaleString()}</p>
+            <p>Nombre del Cliente: ${order.orderName}</p>
+            <p>Vendedor: ${order.sellerName}</p>
+            <p>Total: $${total.toFixed(2)}</p>
+            <p>Método de pago: ${order.paymentMethod}</p>
+            <button onclick='printSingleOrder(${JSON.stringify(order)})'>Imprimir</button>
 `;
         container.appendChild(orderElement);
     });
@@ -512,12 +513,13 @@ socket.on('single-cash-register', (entry) => {
                 </tr>`;
                 
             entry.orders.forEach(order => {
+                const orderTotal = parseFloat(order.total) || 0;
                 printContent += `
                 <tr>
                     <td>${order.id}</td>
                     <td>${order.orderName}</td>
                     <td>${order.sellerName}</td>
-                    <td>$${order.total.toFixed(2)}</td>
+                    <td>$${orderTotal.toFixed(2)}</td>
                     <td>${order.paymentMethod}</td>
                 </tr>`;
             });
@@ -1158,11 +1160,12 @@ socket.on('single-cash-register', (entry) => {
             data.push(['PEDIDOS INCLUIDOS', '', '', '', '']);
             data.push(['ID', 'Nombre', 'Vendedor', 'Total', 'Método de Pago']);
             entry.orders.forEach(order => {
+                const orderTotal = parseFloat(order.total) || 0;
                 data.push([
                     order.id,
                     order.orderName,
                     order.sellerName,
-                    `$${order.total.toFixed(2)}`,
+                    `$${orderTotal.toFixed(2)}`,
                     order.paymentMethod
                 ]);
             });

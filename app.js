@@ -906,60 +906,54 @@ app.post('/cash-register', (req, res) => {
 });
 
 // Data cleanup
-app.post('/clean-old-data', (req, res) => {
-  const local = req.headers['x-local'];
+// app.post('/clean-old-data', (req, res) => {
+//   const local = req.headers['x-local'];
 
-  try {
-    const fiveDaysAgo = new Date();
-    fiveDaysAgo.setDate(fiveDaysAgo.getDate() - 5);
+//   try {
+//     const fiveDaysAgo = new Date();
+//     fiveDaysAgo.setDate(fiveDaysAgo.getDate() - 5);
 
-    let orders = readFile(ordersPath, []);
-    let orders2 = readFile(orders2Path, []);
+//     let orders = readFile(ordersPath, []);
+//     let orders2 = readFile(orders2Path, []);
 
-    const filteredOrders = orders.filter(order => {
-      const orderDate = new Date(order.date);
-      return orderDate >= fiveDaysAgo && order.local === local;
-    });
+//     const filteredOrders = orders.filter(order => {
+//       const orderDate = new Date(order.date);
+//       return orderDate >= fiveDaysAgo && order.local === local;
+//     });
 
-    const filteredOrders2 = orders2.filter(order => {
-      const orderDate = new Date(order.date);
-      return orderDate >= fiveDaysAgo && order.local === local;
-    });
+//     const filteredOrders2 = orders2.filter(order => {
+//       const orderDate = new Date(order.date);
+//       return orderDate >= fiveDaysAgo && order.local === local;
+//     });
 
-    writeFile(ordersPath, filteredOrders);
-    writeFile(orders2Path, filteredOrders2);
+//     writeFile(ordersPath, filteredOrders);
+//     writeFile(orders2Path, filteredOrders2);
 
-    let sellersHistory = readFile(sellersHistoryPath, []);
+//     let sellersHistory = readFile(sellersHistoryPath, []);
 
-    const filteredSellersHistory = sellersHistory.filter(entry => {
-      const entryDate = new Date(entry.updatedAt);
-      return entryDate >= fiveDaysAgo && entry.local === local;
-    });
+//     const filteredSellersHistory = sellersHistory.filter(entry => {
+//       const entryDate = new Date(entry.updatedAt);
+//       return entryDate >= fiveDaysAgo && entry.local === local;
+//     });
 
-    writeFile(sellersHistoryPath, filteredSellersHistory);
+//     writeFile(sellersHistoryPath, filteredSellersHistory);
 
-    let cashRegisterHistory = readFile(cashRegisterFilePath, []);
+//     let cashRegisterHistory = readFile(cashRegisterFilePath, []);
 
-    const filteredCashRegisterHistory = cashRegisterHistory.filter(entry => {
-      const entryDate = new Date(entry.date);
-      return entryDate >= fiveDaysAgo && entry.local === local;
-    });
+//     const filteredCashRegisterHistory = cashRegisterHistory.filter(entry => {
+//       const entryDate = new Date(entry.date);
+//       return entryDate >= fiveDaysAgo && entry.local === local;
+//     });
 
-    writeFile(cashRegisterFilePath, filteredCashRegisterHistory);
+//     writeFile(cashRegisterFilePath, filteredCashRegisterHistory);
 
-    res.status(200).json({ success: true, message: 'Datos antiguos eliminados correctamente' });
-  } catch (error) {
-    console.error('Error al limpiar los datos antiguos:', error);
-    res.status(500).json({ success: false, message: 'Error al limpiar los datos antiguos' });
-  }
-});
+//     res.status(200).json({ success: true, message: 'Datos antiguos eliminados correctamente' });
+//   } catch (error) {
+//     console.error('Error al limpiar los datos antiguos:', error);
+//     res.status(500).json({ success: false, message: 'Error al limpiar los datos antiguos' });
+//   }
+// });
 
-if (process.argv.includes('--migrate')) {
-  const { migrateData } = require('./migrate');
-  migrateData().then(() => {
-    console.log('Migración completada opcionalmente');
-  });
-}
 // Add this route for admin delete
 app.delete('/api/product/:id', isAuthenticated, productController.deleteProduct);
 
