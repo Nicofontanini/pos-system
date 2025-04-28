@@ -1320,14 +1320,36 @@ socket.on('update-cash-register-history', (history) => {
     }
 });
 
-// Función para filtrar el historial de cierres
-// function filterCashRegisterHistory() {
-//     const startDate = document.getElementById('cashStartDate').value;
-//     const endDate = document.getElementById('cashEndDate').value;
+// Agregar esta función
+function loadCurrentSellers() {
+    const local = window.location.pathname.includes('local1') ? 'local1' : 'local2';
     
-//     // Actualizar el historial con las fechas de filtro
-//     loadCashRegisterHistory(startDate, endDate);
-// }
+    fetch('/get-sellers')
+        .then(response => response.json())
+        .then(data => {
+            const sellers = data[local];
+            if (!sellers) {
+                console.warn('No se encontraron vendedores para', local);
+                return;
+            }
+
+            // Actualizar información de vendedores en la UI
+            Object.keys(sellers).forEach(sellerId => {
+                const seller = sellers[sellerId];
+                if (seller) {
+                    const sellerName = typeof seller === 'object' ? seller.name : seller;
+                    const button = document.getElementById(sellerId);
+                    if (button) {
+                        button.textContent = sellerName;
+                        button.disabled = false;
+                    }
+                }
+            });
+        })
+        .catch(error => {
+            console.error('Error al cargar vendedores actuales:', error);
+        });
+}
 
 // Actualizar la función loadCashRegisterHistory para aceptar fechas de filtro
 function loadCashRegisterHistory(startDate = '', endDate = '') {
