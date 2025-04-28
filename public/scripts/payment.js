@@ -312,6 +312,10 @@ function updateStockDisplay(items) {
         const stockElement = document.getElementById(`stock-${component.id}`);
         if (stockElement) {
           const currentStock = parseInt(stockElement.textContent);
+          // Guardar el stock inicial si no existe
+          if (!stockElement.hasAttribute('data-initial-stock')) {
+            stockElement.setAttribute('data-initial-stock', currentStock);
+          }
           stockElement.textContent = currentStock - component.quantityToReduce;
         }
       });
@@ -320,6 +324,10 @@ function updateStockDisplay(items) {
       const stockElement = document.getElementById(`stock-${item.stockToUpdate[0].id}`);
       if (stockElement) {
         const currentStock = parseInt(stockElement.textContent);
+        // Guardar el stock inicial si no existe
+        if (!stockElement.hasAttribute('data-initial-stock')) {
+          stockElement.setAttribute('data-initial-stock', currentStock);
+        }
         stockElement.textContent = currentStock - item.stockToUpdate[0].quantityToReduce;
       }
     }

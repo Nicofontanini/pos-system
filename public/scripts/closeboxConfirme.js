@@ -10,15 +10,56 @@ let cashRegisterStartTime = null;
 // Add this function to load orders
 function loadOrders() {
   const local = window.location.pathname.includes('local1') ? 'local1' : 'local2';
-  // Update to use the correct endpoint
   return fetch(`/api/orders/${local}`)
     .then(response => response.json())
     .then(data => {
-      orders = data;
+      // Filtrar órdenes solo entre el inicio y cierre actual
+      orders = data.filter(order => {
+        const orderDate = new Date(order.date);
+        const startTime = new Date(cashRegisterStartTime);
+        return orderDate >= startTime;
+      });
+      currentOrders = orders; // Actualizar currentOrders con las órdenes filtradas
     })
     .catch(error => {
       console.error('Error loading orders:', error);
     });
+}
+
+function getProductSummary() {
+  const productSummary = [];
+  const productMap = new Map();
+
+  // Solo usar las órdenes desde el inicio de caja
+  currentOrders.forEach(order => {
+    order.items.forEach(item => {
+      const stockElement = document.getElementById(`stock-${item.id}`);
+      const currentStock = stockElement ? parseInt(stockElement.textContent) : 0;
+      const initialStock = stockElement ? parseInt(stockElement.getAttribute('data-initial-stock')) || 0 : 0;
+
+      if (productMap.has(item.name)) {
+        const product = productMap.get(item.name);
+        product.quantitySold += item.quantity;
+        product.totalSold += item.price * item.quantity;
+        product.remainingStock = currentStock;
+      } else {
+        productMap.set(item.name, {
+          name: item.name,
+          price: item.price,
+          quantitySold: item.quantity,
+          totalSold: item.price * item.quantity,
+          initialStock: initialStock,
+          remainingStock: currentStock
+        });
+      }
+    });
+  });
+
+  productMap.forEach(product => {
+    productSummary.push(product);
+  });
+
+  return productSummary;
 }
 
 // Call loadOrders when the page loads
@@ -105,18 +146,27 @@ function getProductSummary() {
   // Aggregate products from orders
   orders.forEach(order => {
     order.items.forEach(item => {
+      // Obtener el elemento de stock actual
+      const stockElement = document.getElementById(`stock-${item.id}`);
+      const currentStock = stockElement ? parseInt(stockElement.textContent) : 0;
+      
+      // Obtener el stock inicial del atributo data si existe
+      const initialStock = stockElement ? parseInt(stockElement.getAttribute('data-initial-stock')) || 0 : 0;
+
       if (productMap.has(item.name)) {
         const product = productMap.get(item.name);
         product.quantitySold += item.quantity;
         product.totalSold += item.price * item.quantity;
+        // Actualizar el stock restante
+        product.remainingStock = currentStock;
       } else {
         productMap.set(item.name, {
           name: item.name,
           price: item.price,
           quantitySold: item.quantity,
           totalSold: item.price * item.quantity,
-          initialStock: item.initialStock || 0,
-          remainingStock: item.remainingStock || 0
+          initialStock: initialStock,
+          remainingStock: currentStock
         });
       }
     });
