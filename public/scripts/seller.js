@@ -6,6 +6,10 @@ function loadSellerInfo() {
       .then(response => response.json())
       .then(data => {
         const sellerInfo = document.getElementById('sellerInfo');
+           if (!sellerInfo) {
+            console.warn('No se encontró el elemento sellerInfo en el DOM');
+            return;
+        }
         sellerInfo.innerHTML = `
       <p>Vendedor 1: ${data[local].vendedor1 ? data[local].vendedor1.name : 'No definido'} (Última actualización: ${data[local].vendedor1 ? new Date(data[local].vendedor1.updatedAt).toLocaleString() : 'N/A'})</p>
       <p>Vendedor 2: ${data[local].vendedor2 ? data[local].vendedor2.name : 'No definido'} (Última actualización: ${data[local].vendedor2 ? new Date(data[local].vendedor2.updatedAt).toLocaleString() : 'N/A'})</p>
