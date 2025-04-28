@@ -208,7 +208,7 @@ async function processPayment() {
       paymentAmounts: orderName.toLowerCase() === 'personal' ? { personal: 0 } : paymentAmounts,
     local: currentLocal,
     orderName: orderName,
-    sellerName: selectedSeller,
+    sellerName: selectedSeller || 'EmpanadasKM11', // Ensure seller name is included
     updateStock: true // Flag para indicar que se debe actualizar el stock
   };
 
@@ -361,10 +361,9 @@ function generateOrderPrintContent(orderData) {
 
   // Verificar explícitamente los valores
   const clientName = orderData.orderName ? orderData.orderName : 'No especificado';
-  const vendorName = orderData.sellerName ? orderData.sellerName : 'No especificado';
+  // const vendorName = orderData.sellerName ? orderData.sellerName : 'No especificado';
 
   console.log("Imprimiendo - Nombre del cliente:", clientName);
-  console.log("Imprimiendo - Nombre del vendedor:", vendorName);
 
   let paymentDetails = '';
 
@@ -538,7 +537,7 @@ function generateOrderPrintContent(orderData) {
 
         <div class="seller-info">
           <h4>Información del Vendedor</h4>
-          <p>Vendedor: ${vendorName}</p>
+          <p>Nombre: EmpanadasKM11</p>
         </div>
 
         <div class="payment-info">

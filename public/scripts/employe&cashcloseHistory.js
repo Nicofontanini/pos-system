@@ -967,7 +967,7 @@ function logEmployeeAction(action) {
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                alert(`Registro de ${action} exitoso para ${employeeName}`);
+                // alert(`Registro de ${action} exitoso para ${employeeName}`);
                 document.getElementById('logEmployeeName').value = '';
                 closeEmployeeLogModal();
                 // Add this line to reload sellers after login/logout

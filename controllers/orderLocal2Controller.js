@@ -11,7 +11,7 @@ exports.createOrder = async (req, res) => {
       paymentAmounts: req.body.paymentAmounts,
       local: req.body.local,
       orderName: req.body.orderName,
-      sellerName: req.body.sellerName,
+      sellerName: req.body.sellerName || 'EmpanadasKM11',
       items: req.body.items || [],
       status: 'completed'
     };
