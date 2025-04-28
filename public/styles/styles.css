@@ -685,7 +685,7 @@
 
 .print-table .subtotal {
   text-align: right;
-  color: var(--color-success);
+  color: black;
   font-weight: 600;
 }
 
@@ -699,7 +699,7 @@
 }
 
 .print-table .total-amount {
-  color: var(--color-success);
+  color: black;
   font-size: 1.1rem;
 }
 

@@ -1,7 +1,7 @@
 // Variables globales para el pago
 // Verificar si la variable ya existe
 if (typeof currentPaymentMethod === 'undefined') {
-    let currentPaymentMethod = null;
+  let currentPaymentMethod = null;
 }
 let paymentAmounts = {
   efectivo: 0,
@@ -21,19 +21,19 @@ let selectedSeller = '';
 let lastOrderData = null;
 
 function showPaymentModal() {
-    const modal = document.getElementById('paymentModal');
-    const total = document.getElementById('cart-total').textContent;
-    document.getElementById('modalTotal').textContent = total;
-    document.getElementById('remainingAmount').textContent = total;
-    modal.style.display = 'block';
-    
-    // Reset payment inputs
-    document.getElementById('paymentInputs').innerHTML = '';
-    document.getElementById('processPaymentBtn').disabled = true;
-    document.getElementById('orderName').value = '';
+  const modal = document.getElementById('paymentModal');
+  const total = document.getElementById('cart-total').textContent;
+  document.getElementById('modalTotal').textContent = total;
+  document.getElementById('remainingAmount').textContent = total;
+  modal.style.display = 'block';
 
-    // Agregar el event listener al botón de procesar pago
-    document.getElementById('processPaymentBtn').addEventListener('click', processPayment);
+  // Reset payment inputs
+  document.getElementById('paymentInputs').innerHTML = '';
+  document.getElementById('processPaymentBtn').disabled = true;
+  document.getElementById('orderName').value = '';
+
+  // Agregar el event listener al botón de procesar pago
+  document.getElementById('processPaymentBtn').addEventListener('click', processPayment);
 }
 
 function closePaymentModal() {
@@ -47,12 +47,12 @@ function selectPaymentMethod(method) {
 }
 
 function updatePaymentInputs(method) {
-    const container = document.getElementById('paymentInputs');
-    const total = document.getElementById('modalTotal').textContent;
-    container.innerHTML = '';
+  const container = document.getElementById('paymentInputs');
+  const total = document.getElementById('modalTotal').textContent;
+  container.innerHTML = '';
 
-    if (currentPaymentMethod === 'mixto') {
-        container.innerHTML = `
+  if (currentPaymentMethod === 'mixto') {
+    container.innerHTML = `
             <div class="payment-input">
                 <label>Monto en efectivo:</label>
                 <input type="number" id="cashAmount" step="0.01" value="" onchange="updateRemainingAmount()">
@@ -62,8 +62,8 @@ function updatePaymentInputs(method) {
                 <input type="number" id="transferAmount" step="0.01" value="" onchange="updateRemainingAmount()">
             </div>
         `;
-    } else if (currentPaymentMethod === 'tarjeta') {
-        container.innerHTML = `
+  } else if (currentPaymentMethod === 'tarjeta') {
+    container.innerHTML = `
             <div class="payment-input">
                 <label>Monto tarjeta:</label>
                 <input type="number" id="singleAmount" step="0.01" value="" onchange="updateRemainingAmount()">
@@ -73,17 +73,17 @@ function updatePaymentInputs(method) {
                 <input type="number" id="cardSurcharge" min="0" max="100" step="0.1" value="0" onchange="updateCardAmount()">
             </div>
         `;
-    } else {
-        container.innerHTML = `
+  } else {
+    container.innerHTML = `
             <div class="payment-input">
                 <label>Monto ${currentPaymentMethod}:</label>
                 <input type="number" id="singleAmount" step="0.01" value="" onchange="updateRemainingAmount()">
             </div>
         `;
-    }
-    
-    // Reset remaining amount display
-    document.getElementById('remainingAmount').textContent = total;
+  }
+
+  // Reset remaining amount display
+  document.getElementById('remainingAmount').textContent = total;
 }
 
 function updateRemainingAmount() {
@@ -203,9 +203,9 @@ async function processPayment() {
     total: finalTotal,
     originalTotal: total,
     paymentMethod: orderName.toLowerCase() === 'personal' ? 'personal' : currentPaymentMethod,
-    surchargePercent: currentPaymentMethod === 'tarjeta' ? 
+    surchargePercent: currentPaymentMethod === 'tarjeta' ?
       parseFloat(document.getElementById('cardSurcharge').value) || 0 : 0,
-      paymentAmounts: orderName.toLowerCase() === 'personal' ? { personal: 0 } : paymentAmounts,
+    paymentAmounts: orderName.toLowerCase() === 'personal' ? { personal: 0 } : paymentAmounts,
     local: currentLocal,
     orderName: orderName,
     sellerName: selectedSeller || 'EmpanadasKM11', // Ensure seller name is included
@@ -244,7 +244,7 @@ async function processPayment() {
 
     // Actualizar la interfaz
     updateStockDisplay(orderData.items);
-    
+
     // Continue with existing functionality after successful save
     lastOrderData = orderData;
     totalPayments++;
@@ -424,7 +424,6 @@ function generateOrderPrintContent(orderData) {
         }
 
         .print-table th {
-          background-color: var(--color-light);
           color: var(--color-text);
           font-weight: 600;
           text-align: left;
@@ -456,7 +455,7 @@ function generateOrderPrintContent(orderData) {
 
         .print-table .subtotal {
           text-align: right;
-          color: var(--color-success);
+          color: black;
           font-weight: 600;
         }
 
@@ -470,7 +469,7 @@ function generateOrderPrintContent(orderData) {
         }
 
         .print-table .total-amount {
-          color: var(--color-success);
+          color: black;
           font-size: 1.1rem;
         }
 
@@ -482,7 +481,6 @@ function generateOrderPrintContent(orderData) {
         }
 
         .order-info div {
-          background-color: var(--color-light);
           padding: 1rem;
           border-radius: var(--border-radius-sm);
         }
@@ -543,11 +541,6 @@ function generateOrderPrintContent(orderData) {
           <p>Nombre: ${clientName}</p>
         </div>
 
-        <div class="seller-info">
-          <h4>Información del Vendedor</h4>
-          <p>Nombre: EmpanadasKM11</p>
-        </div>
-
         <div class="payment-info">
           <h4>Información de Pago</h4>
           <p>Método de pago: ${orderData.paymentMethod}</p>
@@ -560,7 +553,6 @@ function generateOrderPrintContent(orderData) {
           <tr>
             <th>Producto</th>
             <th>Cantidad</th>
-            <th>Precio Unit.</th>
             <th>Subtotal</th>
           </tr>
         </thead>
@@ -578,17 +570,16 @@ function generateOrderPrintContent(orderData) {
                   </div>
                 ` : ''}
               </td>
-              <td class="quantity">${item.quantity || 1}</td>
-              <td class="price">$${item.price.toFixed(2)}</td>
+              <td class="quantity">${item.quantity || 1}</td>  
               <td class="subtotal">$${(item.price * (item.quantity || 1)).toFixed(2)}</td>
             </tr>
           `).join('')}
         </tbody>
         <tfoot>
-          <tr class="total-row">
-            <td colspan="3">Total</td>
-            <td class="total-amount">$${orderData.total.toFixed(2)}</td>
-          </tr>
+        <tr class="total-row">
+        <td colspan="2">Total</td>
+        <td class="total-amount">$${orderData.total.toFixed(2)}</td>
+        </tr>
         </tfoot>
       </table>
 
