@@ -2,7 +2,8 @@ module.exports = (sequelize, DataTypes) => {
   const EmployeeLog = sequelize.define('EmployeeLog', {
     employeeName: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: false,
+      autoIncrement: true
     },
     action: {
       type: DataTypes.STRING,
