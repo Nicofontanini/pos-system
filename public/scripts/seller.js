@@ -282,6 +282,4 @@ function loadSellerInfo() {
 }
 
       // Llamar a esta función cuando se carga la página
-     document.addEventListener('DOMContentLoaded', function() {
-    loadSellersFromStorage();
-});
+ document.addEventListener('DOMContentLoaded', loadSellersFromStorage);
