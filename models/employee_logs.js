@@ -1,9 +1,21 @@
+const { Model } = require('sequelize');
+
 module.exports = (sequelize, DataTypes) => {
-  const EmployeeLog = sequelize.define('EmployeeLog', {
+  class EmployeeLog extends Model {
+    static associate(models) {
+      // define associations here if needed
+    }
+  }
+  
+  EmployeeLog.init({
+    id: {
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      autoIncrement: true
+    },
     employeeName: {
       type: DataTypes.STRING,
-      allowNull: false,
-      autoIncrement: true
+      allowNull: false
     },
     action: {
       type: DataTypes.STRING,
@@ -15,10 +27,12 @@ module.exports = (sequelize, DataTypes) => {
     },
     timestamp: {
       type: DataTypes.DATE,
-      allowNull: false
+      defaultValue: DataTypes.NOW
     }
   }, {
-    timestamps: false // Prevent Sequelize from automatically adding createdAt and updatedAt columns
+    sequelize,
+    modelName: 'EmployeeLog',
+    tableName: 'EmployeeLogs'
   });
 
   return EmployeeLog;
