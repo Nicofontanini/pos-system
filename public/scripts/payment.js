@@ -55,29 +55,29 @@ function updatePaymentInputs(method) {
     container.innerHTML = `
             <div class="payment-input">
                 <label>Monto en efectivo:</label>
-                <input type="number" id="cashAmount" step="0.01" value="" onchange="updateRemainingAmount()">
+                <input type="number" id="cashAmount" step="0.01" value="" oninput="updateRemainingAmount()">
             </div>
             <div class="payment-input">
                 <label>Monto transferencia:</label>
-                <input type="number" id="transferAmount" step="0.01" value="" onchange="updateRemainingAmount()">
+                <input type="number" id="transferAmount" step="0.01" value="" oninput="updateRemainingAmount()">
             </div>
         `;
   } else if (currentPaymentMethod === 'tarjeta') {
     container.innerHTML = `
             <div class="payment-input">
                 <label>Monto tarjeta:</label>
-                <input type="number" id="singleAmount" step="0.01" value="" onchange="updateRemainingAmount()">
+                <input type="number" id="singleAmount" step="0.01" value="" oninput="updateRemainingAmount()">
             </div>
             <div class="payment-input">
                 <label>Recargo (%):</label>
-                <input type="number" id="cardSurcharge" min="0" max="100" step="0.1" value="0" onchange="updateCardAmount()">
+                <input type="number" id="cardSurcharge" min="0" max="100" step="0.1" value="0" oninput="updateCardAmount()">
             </div>
         `;
   } else {
     container.innerHTML = `
             <div class="payment-input">
                 <label>Monto ${currentPaymentMethod}:</label>
-                <input type="number" id="singleAmount" step="0.01" value="" onchange="updateRemainingAmount()">
+                <input type="number" id="singleAmount" step="0.01" value="" oninput="updateRemainingAmount()">
             </div>
         `;
   }
@@ -245,7 +245,7 @@ async function processPayment() {
     // Actualizar la interfaz
     updateStockDisplay(orderData.items);
 
-    // Continue with existing functionality after successful save
+    // After successful processing
     lastOrderData = orderData;
     totalPayments++;
     totalAmount += orderData.total;
@@ -257,11 +257,9 @@ async function processPayment() {
     updateCartUI();
     document.getElementById('orderName').value = '';
 
-    // Show print button
-    const printOrderBtn = document.getElementById('printOrderBtn');
-    printOrderBtn.style.display = 'block';
-    document.getElementById('processPaymentBtn').disabled = true;
-    printOrderBtn.onclick = () => printOrder(lastOrderData);
+    // Print immediately and close modal
+    printOrder(lastOrderData);
+    closePaymentModal();
 
   } catch (error) {
     console.error('Error:', error);
@@ -413,122 +411,9 @@ function generateOrderPrintContent(orderData) {
     <!DOCTYPE html>
     <html>
     <head>
+      <link rel="stylesheet" href="/styles/styles4ticket.css">
       <link rel="stylesheet" href="/styles/base.css">
       <link rel="stylesheet" href="/styles/styles.css">
-      <style>
-        .print-table {
-          width: 100%;
-          border-collapse: collapse;
-          margin: 1rem 0;
-          font-size: 0.9rem;
-        }
-
-        .print-table th {
-          color: var(--color-text);
-          font-weight: 600;
-          text-align: left;
-          padding: 0.5rem;
-          border: 1px solid var(--color-border);
-        }
-
-        .print-table td {
-          padding: 0.5rem;
-          border: 1px solid var(--color-border);
-          vertical-align: top;
-        }
-
-        .print-table .product-name {
-          font-weight: 500;
-          color: var(--color-text);
-        }
-
-        .print-table .quantity {
-          text-align: right;
-          color: var(--color-text-light);
-        }
-
-        .print-table .price {
-          text-align: right;
-          color: var(--color-text);
-          font-weight: 500;
-        }
-
-        .print-table .subtotal {
-          text-align: right;
-          color: black;
-          font-weight: 600;
-        }
-
-        .print-table .total-row {
-          background-color: var(--color-light);
-          font-weight: 600;
-        }
-
-        .print-table .total-row td {
-          border-top: 2px solid var(--color-border);
-        }
-
-        .print-table .total-amount {
-          color: black;
-          font-size: 1.1rem;
-        }
-
-        .order-info {
-          display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-          gap: 1rem;
-          margin-bottom: 1rem;
-        }
-
-        .order-info div {
-          padding: 1rem;
-          border-radius: var(--border-radius-sm);
-        }
-
-        .order-info h4 {
-          margin: 0 0 0.5rem 0;
-          color: var(--color-primary);
-        }
-
-        .docena-detail {
-          margin: 1rem 0;
-          padding: 1rem;
-          background-color: var(--color-light);
-          border-radius: var(--border-radius-sm);
-        }
-
-        .docena-detail h4 {
-          margin: 0 0 0.5rem 0;
-          color: var(--color-primary);
-        }
-
-        .docena-detail ul {
-          list-style-type: none;
-          padding: 0;
-          margin: 0;
-        }
-
-        .docena-detail li {
-          margin: 0.25rem 0;
-          padding: 0.25rem 0;
-        }
-
-        .payment-info {
-          margin: 1rem 0;
-          padding: 1rem;
-          background-color: var(--color-light);
-          border-radius: var(--border-radius-sm);
-        }
-
-        .payment-info h3 {
-          margin: 0 0 0.5rem 0;
-          color: var(--color-primary);
-        }
-
-        .payment-info p {
-          margin: 0.25rem 0;
-        }
-      </style>
     </head>
     <body>
       <h2>EMPANDAS KM11</h2>

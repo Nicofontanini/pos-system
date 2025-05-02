@@ -1,7 +1,3 @@
-// Add this at the top of the file
-// Remove this line since socket is already declared elsewhere
-// const socket = io();
-
 // Add these variables at the top of the file
 let orders = [];
 let currentOrders = [];
@@ -180,21 +176,12 @@ function getProductSummary() {
   return productSummary;
 }
 
-// Remove variable declarations and just use the existing ones from payment.js
-// Remove these variable declarations
-// let totalPayments = 0;
-// let totalAmount = 0;
-// let orders = [];
-// let paymentAmounts = { ... };
-
-// Keep the rest of your functions
 // Add this function to handle new orders
 function addNewOrder(order) {
   if (cashRegisterStartTime) {
     currentOrders.push(order);
   }
 }
-
 // Modify resetCounters to also reset currentOrders
 function resetCounters() {
     totalPayments = 0;

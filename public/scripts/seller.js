@@ -172,7 +172,6 @@ socket.on('employee-log-updated', function (newLog) {
   }
 });
 
-// Agregar esto junto a los otros manejadores de socket
 // Mantener solo un listener para 'sellers-updated'
 socket.on('sellers-updated', (sellers) => {
     const local = window.location.pathname.includes('local1') ? 'local1' : 'local2';

@@ -37,8 +37,6 @@ app.use(session({
   resave: false,
   saveUninitialized: true,
   cookie: { secure: false },
-  // Para producción, considera usar un store como connect-pg-simple
-  // store: new (require('connect-pg-simple')(session))()
 }));
 
 // Set view engine
@@ -905,55 +903,6 @@ app.post('/cash-register', (req, res) => {
   res.json({ success: true });
 });
 
-// Data cleanup
-// app.post('/clean-old-data', (req, res) => {
-//   const local = req.headers['x-local'];
-
-//   try {
-//     const fiveDaysAgo = new Date();
-//     fiveDaysAgo.setDate(fiveDaysAgo.getDate() - 5);
-
-//     let orders = readFile(ordersPath, []);
-//     let orders2 = readFile(orders2Path, []);
-
-//     const filteredOrders = orders.filter(order => {
-//       const orderDate = new Date(order.date);
-//       return orderDate >= fiveDaysAgo && order.local === local;
-//     });
-
-//     const filteredOrders2 = orders2.filter(order => {
-//       const orderDate = new Date(order.date);
-//       return orderDate >= fiveDaysAgo && order.local === local;
-//     });
-
-//     writeFile(ordersPath, filteredOrders);
-//     writeFile(orders2Path, filteredOrders2);
-
-//     let sellersHistory = readFile(sellersHistoryPath, []);
-
-//     const filteredSellersHistory = sellersHistory.filter(entry => {
-//       const entryDate = new Date(entry.updatedAt);
-//       return entryDate >= fiveDaysAgo && entry.local === local;
-//     });
-
-//     writeFile(sellersHistoryPath, filteredSellersHistory);
-
-//     let cashRegisterHistory = readFile(cashRegisterFilePath, []);
-
-//     const filteredCashRegisterHistory = cashRegisterHistory.filter(entry => {
-//       const entryDate = new Date(entry.date);
-//       return entryDate >= fiveDaysAgo && entry.local === local;
-//     });
-
-//     writeFile(cashRegisterFilePath, filteredCashRegisterHistory);
-
-//     res.status(200).json({ success: true, message: 'Datos antiguos eliminados correctamente' });
-//   } catch (error) {
-//     console.error('Error al limpiar los datos antiguos:', error);
-//     res.status(500).json({ success: false, message: 'Error al limpiar los datos antiguos' });
-//   }
-// });
-
 // Add this route for admin delete
 app.delete('/api/product/:id', isAuthenticated, productController.deleteProduct);
 
@@ -980,10 +929,6 @@ app.post('/api/cash-register/start', async (req, res) => {
 app.get('/api/cash-register/close', cashRegisterHistoryController.getCashRegisterHistory);
 app.post('/api/cash-register/close', cashRegisterHistoryController.addCashRegisterEntry);
 app.get('/api/cash-register/close/date', cashRegisterHistoryController.getCashRegisterHistoryByDate);
-
-// Eliminar o comentar las rutas antiguas
-// app.get('/api/cash-register/history', cashRegisterHistoryController.getCashRegisterHistory);
-// app.get('/api/cash-register/history/date', cashRegisterHistoryController.getCashRegisterHistoryByDate);
 
 app.get('/cash-register', (req, res) => {
     res.json({

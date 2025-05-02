@@ -61,7 +61,6 @@ socket.on('stock-update', function ({ local, items }) {
     }
   });
 
-  
   // Función mejorada para enviar alerta
   function sendAlert(productName, stockLevel) {
     // Agregamos logs para debug

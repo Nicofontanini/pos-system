@@ -5,10 +5,7 @@ function printEmployeeHistory() {
 <!DOCTYPE html>
 <html>
 <head>
-<style>
-  body { font-family: Arial; }
-  .history-entry { margin-bottom: 20px; }
-</style>
+      <link rel="stylesheet" href="/styles/styles4ticket.css">
 </head>
 <body>
 <h2>Historial de Cambios de Empleados</h2>
@@ -61,8 +58,6 @@ function loadEmployeeHistory() {
         });
 }
 
-
-
 // Función para cargar los contadores desde el backend
 function loadCashRegisterCounters() {
     fetch('/cash-register')
@@ -89,11 +84,8 @@ function updateCashRegisterCounters() {
         })
         .catch(error => console.error('Error al actualizar los contadores:', error));
 }
-
-
 // Llamar a loadCashRegisterCounters al cargar la página
 document.addEventListener('DOMContentLoaded', loadCashRegisterCounters);
-
 
 // Funciones para el historial
 function showHistory() {
@@ -166,10 +158,7 @@ function printHistory() {
 <!DOCTYPE html>
 <html>
 <head>
-<style>
-  body { font-family: Arial; }
-  .order-card { border: 1px solid #ddd; padding: 10px; margin: 10px 0; }
-</style>
+    <link rel="stylesheet" href="/styles/styles4ticket.css">
 </head>
 <body>
 <h2>Historial de comandas</h2>
@@ -238,14 +227,14 @@ socket.on('update-cash-register-history', (history) => {
 function loadCashRegisterHistory() {
     console.log('Solicitando historial de cierres de caja...');
     const local = window.location.pathname.includes('local1') ? 'local1' : 'local2';
-    
+
     // Obtener fechas de filtro si existen
     const startDate = document.getElementById('cashStartDate')?.value || '';
     const endDate = document.getElementById('cashEndDate')?.value || '';
-    
+
     // Solicitar el historial de cierres de caja al servidor usando socket
     socket.emit('get-cash-register-history', { local, startDate, endDate });
-    
+
     // Mostrar indicador de carga
     const historyContainer = document.getElementById('cash-register-history');
     if (historyContainer) {
@@ -257,125 +246,14 @@ function loadCashRegisterHistory() {
 function filterCashRegisterHistory() {
     const startDate = document.getElementById('cashStartDate').value;
     const endDate = document.getElementById('cashEndDate').value;
-    
+
     if (!startDate || !endDate) {
         alert('Por favor seleccione ambas fechas');
         return;
     }
-    
+
     loadCashRegisterHistory(); // Reutilizamos la misma función
 }
-
-// Actualizar la función que muestra el historial
-socket.on('update-cash-register-history', (history) => {
-    const historyContainer = document.getElementById('cash-register-history');
-    historyContainer.innerHTML = '';
-
-    // Ordenar del más reciente al más antiguo
-    history.reverse().forEach((entry, index) => {
-        const entryElement = document.createElement('div');
-        entryElement.className = 'cash-register-entry';
-
-        // Formatear fechas
-        const closeTime = new Date(entry.closeTime);
-        const startTime = new Date(entry.startTime);
-        const formattedCloseTime = closeTime.toLocaleDateString() + ' ' + closeTime.toLocaleTimeString();
-        const formattedStartTime = startTime.toLocaleDateString() + ' ' + startTime.toLocaleTimeString();
-
-        // Crear resumen de productos con stock
-        let productsHTML = `
-<h4>Productos Vendidos (${entry.productSummary.length}):</h4>
-<table class="summary-table">
-  <tr>
-    <th>Producto</th>
-    <th>Precio</th>
-    <th>Vendidos</th>
-    <th>Stock Inicial</th>
-    <th>Stock Restante</th>
-    <th>Total</th>
-  </tr>
-`;
-
-        entry.productSummary.forEach(product => {
-            productsHTML += `
-  <tr>
-    <td>${product.name}</td>
-    <td>$${product.price.toFixed(2)}</td>
-    <td>${product.quantitySold}</td>
-    <td>${product.initialStock}</td>
-    <td class="${product.remainingStock <= 5 ? 'low-stock' : ''}">${product.remainingStock}</td>
-    <td>$${product.totalSold.toFixed(2)}</td>
-  </tr>
-`;
-        });
-
-        productsHTML += '</table>';
-
-        // Crear resumen de pagos detallado
-        let paymentsHTML = `
-<h4>Métodos de Pago:</h4>
-<table class="payment-table">
-  <tr>
-    <th>Método</th>
-    <th>Monto</th>
-    <th>% del Total</th>
-  </tr>
-  <tr>
-    <td>Efectivo</td>
-    <td>$${entry.paymentSummary.efectivo.toFixed(2)}</td>
-    <td>${((entry.paymentSummary.efectivo / entry.paymentSummary.total) * 100).toFixed(1)}%</td>
-  </tr>
-  <tr>
-    <td>Transferencia</td>
-    <td>$${entry.paymentSummary.transferencia.toFixed(2)}</td>
-    <td>${((entry.paymentSummary.transferencia / entry.paymentSummary.total) * 100).toFixed(1)}%</td>
-  </tr>
-  <tr>
-    <td>Mixto</td>
-    <td>$${entry.paymentSummary.mixto.toFixed(2)}</td>
-    <td>${((entry.paymentSummary.mixto / entry.paymentSummary.total) * 100).toFixed(1)}%</td>
-  </tr>
-  <tr class="total-row">
-    <td><strong>TOTAL</strong></td>
-    <td><strong>$${entry.paymentSummary.total.toFixed(2)}</strong></td>
-    <td>100%</td>
-  </tr>
-</table>
-`;
-
-entryElement.innerHTML = `
-<div class="entry-header">
-  <h3>Cierre #${history.length - index} - ${formattedCloseTime}</h3>
-  <p><strong>Local:</strong> ${entry.local.toUpperCase()}</p>
-  <p><strong>Período:</strong> ${formattedStartTime} a ${formattedCloseTime}</p>
-  <p><strong>Total Ventas:</strong> $${entry.paymentSummary.total.toFixed(2)}</p>
-  <p><strong>Pedidos Procesados:</strong> ${entry.ordersCount}</p>
-  <div class="button-group">
-    <button onclick="downloadSingleCashRegister('${entry.id}')" class="download-btn">Descargar Excel</button>
-    <button onclick="printSingleCashRegister('${entry.id}')" class="print-btn">Imprimir</button>
-  </div>
-</div>
-<div class="entry-details">
-  <button class="toggle-details" onclick="toggleDetails(this)">Mostrar Detalles</button>
-  <div class="details-content" style="display:none;">
-    ${productsHTML}
-    ${paymentsHTML}
-    <h4>Pedidos incluidos (${entry.orders.length}):</h4>
-  </div>
-</div>
-<hr>
-`;
-
-        historyContainer.appendChild(entryElement);
-    });
-     // Si no hay resultados, mostrar mensaje
-     if (history.length === 0) {
-        const noResults = document.createElement('div');
-        noResults.className = 'no-results';
-        noResults.innerHTML = '<p>No se encontraron cierres de caja en el período especificado.</p>';
-        historyContainer.appendChild(noResults);
-    }
-});
 
 // Función para mostrar/ocultar detalles
 function toggleDetails(button) {
@@ -412,7 +290,7 @@ socket.on('single-cash-register', (entry) => {
         alert('No se pudo obtener la información del cierre de caja');
         return;
     }
-    
+
     // Si es para imprimir, crear una ventana de impresión
     if (entry.forPrint === true) {
         // Crear contenido HTML para imprimir
@@ -420,19 +298,7 @@ socket.on('single-cash-register', (entry) => {
         <html>
         <head>
             <title>Cierre de Caja - ${entry.local} - ${new Date(entry.closeTime).toLocaleDateString()}</title>
-            <style>
-                body { font-family: Arial, sans-serif; margin: 20px; }
-                h1 { text-align: center; margin-bottom: 20px; }
-                .info { margin-bottom: 15px; }
-                table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
-                th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
-                th { background-color: #f2f2f2; }
-                .total-row { font-weight: bold; background-color: #f9f9f9; }
-                .section-title { margin-top: 20px; margin-bottom: 10px; font-weight: bold; }
-                @media print {
-                    button { display: none; }
-                }
-            </style>
+            <link rel="stylesheet" href="/styles/styles4ticket.css">
         </head>
         <body>
             <button onclick="window.print()" style="padding: 10px; margin-bottom: 20px;">Imprimir</button>
@@ -450,28 +316,25 @@ socket.on('single-cash-register', (entry) => {
                 <tr>
                     <th>Tipo</th>
                     <th>Monto</th>
-                    <th>Porcentaje</th>
                 </tr>`;
-                
+
         ['efectivo', 'transferencia', 'mixto'].forEach(method => {
             if (entry.paymentSummary[method] > 0) {
                 printContent += `
                 <tr>
                     <td>${method.charAt(0).toUpperCase() + method.slice(1)}</td>
                     <td>$${entry.paymentSummary[method].toFixed(2)}</td>
-                    <td>${((entry.paymentSummary[method]/entry.paymentSummary.total)*100).toFixed(2)}%</td>
                 </tr>`;
             }
         });
-                
+
         printContent += `
                 <tr class="total-row">
                     <td>TOTAL</td>
                     <td>$${entry.paymentSummary.total.toFixed(2)}</td>
-                    <td>100%</td>
                 </tr>
             </table>`;
-            
+
         if (entry.productSummary?.length > 0) {
             printContent += `
             <div class="section-title">PRODUCTOS VENDIDOS</div>
@@ -484,7 +347,7 @@ socket.on('single-cash-register', (entry) => {
                     <th>Stock Restante</th>
                     <th>Total</th>
                 </tr>`;
-                
+
             entry.productSummary.forEach(p => {
                 printContent += `
                 <tr>
@@ -496,10 +359,10 @@ socket.on('single-cash-register', (entry) => {
                     <td>$${p.totalSold.toFixed(2)}</td>
                 </tr>`;
             });
-                
+
             printContent += `</table>`;
         }
-            
+
         if (entry.orders?.length > 0) {
             printContent += `
             <div class="section-title">PEDIDOS INCLUIDOS</div>
@@ -511,7 +374,7 @@ socket.on('single-cash-register', (entry) => {
                     <th>Total</th>
                     <th>Método de Pago</th>
                 </tr>`;
-                
+
             entry.orders.forEach(order => {
                 const orderTotal = parseFloat(order.total) || 0;
                 printContent += `
@@ -523,24 +386,22 @@ socket.on('single-cash-register', (entry) => {
                     <td>${order.paymentMethod}</td>
                 </tr>`;
             });
-                
+
             printContent += `</table>`;
         }
-            
+
         printContent += `
         </body>
         </html>`;
-            
+
         // Abrir ventana de impresión
         const printWindow = window.open('', '_blank');
         printWindow.document.write(printContent);
         printWindow.document.close();
-        
+
         return;
     }
-    
-    // Si no es para imprimir, continuar con la descarga del Excel
-    // El código existente para la descarga de Excel se mantiene igual
+
 });
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -550,24 +411,24 @@ document.addEventListener('DOMContentLoaded', function () {
 function downloadCashRegisterExcel() {
     const historyContainer = document.getElementById('cash-register-history');
     const entries = Array.from(historyContainer.querySelectorAll('.cash-register-entry'));
-    
+
     // Crear un libro de trabajo nuevo
     const workbook = XLSX.utils.book_new();
-    
+
     // Para cada entrada de cierre de caja, crear una hoja separada
     entries.forEach((entry, index) => {
         // Extraer información básica
         const title = entry.querySelector('.entry-header h3').textContent.trim();
         const date = title.split(' - ')[1]?.trim() || 'Sin fecha';
-        
+
         // Preparar los datos en formato vertical
         const data = [];
-        
+
         // Información general - Sección 1
         data.push(['INFORMACIÓN GENERAL', '']);
         data.push(['Cierre', title.split(' - ')[0]?.trim() || 'Sin número']);
         data.push(['Fecha', date]);
-        
+
         // Con la nueva estructura HTML, necesitamos ajustar cómo extraemos la información
         // Extraer desde la tabla consolidada
         const consolidatedTable = entry.querySelector('.consolidated-table');
@@ -585,59 +446,55 @@ function downloadCashRegisterExcel() {
                     data.push(['Transferencia', cells[5].textContent.trim()]);
                 }
             }
-            
+
             // Añadimos una sección específica para métodos de pago
             data.push(['', '']);
             data.push(['MÉTODOS DE PAGO', '']);
-            data.push(['Método', 'Monto', 'Porcentaje']);
-            
+            data.push(['Método', 'Monto']);
+
             if (infoRows && infoRows.length > 0) {
                 const cells = infoRows[0].querySelectorAll('td');
                 if (cells.length >= 6) {
-                    // Extrayendo efectivo y transferencia de las celdas
-                    // Ejemplo: "$1000.00 (50.0%)" -> separamos en "$1000.00" y "50.0%"
+                    // Extract only the amounts without percentages
                     const efectivoCell = cells[4].textContent.trim();
                     const transferenciaCell = cells[5].textContent.trim();
-                    
-                    // Extrae el monto y porcentaje para efectivo
-                    const efectivoMatch = efectivoCell.match(/\$([\d.]+)\s*\(([\d.]+)%\)/);
-                    if (efectivoMatch && efectivoMatch.length >= 3) {
-                        data.push(['Efectivo', `$${efectivoMatch[1]}`, `${efectivoMatch[2]}%`]);
+
+                    // Extract only the amount for efectivo
+                    const efectivoMatch = efectivoCell.match(/\$([\d.]+)/);
+                    if (efectivoMatch) {
+                        data.push(['Efectivo', `$${efectivoMatch[1]}`]);
                     } else {
-                        data.push(['Efectivo', efectivoCell, '']);
+                        data.push(['Efectivo', efectivoCell]);
                     }
-                    
-                    // Extrae el monto y porcentaje para transferencia
-                    const transferenciaMatch = transferenciaCell.match(/\$([\d.]+)\s*\(([\d.]+)%\)/);
-                    if (transferenciaMatch && transferenciaMatch.length >= 3) {
-                        data.push(['Transferencia', `$${transferenciaMatch[1]}`, `${transferenciaMatch[2]}%`]);
+
+                    // Extract only the amount for transferencia
+                    const transferenciaMatch = transferenciaCell.match(/\$([\d.]+)/);
+                    if (transferenciaMatch) {
+                        data.push(['Transferencia', `$${transferenciaMatch[1]}`]);
                     } else {
-                        data.push(['Transferencia', transferenciaCell, '']);
+                        data.push(['Transferencia', transferenciaCell]);
                     }
-                    
-                    // Si hay información de pago mixto, la extraemos de la estructura antigua
-                    // o la calculamos si es necesario
+
+                    // If there's mixed payment info
                     const mixtoElement = entry.querySelector('.payment-table tr:nth-child(4) td:nth-child(2)');
                     if (mixtoElement) {
                         const mixtoValue = mixtoElement.textContent.trim();
-                        const mixtoPercentElement = entry.querySelector('.payment-table tr:nth-child(4) td:nth-child(3)');
-                        const mixtoPercent = mixtoPercentElement ? mixtoPercentElement.textContent.trim() : '';
-                        data.push(['Mixto', mixtoValue, mixtoPercent]);
+                        data.push(['Mixto', mixtoValue]);
                     }
-                    
-                    // Calcular el total
+
+                    // Total without percentage
                     const totalVentas = cells[2].textContent.trim();
-                    data.push(['TOTAL', totalVentas, '100%']);
+                    data.push(['TOTAL', totalVentas]);
                 }
             }
-            
+
             // Espacio en blanco para mejor legibilidad
             data.push(['', '']);
             data.push(['PRODUCTOS VENDIDOS', '']);
-            
+
             // Cabeceras para productos
             data.push(['Producto', 'Precio', 'Vendidos', 'Stock Inicial', 'Stock Restante', 'Total']);
-            
+
             // Extraer datos de productos (segunda sección de la tabla)
             const productRows = consolidatedTable.querySelectorAll('tbody')[1]?.querySelectorAll('tr');
             if (productRows && productRows.length > 0) {
@@ -655,14 +512,14 @@ function downloadCashRegisterExcel() {
                     }
                 });
             }
-            
+
             // Espacio en blanco para mejor legibilidad
             data.push(['', '']);
             data.push(['PEDIDOS INCLUIDOS', '']);
-            
+
             // Cabeceras para pedidos
             data.push(['ID', 'Nombre', 'Vendedor', 'Total', 'Método de Pago']);
-            
+
             // Extraer datos de pedidos (tercera sección de la tabla)
             const orderRows = consolidatedTable.querySelectorAll('tbody')[2]?.querySelectorAll('tr');
             if (orderRows && orderRows.length > 0) {
@@ -680,7 +537,6 @@ function downloadCashRegisterExcel() {
                 });
             }
         } else {
-            // Compatibilidad con la estructura antigua
             // Si no encontramos la tabla consolidada, intentamos extraer desde los elementos p y tablas
             const paragraphs = entry.querySelectorAll('.entry-header p');
             if (paragraphs.length >= 3) {
@@ -695,14 +551,13 @@ function downloadCashRegisterExcel() {
                     }
                 });
             }
-            
             // Extraer información de métodos de pago
             const paymentTable = entry.querySelector('.payment-table');
             if (paymentTable) {
                 data.push(['', '']);
                 data.push(['MÉTODOS DE PAGO', '']);
                 data.push(['Método', 'Monto', 'Porcentaje']);
-                
+
                 const paymentRows = paymentTable.querySelectorAll('tr');
                 paymentRows.forEach(row => {
                     const cells = row.querySelectorAll('td');
@@ -717,20 +572,20 @@ function downloadCashRegisterExcel() {
                     }
                 });
             }
-            
+
             // Intenta extraer información de productos desde la tabla anterior
             const productsTable = entry.querySelector('.summary-table');
             if (productsTable) {
                 data.push(['', '']);
                 data.push(['PRODUCTOS VENDIDOS', '']);
-                
+
                 const rows = Array.from(productsTable.querySelectorAll('tr'));
                 // Añadir cabeceras
                 const headers = rows[0]?.querySelectorAll('th');
                 if (headers && headers.length > 0) {
                     data.push([...Array.from(headers).map(th => th.textContent.trim())]);
                 }
-                
+
                 // Añadir filas de datos
                 rows.slice(1).forEach(row => {
                     const cells = Array.from(row.querySelectorAll('td'));
@@ -739,18 +594,18 @@ function downloadCashRegisterExcel() {
                     }
                 });
             }
-            
+
             // Extraer información de pedidos
             const ordersTable = entry.querySelector('.orders-table');
             if (ordersTable) {
                 data.push(['', '']);
                 data.push(['PEDIDOS INCLUIDOS', '']);
-                
+
                 const headers = ordersTable.querySelectorAll('th');
                 if (headers.length > 0) {
                     data.push([...Array.from(headers).map(th => th.textContent.trim())]);
                 }
-                
+
                 const orderRows = ordersTable.querySelectorAll('tr:not(:first-child)');
                 orderRows.forEach(row => {
                     const cells = row.querySelectorAll('td');
@@ -760,45 +615,45 @@ function downloadCashRegisterExcel() {
                 });
             }
         }
-        
+
         // Crear una hoja para este cierre
         const sheetName = `Cierre ${index + 1}`;
         const worksheet = XLSX.utils.aoa_to_sheet(data);
-        
+
         // Aplicar estilos básicos (ancho de columnas)
         const wscols = [
-            {wch: 25},  // Primera columna más ancha para etiquetas
-            {wch: 30},  // Segunda columna para valores
-            {wch: 15},  // Columnas adicionales para tablas de productos y pedidos
-            {wch: 15},
-            {wch: 15},
-            {wch: 15}
+            { wch: 25 },  // Primera columna más ancha para etiquetas
+            { wch: 30 },  // Segunda columna para valores
+            { wch: 15 },  // Columnas adicionales para tablas de productos y pedidos
+            { wch: 15 },
+            { wch: 15 },
+            { wch: 15 }
         ];
-        
+
         worksheet['!cols'] = wscols;
-        
+
         // Añadir la hoja al libro
         XLSX.utils.book_append_sheet(workbook, worksheet, sheetName);
     });
-    
+
     // Añadir una hoja de resumen con todos los cierres
     const summaryData = [
         ['RESUMEN DE CIERRES DE CAJA', '', '', '', '', '', ''],
         ['Cierre', 'Fecha', 'Local', 'Total Ventas', 'Pedidos', 'Efectivo', 'Transferencia']
     ];
-    
+
     entries.forEach(entry => {
         const title = entry.querySelector('.entry-header h3').textContent.trim();
         const cierre = title.split(' - ')[0]?.trim() || 'Sin número';
         const fecha = title.split(' - ')[1]?.trim() || 'Sin fecha';
-        
+
         // Variables para datos
         let local = '';
         let totalVentas = '';
         let pedidos = '';
         let efectivo = '';
         let transferencia = '';
-        
+
         // Intentar obtener datos de la nueva estructura
         const consolidatedTable = entry.querySelector('.consolidated-table');
         if (consolidatedTable) {
@@ -826,7 +681,7 @@ function downloadCashRegisterExcel() {
                     pedidos = text.replace('Pedidos Procesados:', '').trim();
                 }
             });
-            
+
             // Intentar obtener métodos de pago de la estructura antigua
             const paymentTable = entry.querySelector('.payment-table');
             if (paymentTable) {
@@ -837,7 +692,7 @@ function downloadCashRegisterExcel() {
                         efectivo = efectivoCell.textContent.trim();
                     }
                 }
-                
+
                 const transferenciaRow = paymentTable.querySelector('tr:nth-child(3)');
                 if (transferenciaRow) {
                     const transferenciaCell = transferenciaRow.querySelector('td:nth-child(2)');
@@ -847,17 +702,17 @@ function downloadCashRegisterExcel() {
                 }
             }
         }
-        
+
         summaryData.push([cierre, fecha, local, totalVentas, pedidos, efectivo, transferencia]);
     });
-    
+
     const summarySheet = XLSX.utils.aoa_to_sheet(summaryData);
     XLSX.utils.book_append_sheet(workbook, summarySheet, 'Resumen');
-    
+
     // Generar archivo
     const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
     const blob = new Blob([excelBuffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
-    
+
     // Descargar
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
@@ -1131,7 +986,7 @@ socket.on('single-cash-register', (entry) => {
                 data.push([
                     method.charAt(0).toUpperCase() + method.slice(1),
                     `$${entry.paymentSummary[method].toFixed(2)}`,
-                    `${((entry.paymentSummary[method]/entry.paymentSummary.total)*100).toFixed(2)}%`
+                    `${((entry.paymentSummary[method] / entry.paymentSummary.total) * 100).toFixed(2)}%`
                 ]);
             }
         });
@@ -1182,27 +1037,27 @@ socket.on('single-cash-register', (entry) => {
         // Usar Blob para mejor compatibilidad
         const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
         const blob = new Blob([excelBuffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
-        
+
         // Crear y disparar el evento de descarga
         const url = URL.createObjectURL(blob);
         const link = document.createElement('a');
-        
+
         // Asegurarnos de que el link esté en el DOM
         link.style.display = 'none';
         document.body.appendChild(link);
-        
+
         link.href = url;
         link.download = fileName;
-        
+
         // Simular clic
         const event = new MouseEvent('click', {
             view: window,
             bubbles: true,
             cancelable: true
         });
-        
+
         link.dispatchEvent(event);
-        
+
         // Limpiar
         setTimeout(() => {
             document.body.removeChild(link);
@@ -1265,27 +1120,22 @@ socket.on('update-cash-register-history', (history) => {
   <tr>
     <th>Método</th>
     <th>Monto</th>
-    <th>% del Total</th>
   </tr>
   <tr>
     <td>Efectivo</td>
     <td>$${entry.paymentSummary.efectivo.toFixed(2)}</td>
-    <td>${((entry.paymentSummary.efectivo / entry.paymentSummary.total) * 100).toFixed(1)}%</td>
   </tr>
   <tr>
     <td>Transferencia</td>
     <td>$${entry.paymentSummary.transferencia.toFixed(2)}</td>
-    <td>${((entry.paymentSummary.transferencia / entry.paymentSummary.total) * 100).toFixed(1)}%</td>
   </tr>
   <tr>
     <td>Mixto</td>
     <td>$${entry.paymentSummary.mixto.toFixed(2)}</td>
-    <td>${((entry.paymentSummary.mixto / entry.paymentSummary.total) * 100).toFixed(1)}%</td>
   </tr>
   <tr class="total-row">
     <td><strong>TOTAL</strong></td>
     <td><strong>$${entry.paymentSummary.total.toFixed(2)}</strong></td>
-    <td>100%</td>
   </tr>
 </table>
 `;
@@ -1326,7 +1176,7 @@ socket.on('update-cash-register-history', (history) => {
 // Agregar esta función
 function loadCurrentSellers() {
     const local = window.location.pathname.includes('local1') ? 'local1' : 'local2';
-    
+
     fetch('/get-sellers')
         .then(response => response.json())
         .then(data => {
