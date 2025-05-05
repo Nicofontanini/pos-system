@@ -1,4 +1,3 @@
-// Función para agregar productos al carrito
 // Verificar si cart ya existe antes de declararlo
 if (typeof cart === 'undefined') {
     let cart = [];
@@ -9,12 +8,28 @@ window.cart = window.cart || [];
 
 // Función para agregar al carrito
 window.addToCart = function(productData) {
-    console.log('Product Data Raw:', productData);
-    
-    // Parse the data if it's a string
     const product = typeof productData === 'string' ? JSON.parse(productData) : productData;
     
-    // Parse each component if they are strings
+    // Verificar si es un producto de descuento
+    if (product.category === 'Descuentos' || product.name.toLowerCase().includes('descuento')) {
+        const discountPercent = parseFloat(product.price);
+        const currentTotal = cart.reduce((total, item) => total + (item.price * item.quantity), 0);
+        // Round down the discount amount to the nearest hundred
+        const exactDiscountAmount = currentTotal * (discountPercent / 100);
+        const discountAmount = Math.floor(exactDiscountAmount / 100) * 100;
+        
+        window.currentDiscount = {
+            percent: discountPercent,
+            amount: discountAmount,
+            name: product.name,
+            id: product.id
+        };
+        
+        updateCartUI();
+        return;
+    }
+
+    // Resto del código existente para productos normales
     const parsedComponents = product.components?.map(comp => 
         typeof comp === 'string' ? JSON.parse(comp) : comp
     ) || [];
@@ -27,7 +42,7 @@ window.addToCart = function(productData) {
         isCompound: product.isCompound,
         components: parsedComponents.map(comp => ({
             ...comp,
-            quantity: 0  // Inicializamos las cantidades de componentes en 0
+            quantity: 0
         }))
     };
     
@@ -149,6 +164,7 @@ function updateCartUI() {
 
     cartItemsContainer.innerHTML = '';
 
+    // Mostrar productos normales
     cart.forEach(item => {
         const itemElement = document.createElement('div');
         itemElement.className = 'cart-item';
@@ -186,7 +202,30 @@ function updateCartUI() {
         cartItemsContainer.appendChild(itemElement);
     });
 
+    // Mostrar descuento si existe
+    if (window.currentDiscount) {
+        const discountElement = document.createElement('div');
+        discountElement.className = 'cart-item';
+        discountElement.innerHTML = `
+            <div class="cart-item-main">
+                <span>${window.currentDiscount.name} (${window.currentDiscount.percent}%)</span>
+                <span>-$${window.currentDiscount.amount.toFixed(2)}</span>
+            </div>
+            <div class="cart-item-actions">
+                <button onclick="removeDiscount()">Eliminar</button>
+            </div>
+        `;
+        cartItemsContainer.appendChild(discountElement);
+        total -= window.currentDiscount.amount;
+    }
+
     cartTotalElement.textContent = total.toFixed(2);
+}
+
+// Agregar función para remover descuento
+function removeDiscount() {
+    window.currentDiscount = null;
+    updateCartUI();
 }
 
 // Funciones para manipular items en el carrito
