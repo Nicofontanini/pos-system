@@ -3,12 +3,12 @@ function showCashRegisterHistoryModal() {
     console.log('Abriendo modal de historial');
     const modal = document.getElementById('cashRegisterHistoryModal');
     const container = document.getElementById('cash-register-history');
-    
+
     if (!modal || !container) {
         console.error('Modal o contenedor no encontrado');
         return;
     }
-    
+
     console.log('Modal y contenedor encontrados');
     modal.style.display = 'block';
     loadCashRegisterHistory();
@@ -46,7 +46,7 @@ function loadCashRegisterHistory() {
 
 function displayCashRegisterHistory(history) {
     const container = document.getElementById('cash-register-history');
-    
+
     if (!history || history.length === 0) {
         container.innerHTML = '<p>No hay registros de cierres de caja</p>';
         return;
@@ -60,13 +60,13 @@ function displayCashRegisterHistory(history) {
                 <p>Local: ${entry.local || 'No especificado'}</p>
                 <p>Hora de Inicio: ${entry.startTime ? new Date(entry.startTime).toLocaleTimeString() : 'No disponible'}</p>
                 <p>Hora de Cierre: ${entry.closeTime ? new Date(entry.closeTime).toLocaleTimeString() : 'No disponible'}</p>
-                <p>Total de Ventas: $${entry.totalAmount || 0}</p>
+                <p>Total de Ventas: $${Math.floor(entry.totalAmount || 0)}</p>
                 <p>Cantidad de Pagos: ${entry.totalPayments || 0}</p>
                 <div class="payment-summary">
                     <h4>Resumen de Pagos:</h4>
-                    <p>Efectivo: $${entry.paymentSummary?.efectivo || 0}</p>
-                    <p>Transferencia: $${entry.paymentSummary?.transferencia || 0}</p>
-                    <p>Mixto: $${entry.paymentSummary?.mixto || 0}</p>
+                  <p>Efectivo: $${Math.floor(entry.paymentSummary?.efectivo || 0)}</p>
+                    <p>Transferencia: $${Math.floor(entry.paymentSummary?.transferencia || 0)}</p>
+                  <p>Mixto: $${Math.floor(entry.paymentSummary?.mixto || 0)}</p>
                 </div>
             </div>
         `;
@@ -80,7 +80,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const modal = document.getElementById('cashRegisterHistoryModal');
     if (modal) {
         // Close modal when clicking outside
-        window.onclick = function(event) {
+        window.onclick = function (event) {
             if (event.target === modal) {
                 modal.style.display = 'none';
             }

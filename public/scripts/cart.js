@@ -189,7 +189,7 @@ function updateCartUI() {
         itemElement.innerHTML = `
             <div class="cart-item-main">
                 <span>${item.name} x ${item.quantity}</span>
-                <span>$${subtotal.toFixed(2)}</span>
+                <span>$${Math.floor(subtotal)}</span>
             </div>
             ${componentsHtml}
             <div class="cart-item-actions">
@@ -219,7 +219,7 @@ function updateCartUI() {
         total -= window.currentDiscount.amount;
     }
 
-    cartTotalElement.textContent = total.toFixed(2);
+    cartTotalElement.textContent = Math.floor(total);
 }
 
 // Agregar función para remover descuento
@@ -269,7 +269,7 @@ function generateOrderTicket() {
             <div class="ticket-item">
                 <div class="ticket-item-main">
                     <strong>${item.name}</strong> x ${item.quantity}
-                    <span>$${subtotal.toFixed(2)}</span>
+                    <span>$${Math.floor(subtotal)}</span>
                 </div>`;
 
         // Verificar si es un producto compuesto y tiene componentes
@@ -301,7 +301,7 @@ function generateOrderTicket() {
     ticketContent += `
             </div>
             <div class="ticket-total">
-                <strong>Total: $${total.toFixed(2)}</strong>
+                <strong>Total: $${Math.floor(total)}</strong>
             </div>
         </div>`;
 

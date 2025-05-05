@@ -60,7 +60,7 @@
               <p>Stock: <span id="stock-<%= product.id %>">
                   <%= product.stock %>
                 </span></p>
-              <p>Precio: $<%= product.price %>
+              <p>Precio: $<%= Math.floor(product.price) %>
               </p>
             </div>
             <% if (product.stock <=5) { %>

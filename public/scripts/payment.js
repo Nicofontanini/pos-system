@@ -102,7 +102,7 @@ function updateRemainingAmount() {
   }
 
   const remaining = total - paid;
-  document.getElementById('remainingAmount').textContent = remaining.toFixed(2);
+  document.getElementById('remainingAmount').textContent = Math.floor(remaining);
   document.getElementById('processPaymentBtn').disabled = remaining !== 0;
 }
 
@@ -113,15 +113,6 @@ function updateCardAmount() {
   paymentAmounts[currentPaymentMethod] = totalWithSurcharge;
   updateRemainingAmount();
 }
-
-function updateCardAmount() {
-  const amount = parseFloat(document.getElementById('singleAmount').value) || 0;
-  const surcharge = parseFloat(document.getElementById('cardSurcharge').value) || 0;
-  const totalWithSurcharge = amount + (amount * surcharge / 100);
-  paymentAmounts[currentPaymentMethod] = totalWithSurcharge;
-  updateRemainingAmount();
-}
-
 
 // Función para cargar los contadores desde el backend
 function loadCashRegisterCounters() {
@@ -364,29 +355,42 @@ function printOrder(orderData) {
 
 function generateOrderPrintContent(orderData) {
   const date = new Date(orderData.date).toLocaleString();
-
-  // Verificar explícitamente los valores
   const clientName = orderData.orderName ? orderData.orderName : 'No especificado';
-  // const vendorName = orderData.sellerName ? orderData.sellerName : 'No especificado';
-
-  console.log("Imprimiendo - Nombre del cliente:", clientName);
 
   let paymentDetails = '';
+  let subtotalSection = '';
+
+  // Calcular subtotal antes del descuento
+  const subtotal = orderData.items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+
+  // Si hay descuento, mostrar subtotal y descuento
+  if (window.currentDiscount) {
+    subtotalSection = `
+      <tr class="subtotal-row">
+        <td colspan="2">Subtotal</td>
+        <td class="subtotal-amount">$${subtotal.toFixed(2)}</td>
+      </tr>
+      <tr class="discount-row">
+        <td colspan="2">Descuento ${window.currentDiscount.name} (${window.currentDiscount.percent}%)</td>
+        <td class="discount-amount">-$${window.currentDiscount.amount.toFixed(2)}</td>
+      </tr>
+    `;
+  }
 
   if (orderData.paymentMethod === 'mixto') {
     paymentDetails = `
-      <p>Pago en efectivo: $${orderData.paymentAmounts.efectivo.toFixed(2)}</p>
-      <p>Pago por transferencia: $${orderData.paymentAmounts.transferencia.toFixed(2)}</p>
+    <p>Pago en efectivo: $${Math.floor(orderData.paymentAmounts.efectivo)}</p>
+     <p>Pago por transferencia: $${Math.floor(orderData.paymentAmounts.transferencia)}</p>
     `;
   } else if (orderData.paymentMethod === 'tarjeta') {
     paymentDetails = `
-      <p>Total: $${orderData.total.toFixed(2)}</p>
-      <p>Subtotal: $${orderData.originalTotal.toFixed(2)}</p>
-      <p>Recargo (${orderData.surchargePercent}%): $${(orderData.total - orderData.originalTotal).toFixed(2)}</p>
+     <p>Total: $${Math.floor(orderData.total)}</p>
+            <p>Subtotal: $${Math.floor(orderData.originalTotal)}</p>
+            <p>Recargo (${orderData.surchargePercent}%): $${Math.floor(orderData.total - orderData.originalTotal)}</p>
     `;
   } else {
     paymentDetails = `
-      <p>Total: $${orderData.total.toFixed(2)}</p>
+     <p>Total: $${Math.floor(orderData.total)}</p>
     `;
   }
 
@@ -456,15 +460,16 @@ function generateOrderPrintContent(orderData) {
                 ` : ''}
               </td>
               <td class="quantity">${item.quantity || 1}</td>  
-              <td class="subtotal">$${(item.price * (item.quantity || 1)).toFixed(2)}</td>
+               <td class="subtotal">$${Math.floor(item.price * (item.quantity || 1))}</td>
             </tr>
           `).join('')}
         </tbody>
         <tfoot>
-        <tr class="total-row">
-        <td colspan="2">Total</td>
-        <td class="total-amount">$${orderData.total.toFixed(2)}</td>
-        </tr>
+          ${subtotalSection}
+          <tr class="total-row">
+            <td colspan="2">Total Final</td>
+            <td class="total-amount">$${orderData.total.toFixed(2)}</td>
+          </tr>
         </tfoot>
       </table>
 

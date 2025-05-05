@@ -1,8 +1,3 @@
-// controllers/cashRegisterHistoryController.js
-// Remove these lines
-// const { readCashRegisterHistory, writeCashRegisterHistory } = require('../app');
-// const { filterCashRegisterHistoryByDate } = require('../app');
-
 // Add these instead
 const { 
   readCashRegisterHistory, 

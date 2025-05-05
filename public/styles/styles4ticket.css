@@ -168,3 +168,21 @@ th {
 .payment-info p {
     margin: 0.25rem 0;
 }
+
+.discount-row {
+    color: #e74c3c;
+    font-style: italic;
+}
+
+.subtotal-row {
+    border-top: 1px dashed #ccc;
+}
+
+.discount-amount {
+    color: #e74c3c;
+}
+
+.total-row {
+    font-weight: bold;
+    border-top: 2px solid #333;
+}

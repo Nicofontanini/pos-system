@@ -133,49 +133,6 @@ socket.on('update-cash-register-history', (history) => {
     historyContainer.appendChild(entryElement);
   });
 });
-
-// Add this function before closeCashRegister
-function getProductSummary() {
-  const productSummary = [];
-  const productMap = new Map();
-
-  // Aggregate products from orders
-  orders.forEach(order => {
-    order.items.forEach(item => {
-      // Obtener el elemento de stock actual
-      const stockElement = document.getElementById(`stock-${item.id}`);
-      const currentStock = stockElement ? parseInt(stockElement.textContent) : 0;
-      
-      // Obtener el stock inicial del atributo data si existe
-      const initialStock = stockElement ? parseInt(stockElement.getAttribute('data-initial-stock')) || 0 : 0;
-
-      if (productMap.has(item.name)) {
-        const product = productMap.get(item.name);
-        product.quantitySold += item.quantity;
-        product.totalSold += item.price * item.quantity;
-        // Actualizar el stock restante
-        product.remainingStock = currentStock;
-      } else {
-        productMap.set(item.name, {
-          name: item.name,
-          price: item.price,
-          quantitySold: item.quantity,
-          totalSold: item.price * item.quantity,
-          initialStock: initialStock,
-          remainingStock: currentStock
-        });
-      }
-    });
-  });
-
-  // Convert Map to array
-  productMap.forEach(product => {
-    productSummary.push(product);
-  });
-
-  return productSummary;
-}
-
 // Add this function to handle new orders
 function addNewOrder(order) {
   if (cashRegisterStartTime) {
