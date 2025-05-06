@@ -200,7 +200,7 @@ async function processPayment() {
     local: currentLocal,
     orderName: orderName,
     sellerName: selectedSeller || 'EmpanadasKM11', // Ensure seller name is included
-    updateStock: true // Flag para indicar que se debe actualizar el stock
+    updateStock: true, // Flag para indicar que se debe actualizar el stock
   };
 
   try {
@@ -243,13 +243,13 @@ async function processPayment() {
     updateCashRegisterCounters();
     socket.emit('process-order', orderData);
 
-    // Clear cart and UI
-    cart = [];
-    updateCartUI();
-    document.getElementById('orderName').value = '';
-
     // Print immediately and close modal
     printOrder(lastOrderData);
+        // Now clear everything
+        cart = [];
+        window.currentDiscount = null;
+        updateCartUI();
+        document.getElementById('orderName').value = '';
     closePaymentModal();
 
   } catch (error) {
@@ -371,7 +371,7 @@ function generateOrderPrintContent(orderData) {
         <td class="subtotal-amount">$${subtotal.toFixed(2)}</td>
       </tr>
       <tr class="discount-row">
-        <td colspan="2">Descuento ${window.currentDiscount.name} (${window.currentDiscount.percent}%)</td>
+        <td colspan="2">${window.currentDiscount.name} (${window.currentDiscount.percent}%)</td>
         <td class="discount-amount">-$${window.currentDiscount.amount.toFixed(2)}</td>
       </tr>
     `;

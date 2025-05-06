@@ -64,7 +64,26 @@ function displayCashRegisterHistory(history) {
         return;
     }
 
-    const historyHTML = history.map(entry => `
+    const historyHTML = history.map(entry => {
+        // Crear sección de descuentos si existen
+        let discountsHTML = '';
+        
+        // Buscar descuentos en las órdenes
+        if (entry.orders && entry.orders.length > 0) {
+            const ordersWithDiscounts = entry.orders.filter(order => order.discountAmount && order.discountAmount > 0);
+            
+            if (ordersWithDiscounts.length > 0) {
+                discountsHTML = `
+                <div class="discount-summary">
+                    <h4>Descuentos Aplicados:</h4>
+                    ${ordersWithDiscounts.map(order => 
+                        `<p class="discount-info">Descuento ${order.discountName || ''}: $${Math.floor(order.discountAmount || 0)}</p>`
+                    ).join('')}
+                </div>`;
+            }
+        }
+        
+        return `
         <div class="history-entry">
             <h3>Cierre de Caja - ${new Date(entry.closeTime).toLocaleDateString()}</h3>
             <p>Local: ${entry.local}</p>
@@ -79,8 +98,10 @@ function displayCashRegisterHistory(history) {
                 <p>Tarjeta: $${entry.paymentSummary?.tarjeta || 0}</p>
                 <p>Mixto: $${entry.paymentSummary?.mixto || 0}</p>
             </div>
+            ${discountsHTML}
         </div>
-    `).join('');
+        `;
+    }).join('');
 
     container.innerHTML = historyHTML;
 }
