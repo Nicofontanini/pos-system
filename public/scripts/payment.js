@@ -416,8 +416,6 @@ function generateOrderPrintContent(orderData) {
     <html>
     <head>
       <link rel="stylesheet" href="/styles/styles4ticket.css">
-      <link rel="stylesheet" href="/styles/base.css">
-      <link rel="stylesheet" href="/styles/styles.css">
     </head>
     <body>
       <h2>EMPANDAS KM11</h2>

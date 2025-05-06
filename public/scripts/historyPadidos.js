@@ -57,7 +57,7 @@ function displayOrders(orders, filterDate) {
         <p>Fecha: ${orderDate}</p>
         <p>Cliente: ${order.orderName || 'Sin nombre'}</p>
         <p>Vendedor: ${order.sellerName || 'Sin vendedor'}</p>
-        <p>Total: $${order.total}</p>
+        <p>Total: $${Math.floor(order.total)}</p>
         <p>Método de pago: ${order.paymentMethod}</p>
         <details>
           <summary>Ver items</summary>

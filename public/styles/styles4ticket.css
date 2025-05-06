@@ -190,7 +190,7 @@ th {
 }
 
 h2{
-    font-size:14px;
+    font-size:14px; margin: 0;
 }
 
 .header { text-align: center; margin-bottom: 10px; }
@@ -199,3 +199,17 @@ h2{
                     hr { border-top: 1px dashed #000; }
                     table { width: 100%;}
                     td { font-size: 12px; }
+
+                    body {
+                        padding: 1mm;
+                        margin: 0;
+                        font-size: 12px;
+                    }
+
+                    .header { text-align: center; margin-bottom: 10px; }
+                    .info-line { margin: 1px 0; }
+                    .total { font-weight: bold; margin-top: 10px; }
+                    hr { border-top: 1px dashed #000; }
+                     tr { border-top: 1px dashed #000; }
+                    table { width: 100%; }
+                    td { font-size: 12px;}
