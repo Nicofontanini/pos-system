@@ -381,6 +381,37 @@ db.sequelize.authenticate()
           }
       });
 
+      socket.on('get-single-cash-register-excel', async (data) => {
+        console.log('Solicitud de cierre de caja individual para Excel recibida:', data);
+      
+        try {
+          const entry = await db.CashRegisterHistory.findOne({
+            where: { id: data.id }
+          });
+      
+          if (!entry) {
+            console.log('Cierre de caja no encontrado:', data.id);
+            socket.emit('single-cash-register-excel', null);
+            return;
+          }
+      
+          const plainEntry = entry.get({ plain: true });
+      
+          if (plainEntry.paymentSummary) {
+            plainEntry.paymentSummary.total = Number(plainEntry.paymentSummary.total || 0);
+            plainEntry.paymentSummary.efectivo = Number(plainEntry.paymentSummary.efectivo || 0);
+            plainEntry.paymentSummary.transferencia = Number(plainEntry.paymentSummary.transferencia || 0);
+            plainEntry.paymentSummary.mixto = Number(plainEntry.paymentSummary.mixto || 0);
+          }
+      
+          console.log('Enviando cierre de caja para Excel:', plainEntry.id);
+          socket.emit('single-cash-register-excel', plainEntry);
+        } catch (error) {
+          console.error('Error al obtener cierre de caja individual para Excel:', error);
+          socket.emit('single-cash-register-excel', null);
+        }
+      });
+
       socket.on('disconnect', () => {
         console.log('Cliente desconectado');
       });

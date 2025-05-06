@@ -143,7 +143,7 @@ socket.on('order-history', function (history) {
             <p>Fecha: ${new Date(order.date).toLocaleString()}</p>
             <p>Nombre del Cliente: ${order.orderName}</p>
             <p>Vendedor: ${order.sellerName}</p>
-            <p>Total: $${total.toFixed(2)}</p>
+            <p>Total: $${Math.floor(total.toFixed)}</p>
             <p>Método de pago: ${order.paymentMethod}</p>
             <button onclick='printSingleOrder(${JSON.stringify(order)})'>Imprimir</button>
 `;
@@ -217,7 +217,7 @@ socket.on('update-cash-register-history', (history) => {
 <p><strong>Cierre #${index + 1}</strong></p>
 <p>Fecha: ${new Date(entry.date).toLocaleString()}</p>
 <p>Pagos procesados: ${entry.totalPayments}</p>
-<p>Monto total: $${entry.totalAmount.toFixed(2)}</p>
+<p>Monto total: $${Math.floor(entry.totalAmount)}</p>
 <hr>
 `;
         historyContainer.appendChild(entryElement);
@@ -285,123 +285,73 @@ function printSingleCashRegister(id) {
 
 // Modificar el evento para manejar tanto la descarga como la impresión
 socket.on('single-cash-register', (entry) => {
-    if (!entry) {
-        console.error('No se recibieron datos del cierre de caja');
-        alert('No se pudo obtener la información del cierre de caja');
-        return;
-    }
+    if (!entry || !entry.forPrint) return;
+    const printContent = `
+            <html>
+            <head>
+                <title>Cierre de Caja</title>
+           <link rel="stylesheet" href="/styles/styles4ticket.css">
+           <style>     
+h2{
+    font-size:14px;
+}
+.header { text-align: center; margin-bottom: 10px; }
+                    .info-line { margin: 1px 0; }
+                    .total { font-weight: bold; margin-top: 10px; }
+                    hr { border-top: 1px dashed #000; }
+                    table { width: 100%;}
+                    td { font-size: 12px; }
+                </style>
+            </head>
+            <body>
+                <div class="header">
+                    <h2 style="margin:0;font-size:14px;">CIERRE DE CAJA</h2>
+                    <p style="margin:5px 0;">${entry.local.toUpperCase()}</p>
+                </div>
+                <hr>
+                <div class="info-line">Fecha: ${new Date(entry.closeTime).toLocaleDateString()}</div>
+                <div class="info-line">Hora: ${new Date(entry.closeTime).toLocaleTimeString()}</div>
+                <div class="info-line">Período: ${new Date(entry.startTime).toLocaleTimeString()} - ${new Date(entry.closeTime).toLocaleTimeString()}</div>
+                <hr>
+                <div style="text-align:center;margin:5px 0;"><strong>MÉTODOS DE PAGO</strong></div>
+                <table>
+                    <tr><td>Efectivo:</td><td>$${Math.floor(entry.paymentSummary.efectivo)}</td></tr>
+                    <tr><td>Transferencia:</td><td>$${Math.floor(entry.paymentSummary.transferencia)}</td></tr>
+                    <tr><td>Mixto:</td><td>$${Math.floor(entry.paymentSummary.mixto)}</td></tr>
+                </table>
+                <hr>
+                <div class="total">TOTAL: $${Math.floor(entry.paymentSummary.total)}</div>
+                <div class="info-line">Pedidos: ${entry.ordersCount}</div>
+                <hr>
+                <div style="text-align:center;margin:5px 0;"><strong>PRODUCTOS VENDIDOS</strong></div>
+                <table>
+                    ${entry.productSummary.map(product => `
+                        <tr>
+                            <td>${product.name}</td>
+                            <td>${product.quantitySold}x</td>
+                            <td>$${Math.floor(product.totalSold)}</td>
+                        </tr>
+                    `).join('')}
+                </table>
+                <hr>
+                <div style="text-align:center;font-size:10px;margin-top:10px;">
+                    ${new Date().toLocaleString()}
+                </div>
+            </body>
+            </html>
+        `;
 
-    // Si es para imprimir, crear una ventana de impresión
-    if (entry.forPrint === true) {
-        // Crear contenido HTML para imprimir
-        let printContent = `
-        <html>
-        <head>
-            <title>Cierre de Caja - ${entry.local} - ${new Date(entry.closeTime).toLocaleDateString()}</title>
-            <link rel="stylesheet" href="/styles/styles4ticket.css">
-        </head>
-        <body>
-            <button onclick="window.print()" style="padding: 10px; margin-bottom: 20px;">Imprimir</button>
-            <h1>INFORME DE CIERRE DE CAJA</h1>
-            
-            <div class="info">
-                <p><strong>Local:</strong> ${entry.local.toUpperCase()}</p>
-                <p><strong>Fecha cierre:</strong> ${new Date(entry.closeTime).toLocaleString()}</p>
-                <p><strong>Período:</strong> ${new Date(entry.startTime).toLocaleString()} - ${new Date(entry.closeTime).toLocaleString()}</p>
-                <p><strong>Total:</strong> $${entry.paymentSummary.total.toFixed(2)}</p>
-            </div>
-            
-            <div class="section-title">MÉTODOS DE PAGO</div>
-            <table>
-                <tr>
-                    <th>Tipo</th>
-                    <th>Monto</th>
-                </tr>`;
+    const printWindow = document.createElement('iframe');
+    printWindow.style.display = 'none';
+    document.body.appendChild(printWindow);
+    printWindow.contentDocument.write(printContent);
+    printWindow.contentDocument.close();
+    printWindow.contentWindow.focus();
+    printWindow.contentWindow.print();
 
-        ['efectivo', 'transferencia', 'mixto'].forEach(method => {
-            if (entry.paymentSummary[method] > 0) {
-                printContent += `
-                <tr>
-                    <td>${method.charAt(0).toUpperCase() + method.slice(1)}</td>
-                    <td>$${entry.paymentSummary[method].toFixed(2)}</td>
-                </tr>`;
-            }
-        });
-
-        printContent += `
-                <tr class="total-row">
-                    <td>TOTAL</td>
-                    <td>$${entry.paymentSummary.total.toFixed(2)}</td>
-                </tr>
-            </table>`;
-
-        if (entry.productSummary?.length > 0) {
-            printContent += `
-            <div class="section-title">PRODUCTOS VENDIDOS</div>
-            <table>
-                <tr>
-                    <th>Nombre</th>
-                    <th>Precio Unitario</th>
-                    <th>Cantidad</th>
-                    <th>Stock Inicial</th>
-                    <th>Stock Restante</th>
-                    <th>Total</th>
-                </tr>`;
-
-            entry.productSummary.forEach(p => {
-                printContent += `
-                <tr>
-                    <td>${p.name}</td>
-                    <td>$${p.price.toFixed(2)}</td>
-                    <td>${p.quantitySold}</td>
-                    <td>${p.initialStock}</td>
-                    <td>${p.remainingStock}</td>
-                    <td>$${p.totalSold.toFixed(2)}</td>
-                </tr>`;
-            });
-
-            printContent += `</table>`;
-        }
-
-        if (entry.orders?.length > 0) {
-            printContent += `
-            <div class="section-title">PEDIDOS INCLUIDOS</div>
-            <table>
-                <tr>
-                    <th>ID</th>
-                    <th>Nombre</th>
-                    <th>Vendedor</th>
-                    <th>Total</th>
-                    <th>Método de Pago</th>
-                </tr>`;
-
-            entry.orders.forEach(order => {
-                const orderTotal = parseFloat(order.total) || 0;
-                printContent += `
-                <tr>
-                    <td>${order.id}</td>
-                    <td>${order.orderName}</td>
-                    <td>${order.sellerName}</td>
-                    <td>$${orderTotal.toFixed(2)}</td>
-                    <td>${order.paymentMethod}</td>
-                </tr>`;
-            });
-
-            printContent += `</table>`;
-        }
-
-        printContent += `
-        </body>
-        </html>`;
-
-        // Abrir ventana de impresión
-        const printWindow = window.open('', '_blank');
-        printWindow.document.write(printContent);
-        printWindow.document.close();
-
-        return;
-    }
-
+    setTimeout(() => {
+        document.body.removeChild(printWindow);
+    }, 1000);
 });
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -960,11 +910,12 @@ socket.on('employee-log-updated', function (newLog) {
 
 // Función para descargar un cierre específico en Excel
 function downloadSingleCashRegister(id) {
-    socket.emit('get-single-cash-register', { id: id, forPrint: false });
+    socket.emit('get-single-cash-register-excel', { id: id });
 }
 
 // Escuchar el evento para descargar un cierre específico
-socket.on('single-cash-register', (entry) => {
+socket.on('single-cash-register-excel', (entry) => {
+    if (!entry) return;
     if (entry) {
         // Crear workbook
         const workbook = XLSX.utils.book_new();
@@ -1102,11 +1053,11 @@ socket.on('update-cash-register-history', (history) => {
             productsHTML += `
   <tr>
     <td>${product.name}</td>
-    <td>$${product.price.toFixed(2)}</td>
+    <td>$${Math.floor(product.price)}</td>
     <td>${product.quantitySold}</td>
     <td>${product.initialStock}</td>
     <td class="${product.remainingStock <= 5 ? 'low-stock' : ''}">${product.remainingStock}</td>
-    <td>$${product.totalSold.toFixed(2)}</td>
+    <td>$${Math.floor(product.totalSold)}</td>
   </tr>
 `;
         });
@@ -1123,19 +1074,19 @@ socket.on('update-cash-register-history', (history) => {
   </tr>
   <tr>
     <td>Efectivo</td>
-    <td>$${entry.paymentSummary.efectivo.toFixed(2)}</td>
+    <td>$${Math.floor(entry.paymentSummary.efectivo)}</td>
   </tr>
   <tr>
     <td>Transferencia</td>
-    <td>$${entry.paymentSummary.transferencia.toFixed(2)}</td>
+    <td>$${Math.floor(entry.paymentSummary.transferencia)}</td>
   </tr>
   <tr>
     <td>Mixto</td>
-    <td>$${entry.paymentSummary.mixto.toFixed(2)}</td>
+    <td>$${Math.floor(entry.paymentSummary.mixto)}</td>
   </tr>
   <tr class="total-row">
     <td><strong>TOTAL</strong></td>
-    <td><strong>$${entry.paymentSummary.total.toFixed(2)}</strong></td>
+    <td><strong>$${Math.floor(entry.paymentSummary.total)}</strong></td>
   </tr>
 </table>
 `;
@@ -1145,7 +1096,7 @@ socket.on('update-cash-register-history', (history) => {
   <h3>Cierre #${history.length - index} - ${formattedCloseTime}</h3>
   <p><strong>Local:</strong> ${entry.local.toUpperCase()}</p>
   <p><strong>Período:</strong> ${formattedStartTime} a ${formattedCloseTime}</p>
-  <p><strong>Total Ventas:</strong> $${entry.paymentSummary.total.toFixed(2)}</p>
+  <p><strong>Total Ventas:</strong> $${Math.floor(entry.paymentSummary.total)}</p>
   <p><strong>Pedidos Procesados:</strong> ${entry.ordersCount}</p>
   <button onclick="downloadSingleCashRegister('${entry.id}')" class="download-btn">Descargar Excel</button>
  <button onclick="printSingleCashRegister('${entry.id}')" class="print-btn">Imprimir</button>
